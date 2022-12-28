@@ -25,14 +25,27 @@ body {
     height: 100%;
     background: #2b343b;
     padding: 10px 0;
+    overflow: auto;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+.wrapper .sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .wrapper .sidebar .navigation {
     padding-left: 0;
 }
 
+.wrapper .sidebar .navigation .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
 .wrapper .sidebar ul li {
-    padding: 15px;
+    padding: 12px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     border-top: 1px solid rgba(225,225,225,0.05);
 }

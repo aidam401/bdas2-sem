@@ -64,7 +64,7 @@ export default {
       }
 
       this.loading = true;
-      this.$store.dispatch("auth/login", user).then(
+      this.$store.dispatch("auth/register", user).then(
           data => this.$router.push(this.returnUrl),
           error => {
             this.error = error;

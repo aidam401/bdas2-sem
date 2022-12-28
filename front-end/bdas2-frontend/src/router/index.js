@@ -17,6 +17,7 @@ import UzivatelskeRole from "@/views/entities/UzivatelskeRole.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import store from "@/store";
+import Profile from "@/views/Profile.vue";
 
 const routes = [
     {
@@ -31,6 +32,10 @@ const routes = [
         path: "/register",
         name: "Register",
         component: Register
+    },{
+        path: "/profile",
+        name: "Profile",
+        component: Profile
     }, {
         path: "/linka",
         name: "Linka",
@@ -103,7 +108,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const publicPaths = ['/', '/linka', '/login', '/register'];
-    const adminPaths = ['/ridic', '/autobus', '/trolejbus', '/uzivatel'];
+    const adminPaths = ['/ridic', '/autobus', '/trolejbus', '/uzivatel', '/uzivatelske-role'];
     const authRequired = !publicPaths.includes(to.path);
     const adminRequired = adminPaths.includes(to.path);
     const loggedIn = store.getters["auth/isLoggedIn"];
