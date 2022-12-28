@@ -14,13 +14,3 @@ export default {
   components: {Navigation}
 }
 </script>
-
-<style scoped>
-body {
-  margin: 0;
-  padding: 0;
-}
-.main_content {
-  background-color: #7b95ff;
-}
-</style>
