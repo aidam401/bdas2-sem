@@ -25,6 +25,10 @@ body {
     padding: 10px 0;
 }
 
+.wrapper .sidebar .navigation {
+    padding-left: 0;
+}
+
 .wrapper .sidebar ul li {
     padding: 15px;
     border-bottom: 1px solid rgba(0,0,0,0.05);

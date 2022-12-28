@@ -1,25 +1,36 @@
 import Home from "../views/Home.vue";
 import {createRouter, createWebHistory} from "vue-router";
-import Linky from "@/views/Linky.vue";
-import Adresy from "@/views/Adresy.vue";
-import Zastavky from "@/views/Zastavky.vue";
-import Spoje from "@/views/Spoje.vue";
-import CasyZastavek from "@/views/CasyZastavek.vue";
-import ZaznamyJizdnichRadu from "@/views/ZaznamyJizdnichRadu.vue";
-import JizdniRady from "@/views/JizdniRady.vue";
-import TypyJizdnichRadu from "@/views/TypyJizdnichRadu.vue";
-import AktualniJizdy from "@/views/AktualniJizdy.vue";
-import Ridici from "@/views/Ridici.vue";
-import Trolejbusy from "@/views/Trolejbusy.vue";
-import Autobusy from "@/views/Autobusy.vue";
-import Uzivatele from "@/views/Uzivatele.vue";
-import UzivatelskeRole from "@/views/UzivatelskeRole.vue";
+import Linky from "@/views/entities/Linky.vue";
+import Adresy from "@/views/entities/Adresy.vue";
+import Zastavky from "@/views/entities/Zastavky.vue";
+import Spoje from "@/views/entities/Spoje.vue";
+import CasyZastavek from "@/views/entities/CasyZastavek.vue";
+import ZaznamyJizdnichRadu from "@/views/entities/ZaznamyJizdnichRadu.vue";
+import JizdniRady from "@/views/entities/JizdniRady.vue";
+import TypyJizdnichRadu from "@/views/entities/TypyJizdnichRadu.vue";
+import AktualniJizdy from "@/views/entities/AktualniJizdy.vue";
+import Ridici from "@/views/entities/Ridici.vue";
+import Trolejbusy from "@/views/entities/Trolejbusy.vue";
+import Autobusy from "@/views/entities/Autobusy.vue";
+import Uzivatele from "@/views/entities/Uzivatele.vue";
+import UzivatelskeRole from "@/views/entities/UzivatelskeRole.vue";
+import Login from "@/views/Login.vue";
+import Register from "@/views/Register.vue";
+import store from "@/store";
 
 const routes = [
     {
         path: "/",
         name: "Home",
         component: Home,
+    }, {
+        path: "/login",
+        name: "Login",
+        component: Login
+    }, {
+        path: "/register",
+        name: "Register",
+        component: Register
     }, {
         path: "/linka",
         name: "Linka",
@@ -77,11 +88,43 @@ const routes = [
         name: "Uzivatelske_role",
         component: UzivatelskeRole
     },
+
+    // otherwise redirect to home
+    {
+        path: "/:catchAll(.*)",
+        redirect: '/'
+    }
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
+})
+
+router.beforeEach((to, from, next) => {
+    const publicPaths = ['/', '/linka', '/login', '/register'];
+    const adminPaths = ['/ridic', '/autobus', '/trolejbus', '/uzivatel'];
+    const authRequired = !publicPaths.includes(to.path);
+    const adminRequired = adminPaths.includes(to.path);
+    const loggedIn = store.getters["auth/isLoggedIn"];
+    const isAdmin = store.getters["auth/isAdmin"];
+
+    // pokud vyžaduje přihlašení
+    if (authRequired && !loggedIn) {
+        return next({
+           path: '/login',
+           query: { returnUrl: to.path }
+        });
+    }
+
+    // pokud je stránka adminovská
+    if (adminRequired && !isAdmin) {
+        return next({
+            path: '/'
+        });
+    }
+
+    next();
 })
 
 export default router;
