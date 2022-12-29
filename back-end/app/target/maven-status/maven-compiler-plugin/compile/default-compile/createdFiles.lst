@@ -1,0 +1,12 @@
+com\bdas2\app\security\CustomUserDetailsService.class
+com\bdas2\app\security\SecurityConfig.class
+com\bdas2\app\repository\CrudRepository.class
+com\bdas2\app\exception\CrudDaoException.class
+com\bdas2\app\config\Runner.class
+com\bdas2\app\dao\Dao.class
+com\bdas2\app\AppApplication.class
+com\bdas2\app\config\DataSourceConfig.class
+com\bdas2\app\security\SecurityRepository.class
+com\bdas2\app\security\CustomeUserDetails.class
+com\bdas2\app\repository\LoginRepository.class
+com\bdas2\app\controller\AllRestController.class

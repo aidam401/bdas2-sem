@@ -1,0 +1,7 @@
+database:
+  connection:
+    jdbc:
+      driver: 'oracle.jdbc.driver.OracleDriver'
+      url: 'jdbc:oracle:thin:@fei-sql3.upceucebny.cz:1521:BDAS'
+      username: 'st64512'
+      password: 'abcde'
