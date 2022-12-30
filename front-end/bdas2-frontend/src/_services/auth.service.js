@@ -1,6 +1,6 @@
 import axios from 'axios';
+import {API_URL} from "@/_helpers";
 
-const API_URL = 'http://localhost:8080/';
 
 class AuthService {
     login (user) {
@@ -37,12 +37,19 @@ class AuthService {
     logout () {
         localStorage.removeItem('user');
     }
+
+    refreshAuthData (user) {
+        const userStore = {...user};
+        userStore.authData = window.btoa(user.username + ':' + user.password);
+        localStorage.setItem('user', JSON.stringify(userStore));
+        return Promise.resolve();
+    }
 }
 
 export default new AuthService();
 
 
-/* TODO EXAMPLE OF REQUIRED ENDPOINT
+/* TODO EXAMPLE OF REQUIRED ENDPOINT */
 function getAll() {
     const requestOptions = {
         method: 'GET',
@@ -51,4 +58,3 @@ function getAll() {
 
     return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
 }
- */
