@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     handleUpravit () {
-      // TODO from user.service.js
+      // TODO from base.entity.service.js
     },
     onFileChange (e) {
       console.log(e.target.files);

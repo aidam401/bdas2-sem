@@ -1,8 +1,9 @@
-import axios from 'axios';
-import {API_URL} from "@/_helpers";
+import BaseEntityService from "@/_services/base.entity.service";
 
-class UserService {
-    getAll() {
-        return axios.get(API_URL + '')
+class UserService extends BaseEntityService {
+    constructor() {
+        super('Uzivatel');
     }
 }
+
+export default new UserService();
