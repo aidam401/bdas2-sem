@@ -1,23 +1,29 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth/'; //TODO upravit URL na BE
+const API_URL = 'http://localhost:8080/';
 
 class AuthService {
     login (user) {
-        return axios.post(
+        return axios.get(
             API_URL + 'login', {
-                username: user.username,
-                password: user.password
-            },{
-                headers: { 'Content-Type': 'application/json' },
-            }).then(this.handleResponse)
-            .then( dataUser => {
-                if (dataUser) {
-                    dataUser.authdata = window.btoa(username + ':' + password);
-                    localStorage.setItem('user', JSON.stringify(dataUser));
+                params: {
+                    name: user.username,
+                    password: user.password
+                },
+                headers: { 'Content-Type': 'application/json'}
+            }).then(response => {
+                if (response?.data) {
+                    const userStore = {
+                        username: user.username,
+                        password: user.password,
+                        authData: window.btoa(user.username + ':' + user.password)
+                    }
+                    localStorage.setItem('user', JSON.stringify(userStore));
+                    return Promise.resolve();
                 }
-
-                return dataUser;
+                return Promise.reject("Nesprávné heslo nebo login!");
+            }).catch((e) => {
+                return Promise.reject(e);
             })
     }
 
@@ -30,23 +36,6 @@ class AuthService {
 
     logout () {
         localStorage.removeItem('user');
-    }
-
-    handleResponse (response) {
-        return response.text().then(text => {
-            const data = text && JSON.parse(text);
-            if (!response.ok) {
-                if (response.status === 401) {
-                    this.logout();
-                    location.reload();
-                }
-
-                const error = (data && data.message) || response.statusText;
-                return Promise.reject(error);
-            }
-
-            return data;
-        })
     }
 }
 

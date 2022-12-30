@@ -20,8 +20,8 @@ public class CrudRepository {
         return dao.fetchJsonArray("SELECT * FROM " + tableName);
     }
 
-    public JSONArray fetchAll(String tableName, Integer page, Integer offset){
-        return dao.fetchJsonArray("SELECT "+tableName+" FROM uzivatel order by id_uzivatele OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;", new Object[]{offset, page}, new int[]{Types.INTEGER, Types.INTEGER} );
+    public JSONArray fetchAll(String tableName, Integer limit, Integer offset){
+        return dao.fetchJsonArray("SELECT * FROM "+tableName+" order by id_uzivatele OFFSET ? ROWS FETCH NEXT ? ROWS ONLY", new Object[]{offset, limit}, new int[]{Types.INTEGER, Types.INTEGER} );
     }
     public Integer fetchCount(String tableName){
         return dao.fetchObject("SELECT COUNT(*) FROM "+tableName, Integer.class);

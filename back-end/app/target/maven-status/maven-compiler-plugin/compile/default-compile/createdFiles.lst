@@ -1,6 +1,7 @@
 com\bdas2\app\security\CustomUserDetailsService.class
 com\bdas2\app\security\SecurityConfig.class
 com\bdas2\app\repository\CrudRepository.class
+com\bdas2\app\repository\ViewRepository.class
 com\bdas2\app\exception\CrudDaoException.class
 com\bdas2\app\config\Runner.class
 com\bdas2\app\dao\Dao.class

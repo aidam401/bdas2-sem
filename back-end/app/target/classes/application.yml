@@ -1,3 +1,4 @@
+
 database:
   connection:
     jdbc:
@@ -5,3 +6,5 @@ database:
       url: 'jdbc:oracle:thin:@fei-sql3.upceucebny.cz:1521:BDAS'
       username: 'st64512'
       password: 'abcde'
+server:
+  port: 8080
