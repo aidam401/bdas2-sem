@@ -43,6 +43,7 @@ public class SecurityConfig {
                     auth.antMatchers("/").permitAll();
                     auth.antMatchers("/login").permitAll();
                     auth.regexMatchers("^/all\\D+").hasRole("admin");
+                    auth.regexMatchers("^/count\\D+").hasRole("admin");
                     auth.regexMatchers("^/detail\\D+").hasRole("admin");
                 })
                 .httpBasic(Customizer.withDefaults())

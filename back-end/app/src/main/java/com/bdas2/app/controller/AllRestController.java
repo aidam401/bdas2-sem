@@ -38,7 +38,7 @@ public class AllRestController {
                 return countEndpoints(endpointName.substring(5));
             }
             if (endpointName.substring(0, 3).equalsIgnoreCase("all")) {
-                return allEndpoints(endpointName.substring(3), (Integer) paramMap.getOrDefault("page", null), (Integer) paramMap.getOrDefault("size", null));
+                return allEndpoints(endpointName.substring(3), Integer.parseInt((String) paramMap.getOrDefault("limit", "-1")), Integer.parseInt((String) paramMap.getOrDefault("offset", "-1")));
             }
             if (endpointName.substring(0, 6).equalsIgnoreCase("detail") && paramMap.containsKey("id")) {
                 return detailEndpoints(endpointName.substring(6), (Integer) paramMap.get("id"));
@@ -50,9 +50,9 @@ public class AllRestController {
         }
     }
 
-    private ResponseEntity<String> allEndpoints(@NonNull String table, @Nullable Integer page, @Nullable Integer size){
-        if(page != null && size != null){
-            return new ResponseEntity<>(crudRepo.fetchAll(table, page, size).toString(), HttpStatus.OK);
+    private ResponseEntity<String> allEndpoints(@NonNull String table, @Nullable Integer limit, @Nullable Integer offset){
+        if(limit != -1 && offset != -1){
+            return new ResponseEntity<>(crudRepo.fetchAll(table, limit, offset).toString(), HttpStatus.OK);
         }
         return new ResponseEntity<>(crudRepo.fetchAll(table).toString(), HttpStatus.OK);
     }
@@ -60,7 +60,7 @@ public class AllRestController {
         return new ResponseEntity<>(String.valueOf(crudRepo.fetchCount(table)), HttpStatus.OK);
     }
     private ResponseEntity<String> detailEndpoints(@NonNull String table, @NonNull Integer id){
-        return new ResponseEntity<>(crudRepo.fetchAll(table).toString(), HttpStatus.OK);
+        return new ResponseEntity<>(crudRepo.fetchDetail(table, id).toString(), HttpStatus.OK);
     }
 
     private ResponseEntity<String> loginEndpoint(@NonNull String name, @NonNull String password){
