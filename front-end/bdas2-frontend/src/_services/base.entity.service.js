@@ -37,6 +37,7 @@ export default class BaseEntityService {
     }
 
     updateEntity(data) {
+        console.log(data);
         return axios.post(API_URL + 'update' + this.table, data, {
             headers: { 'Authorization': authBasic(), "Access-Control-Allow-Origin": "*"}
         });

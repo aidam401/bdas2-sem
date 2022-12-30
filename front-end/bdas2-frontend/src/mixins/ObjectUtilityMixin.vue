@@ -3,7 +3,7 @@ export default {
   name: "ObjectUtilityMixin",
   methods: {
     areObjectsEqual(object1, object2) {
-      if (object1 === null || object2 === null)
+      if (!(object1 && object2))
         return false
       const keys1 = Object.keys(object1);
       const keys2 = Object.keys(object2);

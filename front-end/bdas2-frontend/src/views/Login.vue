@@ -4,14 +4,14 @@
     <form @submit.prevent="handleSubmit">
       <div v-if="error" class="alert alert-danger">{{error}}</div>
       <div class="form-group">
-        <label for="username">Login</label>
-        <input type="text" v-model="user.username" name="username" class="form-control" :class="{ 'is-invalid': submitted && !user.username }" />
-        <div v-show="submitted && !user.username" class="invalid-feedback">Login je povinný</div>
+        <label for="login">Login</label>
+        <input type="text" v-model="user.LOGIN" name="login" class="form-control" :class="{ 'is-invalid': submitted && !user.login }" />
+        <div v-show="submitted && !user.LOGIN" class="invalid-feedback">Login je povinný</div>
       </div>
       <div class="form-group">
-        <label for="password">Heslo</label>
-        <input type="password" v-model="user.password" name="password" class="form-control" :class="{ 'is-invalid': submitted && !user.password }" />
-        <div v-show="submitted && !user.password" class="invalid-feedback">Heslo je povinné</div>
+        <label for="heslo">Heslo</label>
+        <input type="password" v-model="user.HESLO" name="heslo" class="form-control" :class="{ 'is-invalid': submitted && !user.heslo }" />
+        <div v-show="submitted && !user.HESLO" class="invalid-feedback">Heslo je povinné</div>
       </div>
       <div class="form-group">
         <button class="btn btn-primary" :disabled="loading">Přihlásit</button>
@@ -32,8 +32,8 @@ export default {
   data () {
     return {
       user: {
-        username: '',
-        password: ''
+        LOGIN: '',
+        HESLO: ''
       },
       submitted: false,
       loading: false,
@@ -52,7 +52,7 @@ export default {
       this.submitted = true;
 
       const { user } = this;
-      if (!(user.username && user.password)) {
+      if (!(user.LOGIN && user.HESLO)) {
         return;
       }
 

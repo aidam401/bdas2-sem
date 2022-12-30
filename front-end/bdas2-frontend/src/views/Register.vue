@@ -4,20 +4,20 @@
     <form @submit.prevent="handleSubmit">
       <div v-if="error" class="alert alert-danger">{{error}}</div>
       <div class="form-group">
-        <label for="username">Login</label>
-        <input type="text" v-model="user.username" name="username" class="form-control" :class="{ 'is-invalid': submitted && !user.username }" />
-        <div v-show="submitted && !user.username" class="invalid-feedback">Login je povinný</div>
+        <label for="login">Login</label>
+        <input type="text" v-model="user.LOGIN" name="login" class="form-control" :class="{ 'is-invalid': submitted && !user.LOGIN }" />
+        <div v-show="submitted && !user.LOGIN" class="invalid-feedback">Login je povinný</div>
       </div>
       <div class="form-group">
-        <label for="password">Heslo</label>
-        <input type="password" v-model="user.password" name="password" class="form-control" :class="{ 'is-invalid': submitted && !user.password }" />
-        <div v-show="submitted && !user.password" class="invalid-feedback">Heslo je povinné</div>
+        <label for="heslo">Heslo</label>
+        <input type="password" v-model="user.HESLO" name="heslo" class="form-control" :class="{ 'is-invalid': submitted && !user.HESLO }" />
+        <div v-show="submitted && !user.HESLO" class="invalid-feedback">Heslo je povinné</div>
       </div>
       <div class="form-group">
         <label for="repeated-password">Heslo znovu</label>
         <input type="password" v-model="user.repeatedPassword" name="repeated-password" class="form-control"
-               :class="{ 'is-invalid': submitted && (!user.repeatedPassword || user.password !== user.repeatedPassword) }"/>
-        <div v-show="submitted && user.password !== user.repeatedPassword" class="invalid-feedback">Hesla se neshodují</div>
+               :class="{ 'is-invalid': submitted && (!user.repeatedPassword || user.HESLO !== user.repeatedPassword) }"/>
+        <div v-show="submitted && user.HESLO !== user.repeatedPassword" class="invalid-feedback">Hesla se neshodují</div>
       </div>
       <div class="form-group">
         <button class="btn btn-primary" :disabled="loading">Potvrdit</button>
@@ -38,8 +38,8 @@ export default {
   data () {
     return {
       user: {
-        username: '',
-        password: '',
+        LOGIN: '',
+        HESLO: '',
         repeatedPassword: ''
       },
       submitted: false,
@@ -59,7 +59,7 @@ export default {
       this.submitted = true;
 
       const { user } = this;
-      if (!(user.username && user.password) || (user.password !== user.repeatedPassword)) {
+      if (!(user.LOGIN && user.HESLO) || (user.HESLO !== user.repeatedPassword)) {
         return;
       }
 
