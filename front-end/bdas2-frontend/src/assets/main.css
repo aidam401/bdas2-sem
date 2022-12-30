@@ -90,6 +90,10 @@ body {
         width: 50px;
     }
 
+    .wrapper .sidebar ul li {
+        text-align: center;
+    }
+
     .wrapper .sidebar ul li a span {
         display: none;
     }

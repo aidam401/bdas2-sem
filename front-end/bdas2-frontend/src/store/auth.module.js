@@ -47,6 +47,18 @@ export const auth = {
                     return Promise.reject(error);
                 }
             );
+        },
+        refreshLoggedUser ({ commit }, user) {
+            return AuthService.refreshAuthData(user).then(
+                response => {
+                    commit('loginSuccess', user);
+                    return Promise.resolve(user);
+                },
+                error => {
+                    commit('loginFailure');
+                    return Promise.reject(error);
+                }
+            )
         }
     },
     mutations: {

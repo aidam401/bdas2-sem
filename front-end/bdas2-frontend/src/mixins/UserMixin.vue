@@ -15,6 +15,19 @@ export default {
     },
     getLoggedUser () {
       return this.$store.getters["auth/loggedUser"];
+    },
+    getUniversalUserImagePath () {
+      return "/universalUserImage.jpg";
+    },
+    getRoleName () {
+      switch (Number(this.getLoggedUser?.role)) {
+        case 1:
+          return "Administrátor";
+        case 2:
+          return "Uživatel";
+        default:
+          return "";
+      }
     }
   }
 }
