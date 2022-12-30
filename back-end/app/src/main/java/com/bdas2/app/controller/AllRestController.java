@@ -41,7 +41,7 @@ public class AllRestController {
                 return allEndpoints(endpointName.substring(3), Integer.parseInt((String) paramMap.getOrDefault("limit", "-1")), Integer.parseInt((String) paramMap.getOrDefault("offset", "-1")));
             }
             if (endpointName.substring(0, 6).equalsIgnoreCase("detail") && paramMap.containsKey("id")) {
-                return detailEndpoints(endpointName.substring(6), (Integer) paramMap.get("id"));
+                return detailEndpoints(endpointName.substring(6), Integer.parseInt((String) paramMap.get("id")));
             }
 
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

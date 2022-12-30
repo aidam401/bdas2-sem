@@ -16,9 +16,11 @@ public class ViewRepository {
 
 
     public JSONArray fetchAllUsers(String limit, Integer offset){
-        return dao.fetchJsonArray("select * from UZIVATELE_ADMIN_VIEW OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;", new Object[]{offset, limit}, new int[]{Types.INTEGER, Types.INTEGER} );
+        return dao.fetchJsonArray("select * from UZIVATELE_ADMIN_VIEW " +
+                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;", new Object[]{offset, limit}, new int[]{Types.INTEGER, Types.INTEGER} );
     }
 
+    //public JSONArray
 
 
 
