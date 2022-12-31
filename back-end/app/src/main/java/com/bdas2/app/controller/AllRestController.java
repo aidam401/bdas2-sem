@@ -19,7 +19,6 @@ import java.util.Objects;
 
 @RestController
 @Slf4j
-@CrossOrigin
 public class AllRestController {
     final CrudRepository crudRepo;
     final LoginRepository loginRepo;
@@ -28,7 +27,7 @@ public class AllRestController {
         this.crudRepo = repo;
         this.loginRepo = loginRepo;
     }
-
+    @CrossOrigin
     @GetMapping(value = "/{endpointName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> allEndpoint(@PathVariable String endpointName, @RequestParam(required = false) Map<String, Object> paramMap) {
         try {
