@@ -1,12 +1,12 @@
 <template>
-  <div class="ridici">
-    Řidiči
+  <div class="vozidla">
+    Vozidla
   </div>
 </template>
 
 <script>
 export default {
-  name: "Ridici"
+  name: "Vozidla"
 }
 </script>
 

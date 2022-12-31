@@ -1,12 +1,10 @@
 <template>
-  <div class="autobusy">
-    Autobusy
-  </div>
+<h1>Zamestnanci</h1>
 </template>
 
 <script>
 export default {
-  name: "Autobusy"
+  name: "Zamestnanci"
 }
 </script>
 

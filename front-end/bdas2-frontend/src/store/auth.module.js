@@ -17,7 +17,7 @@ export const auth = {
             return state.user;
         },
         isAdmin (state) {
-            return state.user?.role === 1;
+            return state.user?.ROLE ? Number(state.user?.ROLE) === 1 : false;
         }
     },
     actions: {
