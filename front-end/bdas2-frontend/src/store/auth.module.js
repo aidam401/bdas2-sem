@@ -13,10 +13,11 @@ export const auth = {
             return state.status.loggedIn;
         },
         loggedUser (state) {
+            console.log(state.user);
             return state.user;
         },
         isAdmin (state) {
-            return state.user?.role === 1;
+            return state.user?.ROLE ? Number(state.user?.ROLE) === 1 : false;
         }
     },
     actions: {

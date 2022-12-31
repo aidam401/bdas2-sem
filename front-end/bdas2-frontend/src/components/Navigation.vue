@@ -68,47 +68,41 @@ export default {
     navigationPublicItems() {
       return [
         { name: 'Domovská stránka' , to: 'Home', icon: 'fa-home' },
-        { name: 'Linky' , to: 'Linka', icon: 'fa-link' }
+        { name: 'Vyhledat SPOJ' , to: 'Spoj', icon: 'fa-circle-nodes' },
       ];
     },
     navigationAdminItems() {
       return [
-        { name: 'Řidiči' , to: 'Ridic', icon: 'fa-id-card'},
-        { name: 'Trolejbusy', to: 'Trolejbus', icon: 'fa-train-tram'},
-        { name: 'Autobusy', to: 'Autobus', icon: 'fa-bus'},
         { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
-        { name: 'Uživatelské role', to: 'Uzivatelske_role', icon: 'fa-user-shield'}
+        { name: 'CRUD Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
+        { name: 'CRUD Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
+        { name: 'CRUD Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
+        { name: 'CRUD Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
+        { name: 'CRUD Spoje' , to: 'Casy_zastavek', icon: 'fa-circle-nodes'},
+        { name: 'CRUD Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
+        { name: 'CRUD Linky' , to: 'Linka', icon: 'fa-link' },
       ];
     },
     navigationLoggedInItems() {
       return [
-        { name: 'Adresy' , to: 'Adresa', icon: 'fa-map-location-dot'},
-        { name: 'Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
-        { name: 'Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
-        { name: 'Časy zastávek' , to: 'Casy_zastavek', icon: 'fa-clock'},
-        { name: 'Záznamy jízdních řádů' , to: 'Zaznam_jizdniho_radu', icon: 'fa-timeline'},
-        { name: 'Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
-        { name: 'Typy jízdních řádů' , to: 'Typ_jizdniho_radu', icon: 'fa-table'},
-        { name: 'Aktuální jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
+          // TODO Přehled linek s detailem spojů
+        { name: 'Linky' , to: 'Linka', icon: 'fa-map-location-dot'}
+
       ];
     },
     allNavigationItems() {
       return [
         { name: 'Domovská stránka' , to: 'Home', icon: 'fa-home' },
-        { name: 'Linky' , to: 'Linka', icon: 'fa-link' },
-        { name: 'Adresy' , to: 'Adresa', icon: 'fa-map-location-dot'},
-        { name: 'Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
-        { name: 'Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
-        { name: 'Časy zastávek' , to: 'Casy_zastavek', icon: 'fa-clock'},
-        { name: 'Záznamy jízdních řádů' , to: 'Zaznam_jizdniho_radu', icon: 'fa-timeline'},
-        { name: 'Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
-        { name: 'Typy jízdních řádů' , to: 'Typ_jizdniho_radu', icon: 'fa-table'},
-        { name: 'Aktuální jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
-        { name: 'Řidiči' , to: 'Ridic', icon: 'fa-id-card'},
-        { name: 'Trolejbusy', to: 'Trolejbus', icon: 'fa-train-tram'},
-        { name: 'Autobusy', to: 'Autobus', icon: 'fa-bus'},
+        { name: 'Vyhledat SPOJ' , to: 'Spoj', icon: 'fa-circle-nodes' },
+        { name: 'Linky' , to: 'Linka', icon: 'fa-map-location-dot'},
         { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
-        { name: 'Uživatelské role', to: 'Uzivatelske_role', icon: 'fa-user-shield'}
+        { name: 'CRUD Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
+        { name: 'CRUD Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
+        { name: 'CRUD Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
+        { name: 'CRUD Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
+        { name: 'CRUD Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
+        { name: 'CRUD Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
+        { name: 'CRUD Linky' , to: 'Linka', icon: 'fa-link' },
       ];
     },
     navigationItems() {

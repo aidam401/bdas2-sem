@@ -7,19 +7,16 @@ class AuthService {
         return axios.get(
             API_URL + 'login', {
                 params: {
-                    name: user.username,
-                    password: user.password
+                    name: user.LOGIN,
+                    password: user.HESLO
                 },
                 headers: { 'Content-Type': 'application/json'}
             }).then(response => {
                 if (response?.data) {
-                    const userStore = {
-                        username: user.username,
-                        password: user.password,
-                        authData: window.btoa(user.username + ':' + user.password)
-                    }
+                    const userStore = {...user};
+                    userStore.authData = window.btoa(user.LOGIN + ':' + user.HESLO);
                     localStorage.setItem('user', JSON.stringify(userStore));
-                    return Promise.resolve();
+                    return Promise.resolve(userStore);
                 }
                 return Promise.reject("Nesprávné heslo nebo login!");
             }).catch((e) => {
@@ -28,10 +25,7 @@ class AuthService {
     }
 
     register(user) {
-        return axios.post(API_URL + 'signup', {
-            username: user.username, // TODO přidat file uživatele
-            password: user.password
-        });
+        return axios.post(API_URL + 'signup', user);
     }
 
     logout () {
@@ -40,9 +34,9 @@ class AuthService {
 
     refreshAuthData (user) {
         const userStore = {...user};
-        userStore.authData = window.btoa(user.username + ':' + user.password);
+        userStore.authData = window.btoa(user.LOGIN + ':' + user.HESLO);
         localStorage.setItem('user', JSON.stringify(userStore));
-        return Promise.resolve();
+        return Promise.resolve(userStore);
     }
 }
 
