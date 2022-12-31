@@ -19,6 +19,7 @@ import java.util.Objects;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class AllRestController {
     final CrudRepository crudRepo;
     final LoginRepository loginRepo;
