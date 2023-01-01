@@ -100,9 +100,9 @@ export default {
         { name: 'CRUD Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
         { name: 'CRUD Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
         { name: 'CRUD Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
-        { name: 'CRUD Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
+        { name: 'CRUD Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},*/
         { name: 'CRUD Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
-        { name: 'CRUD Linky' , to: 'Linka', icon: 'fa-link' },*/
+        /*{ name: 'CRUD Linky' , to: 'Linka', icon: 'fa-link' },*/
       ];
     },
     navigationItems() {

@@ -14,6 +14,8 @@ import store from "@/store";
 import Profile from "@/views/Profile.vue";
 import Vozidla from "@/views/entities/Vozidla.vue";
 import Zamestnanci from "@/views/entities/Zamestnanci.vue";
+import UzivatelDetail from "@/views/entities/UzivatelDetail.vue";
+import ZastavkaDetail from "@/views/entities/ZastavkaDetail.vue";
 
 const routes = [
     {
@@ -44,6 +46,10 @@ const routes = [
         path: "/zastavka",
         name: "Zastavka",
         component: Zastavky
+    },{
+        path: '/zastavka/:id',
+        name: 'ZastavkaDetail',
+        component: ZastavkaDetail
     }, {
         path: "/spoj",
         name: "Spoj",
@@ -71,7 +77,11 @@ const routes = [
     }, {
         path: "/uzivatel",
         name: "Uzivatel",
-        component: Uzivatele
+        component: Uzivatele,
+    }, {
+        path: '/uzivatel/:id',
+        name: 'UzivatelDetail',
+        component: UzivatelDetail
     },
 
     // otherwise redirect to home
@@ -101,7 +111,7 @@ router.beforeEach((to, from, next) => {
            query: { returnUrl: to.path }
         });
     }
-
+    console.log("Je pravda že tuto routu může použít admin?: ", adminRequired);
     // pokud je stránka adminovská
     if (adminRequired && !isAdmin) {
         return next({

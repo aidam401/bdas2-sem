@@ -1,26 +1,21 @@
 <template>
-<WrapperList :entity-service="service" :title="title"/>
+<WrapperList :entity-service="service" :title="title" :detail-id-key="detailIdKey"/>
 </template>
 
 <script>
-import MainHeader from "@/components/MainHeader.vue";
-import UserService from "@/_services/user.service";
-import TableList from "@/components/TableList.vue";
 import WrapperList from "@/components/WrapperList.vue";
+import UzivatelViewService from "@/_services/uzivatel.view.service";
 
 export default {
   name: "Uzivatele",
-  components: {WrapperList, TableList, MainHeader},
+  components: {WrapperList},
   data () {
     return {
       title: 'Uživatelé',
+      detailIdKey: 'ID_UZIVATELE',
       allowedHeaderItems: [],
-      service: UserService
+      service: UzivatelViewService
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

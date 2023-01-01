@@ -33,21 +33,24 @@
 <script>
 export default {
   name: "Pagination",
+  props: {
+    itemsCount: Number
+  },
   data() {
     return {
       current: 1,
-      perPage: 5,
-      pages: [],
-      itemsCount: 25
+      perPage: 15,
+      pages: []
     }
   },
   methods: {
     goToPage(page) {
       this.current = page;
-      this.$emit('pageChanged', page);
+      this.$emit('pageChanged', page, this.perPage);
     }
   },
   mounted() {
+    console.log("COUNT", this.itemsCount);
     for (let i = 1; i <= Math.ceil(this.itemsCount / this.perPage); i++) {
       this.pages.push(i);
     }

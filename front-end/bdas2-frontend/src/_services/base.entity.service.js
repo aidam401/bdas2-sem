@@ -7,14 +7,24 @@ export default class BaseEntityService {
         this.table = table;
     }
 
-    getAll(limit, offset) {
-        return axios.get(API_URL + this.table + '/read', {
+
+    getCount() {
+        return axios.get(API_URL + this.table + '/count', {
             headers: {
                 'Authorization': authBasic(),
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': '*',
-                'Access-Control-Allow-Credentials': true,}
+                'Access-Control-Allow-Origin': '*',}
+        }).catch(e => console.log(e));
+    }
+
+    getAll(limit, offset) {
+        return axios.get(API_URL + this.table + '/read', {
+            params: {
+                limit: limit,
+                offset: offset
+            },
+            headers: {
+                'Authorization': authBasic(),
+                'Access-Control-Allow-Origin': '*',}
         }).catch(e => console.log(e));
     }
 

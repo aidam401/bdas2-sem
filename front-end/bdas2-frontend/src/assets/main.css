@@ -98,6 +98,23 @@ body {
     margin: 0;
 }
 
+.page-item.active .page-link {
+    background-color: #2b343b;
+    border-color: #2b343b;
+}
+
+.page-link {
+    color: #2b343b;
+}
+
+.table tbody tr {
+    cursor: pointer;
+}
+
+.table tbody tr:hover td{
+    background-color: #cbcbcb;
+}
+
 @media (max-width:750px) {
     .wrapper .main_content {
         margin: 5px 5px 5px calc(50px + 5px);
