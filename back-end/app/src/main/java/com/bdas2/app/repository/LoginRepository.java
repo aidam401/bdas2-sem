@@ -31,11 +31,11 @@ public class LoginRepository {
                 new Object[]{name, password},
                 new int[]{Types.VARCHAR, Types.VARCHAR}, String.class), "admin") && anotherUser != null){
             ret.putAll(dao.fetchJsonArray(
-                    "select u.id_uzivatele, r.id_role, u.login, u.heslo, r.nazev_role from uzivatel u join role r on u.id_role = r.id_role WHERE login=?",
+                    "select u.id_uzivatele, r.id_role, u.login, u.heslo, r.nazev_role, s.* from uzivatel u join role r on u.id_role = r.id_role join soubor s on s.id_soubor = u.id_soubor WHERE login=?",
                     new Object[]{anotherUser}, new int[]{Types.VARCHAR}));
         }else{
             ret.putAll(dao.fetchJsonArray(
-                    "select u.id_uzivatele, r.id_role, u.login, u.heslo, r.nazev_role from uzivatel u join role r on u.id_role = r.id_role WHERE login=? AND heslo = ?",
+                    "select u.id_uzivatele, r.id_role, u.login, u.heslo, r.nazev_role, s.* from uzivatel u join role r on u.id_role = r.id_role join soubor s on s.id_soubor = u.id_soubor WHERE login=? AND heslo = ?",
                     new Object[]{name, password}, new int[]{Types.VARCHAR, Types.VARCHAR}));
 
         }
