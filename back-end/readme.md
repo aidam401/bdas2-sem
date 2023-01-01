@@ -149,7 +149,7 @@ http://localhost:8080/adresa/count
 
 ### ✨✨Bez login wallu
 
-`localhost:8080/login?name=<String>&password=<String>` -- Ověření existence uživatele
+`localhost:8080/login?name=<String>&password=<String>&anotherUser=<JmenuUsera>` -- Ověření existence uživatele
 
 ### Example:
 
