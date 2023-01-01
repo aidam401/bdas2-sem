@@ -12,9 +12,10 @@ class AuthService {
                 },
                 headers: { 'Content-Type': 'application/json'}
             }).then(response => {
-                if (response?.data) {
-                    const userStore = {...user};
-                    userStore.authData = window.btoa(user.LOGIN + ':' + user.HESLO);
+                console.log(response);
+                if (response?.data[0]) {
+                    const userStore = {...response.data[1]};
+                    userStore.authData = window.btoa(userStore.LOGIN + ':' + userStore.HESLO);
                     localStorage.setItem('user', JSON.stringify(userStore));
                     return Promise.resolve(userStore);
                 }
@@ -41,14 +42,3 @@ class AuthService {
 }
 
 export default new AuthService();
-
-
-/* TODO EXAMPLE OF REQUIRED ENDPOINT */
-function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
-}

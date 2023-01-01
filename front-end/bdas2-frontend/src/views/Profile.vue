@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2> Profil <small class="text-muted">{{this.getProfileTitleSuffix}}</small> </h2>
+  <div class="main-wrapper">
+    <MainHeader title="Profil" :title-suffix="this.getProfileTitleSuffix"/>
     <form>
       <img :src="getUserFile" width="200" height="200" class="rounded mx-auto d-block" alt="...">
 
@@ -25,13 +25,14 @@
 import UserMixin from "@/mixins/UserMixin.vue";
 import ObjectUtilityMixin from "@/mixins/ObjectUtilityMixin.vue";
 import UserService from "@/_services/user.service";
+import MainHeader from "@/components/MainHeader.vue";
 
 export default {
   name: "Profile.vue",
   mixins: [UserMixin, ObjectUtilityMixin],
+  components: {MainHeader},
   created () {
     this.userModel = {...this.getLoggedUser};
-    delete this.userModel.authData;
   },
   data () {
     return {
@@ -42,7 +43,8 @@ export default {
   methods: {
     handleUpravit () {
 
-      event.preventDefault()
+      event.preventDefault();
+      delete this.userModel.authData;
       UserService.updateEntity(this.userModel);
     },
     onFileChange (e) {

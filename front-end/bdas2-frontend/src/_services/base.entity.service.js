@@ -8,18 +8,18 @@ export default class BaseEntityService {
     }
 
     getAll(limit, offset) {
-        return axios.get(API_URL + 'all' + this.table, {
+        return axios.get(API_URL + this.table + '/read', {
             headers: {
                 'Authorization': authBasic(),
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Methods': '*',
                 'Access-Control-Allow-Credentials': true,}
-        });
+        }).catch(e => console.log(e));
     }
 
     getById(id) {
-        return axios.get(API_URL + 'detail' + this.table,
+        return axios.get(API_URL + this.table + '/read',
             {
                 params: {id: id},
                 headers: {
@@ -27,19 +27,26 @@ export default class BaseEntityService {
                     'Authorization': authBasic(),
                     "Access-Control-Allow-Origin": "*"
                 }
-            });
+            }).catch(e => console.log(e));
     }
 
     createEntity(data) {
-        return axios.post(API_URL + 'create' + this.table, data, {
+        return axios.post(API_URL + this.table + '/create', data, {
             headers: { 'Authorization': authBasic(), "Access-Control-Allow-Origin": "*"}
-        });
+        }).catch(e => console.log(e));
     }
 
-    updateEntity(data) {
-        console.log(data);
-        return axios.post(API_URL + 'update' + this.table, data, {
+    updateEntity(id, data) {
+        return axios.post(API_URL + this.table + '/update', data, {
+            params: {id: id},
             headers: { 'Authorization': authBasic(), "Access-Control-Allow-Origin": "*"}
-        });
+        }).catch(e => console.log(e));
+    }
+
+    deleteEntity(id) {
+        return axios.delete(API_URL + this.table + '/delete', {
+            params: {id: id},
+            headers: { 'Authorization': authBasic(), "Access-Control-Allow-Origin": "*"}
+        }).catch(e => console.log(e));
     }
 }
