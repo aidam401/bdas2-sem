@@ -20,7 +20,7 @@ export default {
       return "/universalUserImage.jpg";
     },
     getRoleName () {
-      switch (Number(this.getLoggedUser?.ROLE)) {
+      switch (Number(this.getLoggedUser?.ID_ROLE)) {
         case 1:
           return "Administrátor";
         case 2:
