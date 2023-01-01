@@ -6,19 +6,20 @@ import com.bdas2.app.repository.LoginRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class AllRestController {
     final CrudRepository crudRepo;
     final LoginRepository loginRepo;
@@ -27,43 +28,81 @@ public class AllRestController {
         this.crudRepo = repo;
         this.loginRepo = loginRepo;
     }
-    @CrossOrigin
-    @GetMapping(value = "/{endpointName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> allEndpoint(@PathVariable String endpointName, @RequestParam(required = false) Map<String, Object> paramMap) {
-        try {
-            if (Objects.equals(endpointName, "login")) {
-                return loginEndpoint((String) paramMap.getOrDefault("name", null), (String) paramMap.getOrDefault("password", null));
-            }
-            if (endpointName.substring(0, 5).equalsIgnoreCase("count")){
-                return countEndpoints(endpointName.substring(5));
-            }
-            if (endpointName.substring(0, 3).equalsIgnoreCase("all")) {
-                return allEndpoints(endpointName.substring(3), Integer.parseInt((String) paramMap.getOrDefault("limit", "-1")), Integer.parseInt((String) paramMap.getOrDefault("offset", "-1")));
-            }
-            if (endpointName.substring(0, 6).equalsIgnoreCase("detail") && paramMap.containsKey("id")) {
-                return detailEndpoints(endpointName.substring(6), Integer.parseInt((String) paramMap.get("id")));
-            }
 
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+    @ResponseBody
+    @RequestMapping(value = "/{tableName}/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> overTableRouterEndpoint(@PathVariable String tableName,
+                                                          @PathVariable String keyword,
+                                                          @RequestParam(required = false) Map<String, Object> params,
+                                                          @RequestBody(required = false) String body,
+                                                          HttpServletRequest request) {
+        try {
+            var method = request.getMethod();
+
+            //CRUD
+            if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "create")) {
+                return create(tableName, body);
+            }
+            if (Objects.equals(method, "GET") && Objects.equals(keyword.toLowerCase(), "read")) {
+                return read(
+                        tableName,
+                        Integer.parseInt((String) params.getOrDefault("limit", "-1")),
+                        Integer.parseInt((String) params.getOrDefault("offset", "-1")),
+                        Integer.parseInt((String) params.getOrDefault("id", "-1")));
+            }
+            if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "update")) {
+                return update(tableName, Integer.parseInt((String) params.get("id")), body);
+            }
+            if (Objects.equals(method, "DELETE") && Objects.equals(keyword.toLowerCase(), "delete")) {
+                return delete(tableName, Integer.parseInt((String) params.get("id")));
+            }
+            //Special
+            if (Objects.equals(method, "GET") && Objects.equals(keyword.toLowerCase(), "count")) {
+                return countEndpoints(tableName);
+            }
+            return new ResponseEntity<>("Endpoint nenalezen", HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    private ResponseEntity<String> allEndpoints(@NonNull String table, @Nullable Integer limit, @Nullable Integer offset){
-        if(limit != -1 && offset != -1){
-            return new ResponseEntity<>(crudRepo.fetchAll(table, limit, offset).toString(), HttpStatus.OK);
+    @ResponseBody
+    @GetMapping("/login")
+    public ResponseEntity<String> loginEndpoint(@RequestParam String name, @RequestParam String password) {
+        try {
+            return login(name, password);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
+    }
+
+    public ResponseEntity<String> create(@NonNull String tableName, @NonNull String body) {
+        return new ResponseEntity<>(String.valueOf(crudRepo.create(tableName, new JSONObject(body))), HttpStatus.OK);
+    }
+
+    private ResponseEntity<String> read(@NonNull String table, Integer limit, Integer offset, Integer id) {
+        if (id != -1)
+            return new ResponseEntity<>(crudRepo.fetchDetail(table, id).toString(), HttpStatus.OK);
+        if (limit != -1 && offset != -1)
+            return new ResponseEntity<>(crudRepo.fetchAll(table, limit, offset).toString(), HttpStatus.OK);
         return new ResponseEntity<>(crudRepo.fetchAll(table).toString(), HttpStatus.OK);
     }
-    private ResponseEntity<String> countEndpoints(@NonNull String table){
-        return new ResponseEntity<>(String.valueOf(crudRepo.fetchCount(table)), HttpStatus.OK);
-    }
-    private ResponseEntity<String> detailEndpoints(@NonNull String table, @NonNull Integer id){
-        return new ResponseEntity<>(crudRepo.fetchDetail(table, id).toString(), HttpStatus.OK);
+
+    public ResponseEntity<String> update(@NonNull String tableName, @NonNull Integer id, @NonNull String body) {
+        return new ResponseEntity<>(String.valueOf(crudRepo.update(tableName, id, new JSONObject(body))), HttpStatus.OK);
     }
 
-    private ResponseEntity<String> loginEndpoint(@NonNull String name, @NonNull String password){
+    private ResponseEntity<String> delete(@NonNull String tableName, @NonNull Integer id) {
+        return new ResponseEntity<>(String.valueOf(crudRepo.delete(tableName, id)), HttpStatus.OK);
+    }
+
+    private ResponseEntity<String> countEndpoints(@NonNull String table) {
+        return new ResponseEntity<>(String.valueOf(crudRepo.fetchCount(table)), HttpStatus.OK);
+    }
+
+    private ResponseEntity<String> login(@NonNull String name, @NonNull String password) {
         return new ResponseEntity<>(String.valueOf(loginRepo.userExist(name, password)), HttpStatus.OK);
     }
 

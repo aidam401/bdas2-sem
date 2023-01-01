@@ -29,7 +29,7 @@ public class Dao {
         try {
             return template.queryForObject(sql, args, argsTypes, type);
         } catch (DataAccessException e) {
-            throw new CrudDaoException("Problém s připojením do DB", e);
+            throw new CrudDaoException(e.getMessage(), e);
         }
     }
 
@@ -37,17 +37,20 @@ public class Dao {
         try {
             return template.queryForObject(sql, args, argsTypes, mapper);
         } catch (DataAccessException e) {
-            throw new CrudDaoException("Problém s připojením do DB", e);
+            throw new CrudDaoException(e.getMessage(), e);
         }
     }
     public <T> T fetchObject(@NonNull String sql, @NonNull Class<T> type) {
         try {
             return template.queryForObject(sql, type);
         } catch (DataAccessException e) {
-            throw new CrudDaoException("Problém s připojením do DB", e);
+            throw new CrudDaoException(e.getMessage(), e);
         }
     }
-
+    //TODO Integer[] na int[]
+    public boolean update(@NonNull String sql, @NonNull Object[] args, @NonNull int[] argsTypes){
+        return template.update(sql, args, argsTypes) == 1;
+    }
 
     public JSONArray fetchJsonArray(@NonNull String sql) {
         try {
@@ -65,7 +68,7 @@ public class Dao {
             return out;
 
         } catch (DataAccessException e) {
-            throw new CrudDaoException("Problém s připojením do DB", e);
+            throw new CrudDaoException(e.getMessage(), e);
         }
     }
 
@@ -85,7 +88,7 @@ public class Dao {
             return out;
 
         } catch (DataAccessException e) {
-            throw new CrudDaoException("Problém s připojením do DB", e);
+            throw new CrudDaoException(e.getMessage(), e);
         }
     }
 
