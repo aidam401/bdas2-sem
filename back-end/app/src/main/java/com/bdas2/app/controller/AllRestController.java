@@ -69,9 +69,9 @@ public class AllRestController {
 
     @ResponseBody
     @GetMapping("/login")
-    public ResponseEntity<String> loginEndpoint(@RequestParam String name, @RequestParam String password) {
+    public ResponseEntity<String> loginEndpoint(@RequestParam String name, @RequestParam String password, @RequestParam(required = false) String anotherUser) {
         try {
-            return login(name, password);
+            return login(name, password, anotherUser);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -102,8 +102,8 @@ public class AllRestController {
         return new ResponseEntity<>(String.valueOf(crudRepo.fetchCount(table)), HttpStatus.OK);
     }
 
-    private ResponseEntity<String> login(@NonNull String name, @NonNull String password) {
-        return new ResponseEntity<>(String.valueOf(loginRepo.userExist(name, password)), HttpStatus.OK);
+    private ResponseEntity<String> login(@NonNull String name, @NonNull String password,String anotherUser) {
+        return new ResponseEntity<>(String.valueOf(loginRepo.userExist(name, password, anotherUser)), HttpStatus.OK);
     }
 
 
