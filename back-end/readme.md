@@ -11,7 +11,15 @@ java -jar app-0.0.1-SNAPSHOT.jar
 
 ## Upoznění, ke správné funkčnosti je třeba připojení na učebny přes vpn a verze javy alespoň 18.
 
+## Seznam views:
+* UZIVATELE_VIEW - kombinace tabulek **SOUBOR, ROLE, UZIVATEL**
+* ZASTAVKA_LINKA_VIEW - kombinace tabulek **LINKA, ZASTAVKA_LINKA, ZASTAVKA**
+* JIZDNI_RAD_VIEW - kombinace tabulek zastavka **LINKA, SPOJ, ZASTAVKA_LINKA, ZAZNAM_JIZDNIHO_RADU, JIZDNI_RAD**
+
+
 # ENDPOINTY:
+
+
 ## GET
 ### ✨Za login wallem
 

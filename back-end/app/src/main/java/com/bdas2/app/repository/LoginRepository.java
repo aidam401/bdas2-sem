@@ -18,35 +18,27 @@ public class LoginRepository {
         this.dao = dao;
     }
 
-    public JSONArray userExist(String name, String password, String anotherUser){
-        var exist =  dao.fetchObject("SELECT COUNT(*) FROM UZIVATEL WHERE login=? AND heslo = ?", new Object[]{name, password}, new int[]{Types.VARCHAR, Types.VARCHAR}, Boolean.class);
+    public JSONArray userExist(String name, String password, String anotherUser) {
+        var exist = dao.fetchObject("SELECT COUNT(*) FROM UZIVATEL WHERE login=? AND heslo = ?", new Object[]{name, password}, new int[]{Types.VARCHAR, Types.VARCHAR}, Boolean.class);
         var ret = new JSONArray(new Object[]{exist});
-        if(Boolean.FALSE.equals(exist))
+        if (Boolean.FALSE.equals(exist))
             return ret;
 
-        if(Objects.equals(dao.fetchObject("SELECT r.nazev_role " +
+        if (Objects.equals(dao.fetchObject("SELECT r.nazev_role " +
                         "FROM UZIVATEL u " +
                         "join role r on u.id_role = r.id_role " +
                         "WHERE login=? AND heslo = ? ",
                 new Object[]{name, password},
-                new int[]{Types.VARCHAR, Types.VARCHAR}, String.class), "admin") && anotherUser != null){
+                new int[]{Types.VARCHAR, Types.VARCHAR}, String.class), "admin") && anotherUser != null) {
             ret.putAll(dao.fetchJsonArray(
                     "select u.id_uzivatele, r.id_role, u.login, u.heslo, r.nazev_role, s.* from uzivatel u join role r on u.id_role = r.id_role join soubor s on s.id_soubor = u.id_soubor WHERE login=?",
                     new Object[]{anotherUser}, new int[]{Types.VARCHAR}));
-        }else{
+        } else {
             ret.putAll(dao.fetchJsonArray(
                     "select u.id_uzivatele, r.id_role, u.login, u.heslo, r.nazev_role, s.* from uzivatel u join role r on u.id_role = r.id_role join soubor s on s.id_soubor = u.id_soubor WHERE login=? AND heslo = ?",
                     new Object[]{name, password}, new int[]{Types.VARCHAR, Types.VARCHAR}));
-
         }
-
-
-
-
-
-
         return ret;
-
     }
 
 

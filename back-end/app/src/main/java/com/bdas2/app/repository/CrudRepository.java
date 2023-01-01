@@ -32,10 +32,11 @@ public class CrudRepository {
 
         if (limit != -1 && offset != -1) {
             sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-            args.add(limit);
-            types.add(Types.INTEGER);
             args.add(offset);
             types.add(Types.INTEGER);
+            args.add(limit);
+            types.add(Types.INTEGER);
+
         }
 
         if (query != "") {
