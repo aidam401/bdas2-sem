@@ -92,6 +92,27 @@ http://localhost:8080/adresa/read?limit=1&offset=1
 
 ### ✨Za login wallem
 
+`localhost:8080/<nazevTabulky>/read?query=<String>` -- Vyhledávání podle query
+
+### Example:
+
+localhost:8080/spoj/read?query=ten
+
+###  Response:
+
+[
+{
+"NAZEV_SPOJ": "Ten spojenej",
+"ID_LINKA": 1,
+"ID_SPOJ": 1
+}
+]
+
+#
+#
+
+### ✨Za login wallem
+
 `localhost:8080/<nazevTabulky>/read?id=<číslo>` -- Specifická záznam z tabulky
 
 ### Example:

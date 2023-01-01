@@ -18,7 +18,7 @@ public class SecurityRepository {
 
     public CustomeUserDetails fetchCustomeUserDetails(String name){
         try {
-            return dao.fetchObject("select uzivatel.login, uzivatel.heslo, role.nazev role from uzivatel join role on uzivatel.id_role = role.id_role where uzivatel.login = ?",
+            return dao.fetchObject("select uzivatel.login, uzivatel.heslo, role.nazev_role role from uzivatel join role on uzivatel.id_role = role.id_role where uzivatel.login = ?",
                     new Object[]{name},
                     new int[]{Types.VARCHAR},
                     new BeanPropertyRowMapper<>(CustomeUserDetails.class));

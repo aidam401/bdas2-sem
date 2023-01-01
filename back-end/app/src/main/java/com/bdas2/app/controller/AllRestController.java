@@ -49,7 +49,8 @@ public class AllRestController {
                         tableName,
                         Integer.parseInt((String) params.getOrDefault("limit", "-1")),
                         Integer.parseInt((String) params.getOrDefault("offset", "-1")),
-                        Integer.parseInt((String) params.getOrDefault("id", "-1")));
+                        Integer.parseInt((String) params.getOrDefault("id", "-1")),
+                        (String) params.getOrDefault("query", ""));
             }
             if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "update")) {
                 return update(tableName, Integer.parseInt((String) params.get("id")), body);
@@ -82,12 +83,12 @@ public class AllRestController {
         return new ResponseEntity<>(String.valueOf(crudRepo.create(tableName, new JSONObject(body))), HttpStatus.OK);
     }
 
-    private ResponseEntity<String> read(@NonNull String table, Integer limit, Integer offset, Integer id) {
+    private ResponseEntity<String> read(@NonNull String table, Integer limit, Integer offset, Integer id, String query) {
         if (id != -1)
             return new ResponseEntity<>(crudRepo.fetchDetail(table, id).toString(), HttpStatus.OK);
-        if (limit != -1 && offset != -1)
-            return new ResponseEntity<>(crudRepo.fetchAll(table, limit, offset).toString(), HttpStatus.OK);
-        return new ResponseEntity<>(crudRepo.fetchAll(table).toString(), HttpStatus.OK);
+
+        return new ResponseEntity<>(crudRepo.fetchAll(table, limit, offset, query).toString(), HttpStatus.OK);
+
     }
 
     public ResponseEntity<String> update(@NonNull String tableName, @NonNull Integer id, @NonNull String body) {

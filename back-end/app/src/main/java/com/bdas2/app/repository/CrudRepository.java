@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 public class CrudRepository {
@@ -25,8 +23,34 @@ public class CrudRepository {
         return dao.fetchJsonArray("SELECT * FROM " + tableName);
     }
 
-    public JSONArray fetchAll(String tableName, Integer limit, Integer offset) {
-        return dao.fetchJsonArray("SELECT * FROM " + tableName + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY", new Object[]{offset, limit}, new int[]{Types.INTEGER, Types.INTEGER});
+    public JSONArray fetchAll(String tableName, Integer limit, Integer offset, String query) {
+
+        var sql = "SELECT * FROM " + tableName;
+
+        List<Object> args = new ArrayList<>();
+        List<Integer> types = new ArrayList<>();
+
+        if (limit != -1 && offset != -1) {
+            sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            args.add(limit);
+            types.add(Types.INTEGER);
+            args.add(offset);
+            types.add(Types.INTEGER);
+        }
+
+        if (query != "") {
+            var col_name = dao.fetchObject("SELECT column_name FROM user_tab_columns WHERE table_name = '"+tableName.toUpperCase()+"' AND REGEXP_LIKE(column_name, '^nazev_', 'i') and ROWNUM = 1",
+                    String.class
+            );
+            sql += " where LOWER(" + col_name + ") like ?";
+            args.add("%"+query.toLowerCase()+"%");
+            types.add(Types.VARCHAR);
+        }
+        int[] prim_types = new int[types.size()];
+        for (int i = 0; i < types.size(); i++) {
+            prim_types[i] = types.get(i).intValue();
+        }
+        return dao.fetchJsonArray(sql, args.toArray(), prim_types);
     }
 
     public Integer fetchCount(String tableName) {
@@ -42,6 +66,7 @@ public class CrudRepository {
         var sql = "DELETE FROM " + tableName + " WHERE " + getPrimaryKeyName(tableName) + " = ?";
         return dao.update(sql, new Object[]{id}, new int[]{Types.INTEGER});
     }
+
 
     public boolean create(String tableName, JSONObject body) {
         Iterator<String> keys = body.keys();
@@ -78,13 +103,13 @@ public class CrudRepository {
         Iterator<String> keys = body.keys();
         var setString = "";
         var args = new ArrayList<>();
-        var argsTypes = new int[body.toMap().size()+1];
+        var argsTypes = new int[body.toMap().size() + 1];
         int counter = 0;
         while (keys.hasNext()) {
             var key = keys.next();
             var val = body.get(key);
             args.add(val);
-            argsTypes[counter]=(isNumeric((String) val)) ? Types.INTEGER : Types.VARCHAR;
+            argsTypes[counter] = (isNumeric((String) val)) ? Types.INTEGER : Types.VARCHAR;
             setString += key + " = ?";
             if (keys.hasNext()) {
                 setString += ", ";
@@ -92,7 +117,7 @@ public class CrudRepository {
             counter++;
         }
         args.add(id.intValue());
-        argsTypes[counter]=Types.INTEGER;
+        argsTypes[counter] = Types.INTEGER;
         var sql = "UPDATE " + tableName + " SET " + setString + " WHERE " + getPrimaryKeyName(tableName) + " = ?";
         return dao.update(sql, args.toArray(), argsTypes);
     }
