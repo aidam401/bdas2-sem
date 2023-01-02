@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +54,7 @@ public class AllRestController {
                         (String) params.getOrDefault("query", ""));
             }
             if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "update")) {
-                return update(tableName, Integer.parseInt((String) params.get("id")), body);
+                return update(tableName, Integer.parseInt((String) params.get("id")), body, (String) params.get("idCol"));
             }
             if (Objects.equals(method, "DELETE") && Objects.equals(keyword.toLowerCase(), "delete")) {
                 return delete(tableName, Integer.parseInt((String) params.get("id")));
@@ -86,13 +87,13 @@ public class AllRestController {
     private ResponseEntity<String> read(@NonNull String table, Integer limit, Integer offset, Integer id, String query) {
         if (id != -1)
             return new ResponseEntity<>(crudRepo.fetchDetail(table, id).toString(), HttpStatus.OK);
-
         return new ResponseEntity<>(crudRepo.fetchAll(table, limit, offset, query).toString(), HttpStatus.OK);
-
     }
 
-    public ResponseEntity<String> update(@NonNull String tableName, @NonNull Integer id, @NonNull String body) {
-        return new ResponseEntity<>(String.valueOf(crudRepo.update(tableName, id, new JSONObject(body))), HttpStatus.OK);
+    public ResponseEntity<String> update(@NonNull String tableName, @NonNull Integer id, @NonNull String body, @NonNull String idCol) {
+        if("-1".equals(idCol))
+            idCol = null;
+        return new ResponseEntity<>(String.valueOf(crudRepo.update(tableName, id, new JSONObject(body), idCol)), HttpStatus.OK);
     }
 
     private ResponseEntity<String> delete(@NonNull String tableName, @NonNull Integer id) {

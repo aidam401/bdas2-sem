@@ -3,6 +3,7 @@ package com.bdas2.app.repository;
 import com.bdas2.app.dao.Dao;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -65,7 +66,7 @@ public class CrudRepository {
 
     public Boolean delete(String tableName, Integer id) {
         var sql = "DELETE FROM " + tableName + " WHERE " + getPrimaryKeyName(tableName) + " = ?";
-        return dao.update(sql, new Object[]{id}, new int[]{Types.INTEGER});
+        return dao.update(sql, new Object[]{id});
     }
 
 
@@ -75,13 +76,11 @@ public class CrudRepository {
         var valString = "(";
 
         var args = new ArrayList<>();
-        var argsTypes = new int[body.toMap().size()];
-        int counter = 0;
         while (keys.hasNext()) {
             var key = keys.next();
             var val = body.get(key);
             args.add(val);
-            argsTypes[counter] = (isNumeric((String) val)) ? Types.INTEGER : Types.VARCHAR;
+
             colString += key;
             valString += "?";
 
@@ -89,38 +88,37 @@ public class CrudRepository {
                 colString += ", ";
                 valString += ", ";
             }
-            counter++;
         }
         colString += ")";
         valString += ")";
 
         var sql = "INSERT INTO " + tableName + colString + " VALUES " + valString;
-        return dao.update(sql, args.toArray(), argsTypes);
+        return dao.update(sql, args.toArray());
 
 
     }
 
-    public Boolean update(String tableName, Integer id, JSONObject body) {
+    public Boolean update(String tableName, Integer id, JSONObject body, @Nullable String idCol) {
         Iterator<String> keys = body.keys();
         var setString = "";
         var args = new ArrayList<>();
-        var argsTypes = new int[body.toMap().size() + 1];
-        int counter = 0;
+
+
         while (keys.hasNext()) {
             var key = keys.next();
             var val = body.get(key);
             args.add(val);
-            argsTypes[counter] = (isNumeric((String) val)) ? Types.INTEGER : Types.VARCHAR;
+
             setString += key + " = ?";
             if (keys.hasNext()) {
                 setString += ", ";
             }
-            counter++;
+
         }
         args.add(id.intValue());
-        argsTypes[counter] = Types.INTEGER;
-        var sql = "UPDATE " + tableName + " SET " + setString + " WHERE " + getPrimaryKeyName(tableName) + " = ?";
-        return dao.update(sql, args.toArray(), argsTypes);
+
+        var sql = "UPDATE " + tableName + " SET " + setString + " WHERE " + ((idCol== null) ?  getPrimaryKeyName(tableName): idCol) + " = ?";
+        return dao.update(sql, args.toArray());
     }
 
     private String getPrimaryKeyName(String tableName) {

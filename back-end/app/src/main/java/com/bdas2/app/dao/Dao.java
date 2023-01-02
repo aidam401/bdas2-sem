@@ -5,24 +5,28 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @Repository
 @Slf4j
 public class Dao {
     final DataSource datasource;
     final JdbcTemplate template;
+    final Connection connection;
 
-
-    public Dao(DataSource datasource, JdbcTemplate template) {
+    public Dao(DataSource datasource, JdbcTemplate template, Connection connection) {
         this.datasource = datasource;
         this.template = template;
-
+        this.connection = connection;
     }
 
     public <T> T fetchObject(@NonNull String sql, @NonNull Object[] args, @NonNull int[] argsTypes, @NonNull Class<T> type) {
@@ -47,9 +51,22 @@ public class Dao {
             throw new CrudDaoException(e.getMessage(), e);
         }
     }
-    //TODO Integer[] na int[]
-    public boolean update(@NonNull String sql, @NonNull Object[] args, @NonNull int[] argsTypes){
-        return template.update(sql, args, argsTypes) == 1;
+
+    public boolean update(@NonNull String sql, @NonNull Object[] args){
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            for (int i = 1; i <= args.length; i++) {
+                log.info(args[i].toString());
+                stmt.setObject(i, args[i]);
+            }
+            var ex = stmt.execute();
+            stmt.close();
+            return ex;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     public JSONArray fetchJsonArray(@NonNull String sql) {
