@@ -1,7 +1,8 @@
 <template>
   <div class="main-wrapper">
     <MainHeader :title="title"/>
-    <TableList v-if="items" :items="items" :allowedHeaderItems="headerItems" :detailIdKey="detailIdKey"/>
+    <Filters @search="handleSearch"/>
+    <TableList v-if="items" :items="items" :allowedHeaderItems="headerItems" :detailIdKey="detailIdKey" :allowed-deletion="this.isAdmin" @deleteItem="handleDeleteItem"/>
     <Pagination v-if="itemsCount !== 0" :items-count="itemsCount" @pageChanged="handlePageChanged" />
   </div>
 </template>
@@ -11,15 +12,21 @@ import TableList from "@/components/TableList.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import BaseEntityService from "@/_services/base.entity.service";
 import Pagination from "@/components/Pagination.vue";
+import Filters from "@/components/Filters.vue";
+import UserMixin from "@/mixins/UserMixin.vue";
 
 export default {
   name: "WrapperList",
-  components: {TableList, MainHeader, Pagination},
+  components: {Filters, TableList, MainHeader, Pagination},
+  mixins: [UserMixin],
   data () {
     return {
       items: [],
       headerItems: [],
-      itemsCount: 0
+      itemsCount: 0,
+      search: '',
+      page: 1,
+      perPage: 15
     };
   },
   props: {
@@ -29,7 +36,7 @@ export default {
     entityService: BaseEntityService
   },
   created () {
-    this.refreshItems(5, 0).then( () => {
+    this.refreshItems(15, 0).then( () => {
       this.initHeaders();
     });
   },
@@ -42,6 +49,8 @@ export default {
       }
     },
     handlePageChanged (page, perPage) {
+      this.page = page;
+      this.perPage = perPage;
       let limit = perPage;
       let offset = perPage * (page - 1);
       this.refreshItems(limit, offset);
@@ -50,10 +59,24 @@ export default {
       return this.entityService.getCount().then( resp => {
         this.itemsCount = resp.data;
       }).then(() => {
-        return this.entityService.getAll(limit, offset).then(resp => {
+        return this.entityService.getAll(limit, offset, this.search).then(resp => {
           this.items = resp.data;
         })
       });
+    },
+    handleDeleteItem (id) {
+      return this.entityService.deleteEntity(id).then( (resp) => {
+        console.log(resp);
+        let limit = this.perPage;
+        let offset = this.perPage * (this.page - 1);
+        this.refreshItems(limit, offset);
+      })
+    },
+    handleSearch (searchQuery) {
+      this.search = searchQuery;
+      let limit = this.perPage;
+      let offset = this.perPage * (this.page - 1);
+      this.refreshItems(limit, offset);
     }
   }
 }

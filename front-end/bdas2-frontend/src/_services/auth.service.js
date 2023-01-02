@@ -4,12 +4,20 @@ import {API_URL} from "@/_helpers";
 
 class AuthService {
     login (user) {
+        var params = {};
+        if (user?.LOGIN.includes("@")) {
+             var parts = user?.LOGIN.split("@");
+             params.name = parts[0];
+             params.anotherUser = parts[1];
+        }
+        else
+        {
+            params.name = user.LOGIN;
+        }
+        params.password = user.HESLO;
         return axios.get(
             API_URL + 'login', {
-                params: {
-                    name: user.LOGIN,
-                    password: user.HESLO
-                },
+                params,
                 headers: { 'Content-Type': 'application/json'}
             }).then(response => {
                 if (response?.data[0]) {

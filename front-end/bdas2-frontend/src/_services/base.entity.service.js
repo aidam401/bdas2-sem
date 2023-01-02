@@ -16,11 +16,12 @@ export default class BaseEntityService {
         }).catch(e => console.log(e));
     }
 
-    getAll(limit, offset) {
+    getAll(limit, offset, searchQuery) {
         return axios.get(API_URL + this.table + '/read', {
             params: {
                 limit: limit,
-                offset: offset
+                offset: offset,
+                query: searchQuery
             },
             headers: {
                 'Authorization': authBasic(),

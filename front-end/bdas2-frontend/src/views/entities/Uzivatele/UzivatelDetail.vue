@@ -1,6 +1,6 @@
 <template>
   <div class="main-wrapper">
-    <MainHeader title="Úprava uživatele" :title-suffix="this.getProfileTitleSuffix"/>
+    <MainHeader title="Detail uživatele" :title-suffix="this.getProfileTitleSuffix"/>
     <form v-if="userModel">
       <img :src="getUserFile" width="200" height="200" class="rounded mx-auto d-block" alt="...">
 
