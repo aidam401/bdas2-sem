@@ -93,7 +93,10 @@ public class CrudRepository {
         valString += ")";
 
         var sql = "INSERT INTO " + tableName + colString + " VALUES " + valString;
-        return dao.update(sql, args.toArray());
+        if (!dao.update(sql, args.toArray())){
+            throw new RuntimeException("aaaaaaaaaaggggggggggggggg");
+        }
+        return true;
 
 
     }
