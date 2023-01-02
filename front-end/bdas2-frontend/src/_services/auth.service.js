@@ -12,7 +12,6 @@ class AuthService {
                 },
                 headers: { 'Content-Type': 'application/json'}
             }).then(response => {
-                console.log(response);
                 if (response?.data[0]) {
                     const userStore = {...response.data[1]};
                     userStore.authData = window.btoa(userStore.LOGIN + ':' + userStore.HESLO);

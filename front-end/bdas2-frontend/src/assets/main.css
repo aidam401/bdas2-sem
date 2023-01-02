@@ -115,6 +115,10 @@ body {
     background-color: #cbcbcb;
 }
 
+.dropdown-menu {
+    display: block;
+}
+
 @media (max-width:750px) {
     .wrapper .main_content {
         margin: 5px 5px 5px calc(50px + 5px);

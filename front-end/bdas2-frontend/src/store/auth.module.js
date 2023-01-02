@@ -13,7 +13,6 @@ export const auth = {
             return state.status.loggedIn;
         },
         loggedUser (state) {
-            console.log(state.user);
             return state.user;
         },
         isAdmin (state) {

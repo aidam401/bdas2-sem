@@ -46,10 +46,17 @@ export default class BaseEntityService {
         }).catch(e => console.log(e));
     }
 
-    updateEntity(id, data) {
+    updateEntity(id, data, colId) {
         return axios.post(API_URL + this.table + '/update', data, {
-            params: {id: id},
-            headers: { 'Authorization': authBasic(), "Access-Control-Allow-Origin": "*"}
+            params: {
+                id: id,
+                idCol: colId
+            },
+            headers: {
+                'Authorization': authBasic(),
+                "Access-Control-Allow-Origin": "*",
+                /* 'Content-Type': 'multipart/form-data'*/
+            }
         }).catch(e => console.log(e));
     }
 

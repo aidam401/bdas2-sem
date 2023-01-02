@@ -24,8 +24,8 @@
 <script>
 import UserMixin from "@/mixins/UserMixin.vue";
 import ObjectUtilityMixin from "@/mixins/ObjectUtilityMixin.vue";
-import UserService from "@/_services/user.service";
 import MainHeader from "@/components/MainHeader.vue";
+import UzivatelViewService from "@/_services/uzivatel.view.service";
 
 export default {
   name: "Profile.vue",
@@ -42,22 +42,29 @@ export default {
   },
   methods: {
     handleUpravit () {
-
       event.preventDefault();
       delete this.userModel.authData;
-      UserService.updateEntity(this.userModel);
+      UzivatelViewService.updateEntity(this.userModel?.ID_UZIVATELE, this.userModel);
     },
     onFileChange (e) {
-      console.log(e.target.files);
       const [file] = e.target.files;
       if (file) {
-        this.userModel.file = file;
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onload = () => {
+          this.userModel.NAZEV_SOUBOR = file?.name;
+          this.userModel.TYP_SOUBOR = file?.type;
+          this.userModel.DATA_SOUBOR = new Blob([reader.result], { type: file.type });
+        };
       } else {
-        if (this.getLoggedUser.file) {
-          this.userModel.file = this.getLoggedUser?.file ;
+        if (this.getLoggedUser?.ID_SOUBOR) {
+          this.userModel.DATA_SOUBOR = this.getLoggedUser?.DATA_SOUBOR ;
+          this.userModel.TYP_SOUBOR = this.getLoggedUser?.TYP_SOUBOR;
+          this.userModel.NAZEV_SOUBOR = this.getLoggedUser?.NAZEV_SOUBOR;
         } else {
-          delete this.userModel.file
-          // TODO smazat všechny části file - typ, data atd.
+          delete this.userModel.DATA_SOUBOR;
+          delete this.userModel.TYP_SOUBOR;
+          delete this.userModel.NAZEV_SOUBOR;
         }
       }
     }
@@ -67,7 +74,7 @@ export default {
       return this.areObjectsEqual(this.getLoggedUser, this.userModel);
     },
     getUserFile () {
-      return this.userModel?.file ? URL.createObjectURL(this.userModel.file) : this.getUniversalUserImagePath
+      return this.userModel?.DATA_SOUBOR ? URL.createObjectURL(this.userModel.DATA_SOUBOR) : this.getUniversalUserImagePath
     },
     getProfileTitleSuffix () {
       return this.getRoleName + " " + this.userModel.LOGIN;

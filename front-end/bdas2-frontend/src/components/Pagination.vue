@@ -50,7 +50,6 @@ export default {
     }
   },
   mounted() {
-    console.log("COUNT", this.itemsCount);
     for (let i = 1; i <= Math.ceil(this.itemsCount / this.perPage); i++) {
       this.pages.push(i);
     }
