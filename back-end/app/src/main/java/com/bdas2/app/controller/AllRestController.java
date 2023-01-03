@@ -56,7 +56,7 @@ public class AllRestController {
                         (String) params.getOrDefault("query", ""));
             }
             if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "update")) {
-                return update(tableName, Integer.parseInt((String) params.get("id")), body, (String) params.get("idCol"));
+                return update(tableName, Integer.parseInt((String) params.get("id")), body, (String) params.getOrDefault("idCol", "-1"));
             }
             if (Objects.equals(method, "DELETE") && Objects.equals(keyword.toLowerCase(), "delete")) {
                 return delete(tableName, Integer.parseInt((String) params.get("id")));
@@ -83,6 +83,8 @@ public class AllRestController {
     }
 
     public ResponseEntity<String> create(@NonNull String tableName, @NonNull String body) {
+        if(tableName=="uzivatel")
+            return new ResponseEntity<>(String.valueOf(crudRepo.createUser(new JSONObject(body))), HttpStatus.OK);
         return new ResponseEntity<>(String.valueOf(crudRepo.create(tableName, new JSONObject(body))), HttpStatus.OK);
     }
 

@@ -185,8 +185,8 @@ http://localhost:8080/adresa/create
 
 `body`:
 {
-"ULICE": "test",
-"MESTO": "test2"
+"ULICE": "'test'",
+"MESTO": "'test2'"
 }
 
 ###  Response:
@@ -207,8 +207,8 @@ http://localhost:8080/adresa/update?id=1
 
 `body`:
 {
-"ULICE": "test",
-"MESTO": "test2"
+"ULICE": "'test'",
+"MESTO": "'test2'"
 }
 
 ###  Response:

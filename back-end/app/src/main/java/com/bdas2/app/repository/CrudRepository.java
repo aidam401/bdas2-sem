@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import java.sql.Types;
 import java.util.*;
@@ -41,11 +40,11 @@ public class CrudRepository {
         }
 
         if (query != "") {
-            var col_name = dao.fetchObject("SELECT column_name FROM user_tab_columns WHERE table_name = '"+tableName.toUpperCase()+"' AND REGEXP_LIKE(column_name, '^nazev_', 'i') and ROWNUM = 1",
+            var col_name = dao.fetchObject("SELECT column_name FROM user_tab_columns WHERE table_name = '" + tableName.toUpperCase() + "' AND REGEXP_LIKE(column_name, '^nazev_', 'i') and ROWNUM = 1",
                     String.class
             );
             sql += " where LOWER(" + col_name + ") like ?";
-            args.add("%"+query.toLowerCase()+"%");
+            args.add("%" + query.toLowerCase() + "%");
             types.add(Types.VARCHAR);
         }
         int[] prim_types = new int[types.size()];
@@ -70,7 +69,7 @@ public class CrudRepository {
     }
 
 
-    public boolean create(String tableName, JSONObject body) {
+    public Integer create(String tableName, JSONObject body) {
         Iterator<String> keys = body.keys();
         var colString = "(";
         var valString = "(";
@@ -93,35 +92,36 @@ public class CrudRepository {
         valString += ")";
 
         var sql = "INSERT INTO " + tableName + colString + " VALUES " + valString;
-        if (!dao.update(sql, args.toArray())){
+        if (!dao.update(sql, args.toArray())) {
             throw new RuntimeException("aaaaaaaaaaggggggggggggggg");
         }
-        return true;
-
+        var prim_key = dao.fetchObject("SELECT cols.column_name FROM all_constraints cons, all_cons_columns cols WHERE cols.table_name = 'UZIVATEL' AND cons.constraint_type = 'P' AND cons.constraint_name = cols.constraint_name AND cons.owner = cols.owner ORDER BY cols.table_name, cols.position", String.class);
+        return dao.fetchObject("select max(" + prim_key + ") from " + tableName, Integer.class);
 
     }
 
+    public Integer createUser(JSONObject jsonObject) {
+        return dao.createUser((String) jsonObject.get("LOGIN"), (String) jsonObject.get("HESLO"), (Integer) jsonObject.get("ID_ROLE"), (Integer) jsonObject.get("ID_SOUBOR"));
+    }
+
     public Boolean update(String tableName, Integer id, JSONObject body, @Nullable String idCol) {
+        var argStr = "";
         Iterator<String> keys = body.keys();
-        var setString = "";
-        var args = new ArrayList<>();
-
-
         while (keys.hasNext()) {
             var key = keys.next();
             var val = body.get(key);
-            args.add(val);
-
-            setString += key + " = ?";
-            if (keys.hasNext()) {
-                setString += ", ";
-            }
-
+            argStr += key + " = " + val;
+            if(keys.hasNext())
+                argStr += ", ";
+            else
+                argStr += " ";
         }
-        args.add(id.intValue());
 
-        var sql = "UPDATE " + tableName + " SET " + setString + " WHERE " + ((idCol== null) ?  getPrimaryKeyName(tableName): idCol) + " = ?";
-        return dao.update(sql, args.toArray());
+
+        var sql = "{call update_table(?, ?, ?)}";
+
+
+        return dao.call(sql, new Object[]{tableName, argStr, ((idCol == null) ? getPrimaryKeyName(tableName) : idCol) + "=" + id});
     }
 
     private String getPrimaryKeyName(String tableName) {

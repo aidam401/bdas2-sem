@@ -7,19 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.internal.OracleTypes;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlOutParameter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 @Slf4j
@@ -54,6 +50,7 @@ public class Dao {
             var ret = new CustomeUserDetails(rs.getString(1), rs.getString(2), rs.getString(3));
             rs.close();
             stmt.close();
+
             return ret;
         }catch (SQLException e){
             throw new RuntimeException(e);
@@ -61,7 +58,24 @@ public class Dao {
     }
 
 
+    public Integer createUser(String login, String password, Integer file_id, Integer role_id) {
 
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(template)
+                .withProcedureName("add_user")
+                .declareParameters(
+                        new SqlParameter("login", Types.VARCHAR),
+                        new SqlParameter("password", Types.VARCHAR),
+                        new SqlParameter("file_id", Types.NUMERIC),
+                        new SqlParameter("role_id", Types.NUMERIC),
+                        new SqlOutParameter("new_id", Types.NUMERIC));
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("login", login);
+        parameters.put("password", password);
+        parameters.put("file_id", file_id);
+        parameters.put("role_id", role_id);
+        Map<String, Object> result = jdbcCall.execute(parameters);
+        return (Integer) result.get("new_id");
+    }
 
     public <T> T fetchObject(@NonNull String sql, @NonNull Class<T> type) {
         try {
@@ -84,8 +98,19 @@ public class Dao {
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
+    }
 
-
+    public boolean call(@NonNull String sql,@NonNull Object[] args){
+        try {
+            PreparedStatement stmt = connection.prepareCall(sql);
+            for (int i = 0; i < args.length; i++)
+                stmt.setObject(i+1, args[i]);
+            var ex = stmt.executeUpdate() > 0;
+            stmt.close();
+            return ex;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
     public JSONArray fetchJsonArray(@NonNull String sql) {
@@ -127,5 +152,6 @@ public class Dao {
             throw new CrudDaoException(e.getMessage(), e);
         }
     }
+
 
 }
