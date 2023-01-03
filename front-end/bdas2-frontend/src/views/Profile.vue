@@ -25,7 +25,7 @@
 import UserMixin from "@/mixins/UserMixin.vue";
 import ObjectUtilityMixin from "@/mixins/ObjectUtilityMixin.vue";
 import MainHeader from "@/components/MainHeader.vue";
-import UzivatelViewService from "@/_services/uzivatel.view.service";
+import UzivatelViewService from "@/_services/view_services/uzivatel.view.service";
 
 export default {
   name: "Profile.vue",

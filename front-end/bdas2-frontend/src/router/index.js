@@ -1,11 +1,11 @@
 import Home from "../views/Home.vue";
 import {createRouter, createWebHistory} from "vue-router";
-import Linky from "@/views/entities/Linky.vue";
+import Linky from "@/views/entities/Linky/Linky.vue";
 import Zastavky from "@/views/entities/Zastavky/Zastavky.vue";
 import Spoje from "@/views/entities/Spoje.vue";
 import CasyZastavek from "@/views/entities/CasyZastavek.vue";
 import ZaznamyJizdnichRadu from "@/views/entities/ZaznamyJizdnichRadu.vue";
-import JizdniRady from "@/views/entities/JizdniRady.vue";
+import JizdniRady from "@/views/entities/JizdniRad/JizdniRady.vue";
 import AktualniJizdy from "@/views/entities/AktualniJizdy.vue";
 import Uzivatele from "@/views/entities/Uzivatele/Uzivatele.vue";
 import Login from "@/views/Login.vue";
@@ -18,6 +18,13 @@ import UzivatelDetail from "@/views/entities/Uzivatele/UzivatelDetail.vue";
 import ZastavkaDetail from "@/views/entities/Zastavky/ZastavkaDetail.vue";
 import uzivatelNovy from "@/views/entities/Uzivatele/UzivatelNovy.vue";
 import ZastavkaNova from "@/views/entities/Zastavky/ZastavkaNova.vue";
+import PoziceZamestnance from "@/views/entities/PoziceZamestnance/PoziceZamestnance.vue";
+import PoziceZamestnanceDetail from "@/views/entities/PoziceZamestnance/PoziceZamestnanceDetail.vue";
+import PoziceZamestnanceNova from "@/views/entities/PoziceZamestnance/PoziceZamestnanceNova.vue";
+import Role from "@/views/entities/Role/Role.vue";
+import RoleNova from "@/views/entities/Role/RoleNova.vue";
+import RoleDetail from "@/views/entities/Role/RoleDetail.vue";
+import LinkaNova from "@/views/entities/Linky/LinkaNova.vue";
 
 const routes = [
     {
@@ -36,15 +43,8 @@ const routes = [
         path: "/profile",
         name: "Profile",
         component: Profile
-    }, {
-        path: "/linka",
-        name: "Linka",
-        component: Linky
-    }, {
-        path: "/vozidlo",
-        name: "Vozidlo",
-        component: Vozidla
-    }, {
+    },
+    {
         path: "/zastavka",
         name: "Zastavka",
         component: Zastavky
@@ -56,7 +56,61 @@ const routes = [
         path: '/zastavka/:id',
         name: 'ZastavkaDetail',
         component: ZastavkaDetail
+    },
+    {
+        path: "/uzivatel",
+        name: "Uzivatel",
+        component: Uzivatele,
     }, {
+        path: '/uzivatel/add',
+        name: 'UzivatelNovy',
+        component: uzivatelNovy
+    }, {
+        path: '/uzivatel/:id',
+        name: 'UzivatelDetail',
+        component: UzivatelDetail
+    },
+    {
+        path: "/pozice",
+        name: "Pozice",
+        component: PoziceZamestnance
+    }, {
+        path: "/pozice/add",
+        name: "PoziceNova",
+        component: PoziceZamestnanceNova
+    }, {
+        path: "/pozice/:id",
+        name: "PoziceDetail",
+        component: PoziceZamestnanceDetail
+    },
+    {
+        path: "/role",
+        name: "Role",
+        component: Role
+    }, {
+        path: "/role/add",
+        name: "RoleNova",
+        component: RoleNova
+    }, {
+        path: "/role/:id",
+        name: "RoleDetail",
+        component: RoleDetail
+    },
+    {
+        path: "/linka",
+        name: "Linka",
+        component: Linky
+    }, {
+        path: "/linka/add",
+        name: "LinkaNova",
+        component: LinkaNova
+    },
+
+
+
+
+
+    {
         path: "/spoj",
         name: "Spoj",
         component: Spoje
@@ -81,19 +135,10 @@ const routes = [
         name: "Zamestnanec",
         component: Zamestnanci
     }, {
-        path: "/uzivatel",
-        name: "Uzivatel",
-        component: Uzivatele,
-    }, {
-        path: '/uzivatel/add',
-        name: 'UzivatelNovy',
-        component: uzivatelNovy
-    }, {
-        path: '/uzivatel/:id',
-        name: 'UzivatelDetail',
-        component: UzivatelDetail
+        path: "/vozidlo",
+        name: "Vozidlo",
+        component: Vozidla
     },
-
     // otherwise redirect to home
     {
         path: "/:catchAll(.*)",

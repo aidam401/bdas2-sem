@@ -20,21 +20,24 @@ export default {
     isDefinedNonEmptyArray(array) {
       return array !== undefined && Array.isArray(array) && array.length > 0;
     },
-    getDataForSelectBox(items, valueKey, textKey) {
+    getItemsWithValueKey(items, valueKey, textKey) {
       var dataArray = []
       items.forEach((item) => {
-        dataArray.push(this.getValueForSelectBox(item, valueKey, textKey));
+        dataArray.push(this.getItemWithValueKey(item, valueKey, textKey));
       })
 
       return dataArray;
     },
 
-    getValueForSelectBox(item, valueKey, textKey) {
+    getItemWithValueKey(item, valueKey, textKey) {
       if (item !== null) {
         return { value: item[valueKey], text: item[textKey] };
       } else {
         return {};
       }
+    },
+    difference(array1, array2) {
+      return array1.filter((item) => !array2.includes(item));
     }
   }
 

@@ -93,16 +93,17 @@ export default {
     allNavigationItems() {
       return [
         { name: 'Domovská stránka' , to: 'Home', icon: 'fa-home' },
-        /*{ name: 'Vyhledat SPOJ' , to: 'Spoj', icon: 'fa-circle-nodes' },
-        { name: 'Linky' , to: 'Linka', icon: 'fa-map-location-dot'},*/
+        { name: 'Pozice zaměstnance' , to: 'Pozice', icon: ''},
+        { name: 'Role uživatele' , to: 'Role', icon: ''},
         { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
-        /*{ name: 'CRUD Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
-        { name: 'CRUD Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
-        { name: 'CRUD Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
-        { name: 'CRUD Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
-        { name: 'CRUD Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},*/
-        { name: 'CRUD Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
-        /*{ name: 'CRUD Linky' , to: 'Linka', icon: 'fa-link' },*/
+        { name: 'Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
+        { name: 'Linky' , to: 'Linka', icon: 'fa-map-location-dot'},
+        { name: 'TODO Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
+        { name: 'TODO Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
+        { name: 'TODO Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
+        { name: 'TODO Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
+        { name: 'TODO Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
+        { name: 'TODO Vyhledat SPOJ' , to: 'Spoj', icon: 'fa-circle-nodes' },
       ];
     },
     navigationItems() {
