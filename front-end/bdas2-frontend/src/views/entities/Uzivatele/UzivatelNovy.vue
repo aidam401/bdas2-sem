@@ -1,10 +1,10 @@
 <template>
-
+Nový záznam
 </template>
 
 <script>
 export default {
-  name: "UzivatelDetail"
+  name: "UzivatelNovy"
 }
 </script>
 

@@ -1,21 +1,23 @@
 import Home from "../views/Home.vue";
 import {createRouter, createWebHistory} from "vue-router";
 import Linky from "@/views/entities/Linky.vue";
-import Zastavky from "@/views/entities/Zastavky.vue";
+import Zastavky from "@/views/entities/Zastavky/Zastavky.vue";
 import Spoje from "@/views/entities/Spoje.vue";
 import CasyZastavek from "@/views/entities/CasyZastavek.vue";
 import ZaznamyJizdnichRadu from "@/views/entities/ZaznamyJizdnichRadu.vue";
 import JizdniRady from "@/views/entities/JizdniRady.vue";
 import AktualniJizdy from "@/views/entities/AktualniJizdy.vue";
-import Uzivatele from "@/views/entities/Uzivatele.vue";
+import Uzivatele from "@/views/entities/Uzivatele/Uzivatele.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import store from "@/store";
 import Profile from "@/views/Profile.vue";
 import Vozidla from "@/views/entities/Vozidla.vue";
 import Zamestnanci from "@/views/entities/Zamestnanci.vue";
-import UzivatelDetail from "@/views/entities/UzivatelDetail.vue";
-import ZastavkaDetail from "@/views/entities/ZastavkaDetail.vue";
+import UzivatelDetail from "@/views/entities/Uzivatele/UzivatelDetail.vue";
+import ZastavkaDetail from "@/views/entities/Zastavky/ZastavkaDetail.vue";
+import uzivatelNovy from "@/views/entities/Uzivatele/UzivatelNovy.vue";
+import ZastavkaNova from "@/views/entities/Zastavky/ZastavkaNova.vue";
 
 const routes = [
     {
@@ -47,6 +49,10 @@ const routes = [
         name: "Zastavka",
         component: Zastavky
     },{
+        path: '/zastavka/add',
+        name: 'ZastavkaNova',
+        component: ZastavkaNova
+    }, {
         path: '/zastavka/:id',
         name: 'ZastavkaDetail',
         component: ZastavkaDetail
@@ -78,6 +84,10 @@ const routes = [
         path: "/uzivatel",
         name: "Uzivatel",
         component: Uzivatele,
+    }, {
+        path: '/uzivatel/add',
+        name: 'UzivatelNovy',
+        component: uzivatelNovy
     }, {
         path: '/uzivatel/:id',
         name: 'UzivatelDetail',

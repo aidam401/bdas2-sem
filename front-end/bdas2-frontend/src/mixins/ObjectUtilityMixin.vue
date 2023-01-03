@@ -16,7 +16,27 @@ export default {
         }
       }
       return true;
+    },
+    isDefinedNonEmptyArray(array) {
+      return array !== undefined && Array.isArray(array) && array.length > 0;
+    },
+    getDataForSelectBox(items, valueKey, textKey) {
+      var dataArray = []
+      items.forEach((item) => {
+        dataArray.push(this.getValueForSelectBox(item, valueKey, textKey));
+      })
+
+      return dataArray;
+    },
+
+    getValueForSelectBox(item, valueKey, textKey) {
+      if (item !== null) {
+        return { value: item[valueKey], text: item[textKey] };
+      } else {
+        return {};
+      }
     }
   }
+
 }
 </script>

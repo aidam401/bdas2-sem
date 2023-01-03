@@ -115,6 +115,36 @@ body {
     background-color: #cbcbcb;
 }
 
+.dropdown-menu {
+    display: block;
+}
+
+.filters .my-2 {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+.filters .form-inline {
+    display: inline-block;
+}
+
+.form-inline .form-control {
+    width: 65%;
+    margin-right: 5%;
+}
+
+.form-inline .btn-outline-success {
+    width: 30%;
+}
+
+.filters {
+    padding-bottom: 15px;
+}
+
+.filters .btn-outline-primary {
+    float: right;
+}
+
 @media (max-width:750px) {
     .wrapper .main_content {
         margin: 5px 5px 5px calc(50px + 5px);

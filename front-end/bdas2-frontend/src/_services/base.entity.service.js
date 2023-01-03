@@ -16,11 +16,12 @@ export default class BaseEntityService {
         }).catch(e => console.log(e));
     }
 
-    getAll(limit, offset) {
+    getAll(limit, offset, searchQuery) {
         return axios.get(API_URL + this.table + '/read', {
             params: {
                 limit: limit,
-                offset: offset
+                offset: offset,
+                query: searchQuery
             },
             headers: {
                 'Authorization': authBasic(),
@@ -46,10 +47,17 @@ export default class BaseEntityService {
         }).catch(e => console.log(e));
     }
 
-    updateEntity(id, data) {
+    updateEntity(id, data, colId) {
         return axios.post(API_URL + this.table + '/update', data, {
-            params: {id: id},
-            headers: { 'Authorization': authBasic(), "Access-Control-Allow-Origin": "*"}
+            params: {
+                id: id,
+                idCol: colId
+            },
+            headers: {
+                'Authorization': authBasic(),
+                "Access-Control-Allow-Origin": "*",
+                /* 'Content-Type': 'multipart/form-data'*/
+            }
         }).catch(e => console.log(e));
     }
 
