@@ -4,7 +4,7 @@
 
 <script>
 import WrapperList from "@/components/WrapperList.vue";
-import UzivatelViewService from "@/_services/uzivatel.view.service";
+import UzivatelViewService from "@/_services/view_services/uzivatel.view.service";
 
 export default {
   name: "Uzivatele",

@@ -1,10 +1,10 @@
 <template>
   <div class="main-wrapper">
-    <MainHeader title="Nová zastávka"/>
+    <MainHeader title="Nová role"/>
     <form>
       <div class="mb-3">
-        <label for="zastavka" class="form-label">Název</label>
-        <input v-model="zastavkaModel.NAZEV_ZASTAVKA" type="text" class="form-control" id="zastavka">
+        <label for="entity" class="form-label">Název</label>
+        <input v-model="entity.NAZEV_ROLE" type="text" class="form-control" id="entity">
       </div>
       <button :disabled="isSomewthingWrong" @click="handlePridat" class="btn btn-primary">Přidat</button>
     </form>
@@ -13,26 +13,25 @@
 
 <script>
 import RouterDetailMixin from "@/mixins/RouterDetailMixin.vue";
-import ZastavkaService from "@/_services/zastavka.service";
 import ObjectUtilityMixin from "@/mixins/ObjectUtilityMixin.vue";
 import MainHeader from "@/components/MainHeader.vue";
+import RoleService from "@/_services/role.service";
 
 export default {
-  name: "ZastavkaNova",
+  name: "RoleNova",
   mixins: [RouterDetailMixin, ObjectUtilityMixin],
   components: {MainHeader},
   data() {
     return {
-      zastavkaModel: {
-        NAZEV_ZASTAVKA: ''
+      entity: {
+        NAZEV_ROLE: ''
       }
     };
   },
   methods: {
     handlePridat() {
       event.preventDefault()
-      ZastavkaService.createEntity(this.zastavkaModel).then((resp) => {
-        console.log(resp);
+      RoleService.createEntity(this.entity).then((resp) => {
         this.goToTheDetailFromAdd(resp.data);
       })
     }

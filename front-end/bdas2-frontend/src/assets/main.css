@@ -145,6 +145,10 @@ body {
     float: right;
 }
 
+.drag-and-drop {
+    margin: 20px;
+}
+
 @media (max-width:750px) {
     .wrapper .main_content {
         margin: 5px 5px 5px calc(50px + 5px);

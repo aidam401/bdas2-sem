@@ -29,7 +29,7 @@ import RouterDetailMixin from "@/mixins/RouterDetailMixin.vue";
 import UserMixin from "@/mixins/UserMixin.vue";
 import ObjectUtilityMixin from "@/mixins/ObjectUtilityMixin.vue";
 import MainHeader from "@/components/MainHeader.vue";
-import UzivatelViewService from "@/_services/uzivatel.view.service";
+import UzivatelViewService from "@/_services/view_services/uzivatel.view.service";
 import SearchableSelectBox from "@/components/SearchableSelectBox.vue";
 import RoleService from "@/_services/role.service";
 
@@ -46,7 +46,7 @@ export default {
     });
     RoleService.getAll().then((resp) => {
       if (resp?.data) {
-        this.roleItems = this.getDataForSelectBox(resp.data, 'ID_ROLE', 'NAZEV_ROLE');
+        this.roleItems = this.getItemsWithValueKey(resp.data, 'ID_ROLE', 'NAZEV_ROLE');
       }
     })
   },
@@ -101,7 +101,7 @@ export default {
       return String(this.userModel?.LOGIN);
     },
     getSelectedRoleItem() {
-      return this.getValueForSelectBox({
+      return this.getItemWithValueKey({
         'ID_ROLE' : this.userModel.ID_ROLE,
         'NAZEV_ROLE' : this.userModel.NAZEV_ROLE
       }, 'ID_ROLE', 'NAZEV_ROLE');

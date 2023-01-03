@@ -66,7 +66,6 @@ export default {
     },
     handleDeleteItem (id) {
       return this.entityService.deleteEntity(id).then( (resp) => {
-        console.log(resp);
         let limit = this.perPage;
         let offset = this.perPage * (this.page - 1);
         this.refreshItems(limit, offset);
