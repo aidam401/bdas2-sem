@@ -8,3 +8,10 @@ database:
       password: 'abcde'
 server:
   port: 8080
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

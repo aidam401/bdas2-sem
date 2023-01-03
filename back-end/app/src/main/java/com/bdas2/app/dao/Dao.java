@@ -47,7 +47,7 @@ public class Dao {
             stmt.execute();
             ResultSet rs = (ResultSet) stmt.getObject(1);
             rs.next();
-            var ret = new CustomeUserDetails(rs.getString(1), rs.getString(2), rs.getString(3));
+            var ret = new CustomeUserDetails(rs.getString(1), rs.getString(2), rs.getInt(3));
             rs.close();
             stmt.close();
 

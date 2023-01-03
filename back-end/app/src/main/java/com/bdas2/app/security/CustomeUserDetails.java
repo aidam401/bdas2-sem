@@ -14,13 +14,13 @@ import java.util.Collections;
 public class CustomeUserDetails implements UserDetails {
     public String heslo;
     public String login;
-    public String role;
+    public Integer role;
 
     public CustomeUserDetails() {
         super();
     }
 
-    public CustomeUserDetails(String login, String heslo, String role) {
+    public CustomeUserDetails(String login, String heslo, Integer role) {
         super();
         this.heslo = heslo;
         this.login = login;
@@ -29,7 +29,7 @@ public class CustomeUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+this.role));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+ this.role));
     }
     @Override
     public String getPassword() {
