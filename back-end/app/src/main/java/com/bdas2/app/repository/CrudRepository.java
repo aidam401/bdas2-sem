@@ -91,7 +91,7 @@ public class CrudRepository {
 
         var sql = "INSERT INTO " + tableName + colString + " VALUES " + valString;
         if (!dao.update(sql, args.toArray())) {
-            throw new RuntimeException("aaaaaaaaaaggggggggggggggg");
+            throw new RuntimeException("Nastala chyba");
         }
         var prim_key = dao.fetchObject("SELECT cols.column_name FROM all_constraints cons, all_cons_columns cols WHERE cols.table_name = 'UZIVATEL' AND cons.constraint_type = 'P' AND cons.constraint_name = cols.constraint_name AND cons.owner = cols.owner ORDER BY cols.table_name, cols.position", String.class);
         return dao.fetchObject("select max(" + prim_key + ") from " + tableName, Integer.class);
