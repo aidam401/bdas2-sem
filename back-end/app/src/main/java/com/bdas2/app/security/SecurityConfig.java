@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeRequests(auth ->{
                     auth.antMatchers("/login").permitAll();
-                    auth.regexMatchers("^/\\D+").hasRole("admin");
+                    auth.regexMatchers("^/\\D+").hasRole("1");
                 })
                 .httpBasic(Customizer.withDefaults())
                 .build();
