@@ -4,7 +4,7 @@
 
 <script>
 import WrapperList from "@/components/WrapperList.vue";
-import LinkyViewService from "@/_services/view_services/linky.view.service";
+import LinkaService from "@/_services/linka.service";
 
 export default {
   name: "Linky",
@@ -14,7 +14,7 @@ export default {
       title: 'Linky',
       detailIdKey: 'ID_LINKA',
       allowedHeaderItems: [],
-      service: LinkyViewService
+      service: LinkaService
     }
   }
 }

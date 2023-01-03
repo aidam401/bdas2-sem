@@ -41,13 +41,6 @@ export default {
         this.refreshZastavky();
       }
     });
-    /*
-    LinkyViewService.getLinkaDetail(this.getIdDetail).then((resp) => {
-      if (resp?.data) {
-        this.zastavkyLinky = this.getItemsWithValueKey(resp.data, 'ID_ZASTAVKA', 'NAZEV_ZASTAVKA');
-        this.refreshZastavky();
-      }
-    });*/
   },
   methods: {
     refreshZastavky () {
@@ -64,7 +57,6 @@ export default {
         if (resp.data) {
           this.zastavkyLinky?.forEach((zastavka, index) => {
             const poradi = index + 1;
-            console.log(poradi);
             ZastavkalinkaService.createEntity({
               'ID_LINKA' : resp.data,
               'ID_ZASTAVKA' : zastavka.value,

@@ -25,6 +25,7 @@ import Role from "@/views/entities/Role/Role.vue";
 import RoleNova from "@/views/entities/Role/RoleNova.vue";
 import RoleDetail from "@/views/entities/Role/RoleDetail.vue";
 import LinkaNova from "@/views/entities/Linky/LinkaNova.vue";
+import LinkaDetail from "@/views/entities/Linky/LinkaDetail.vue";
 
 const routes = [
     {
@@ -104,6 +105,10 @@ const routes = [
         path: "/linka/add",
         name: "LinkaNova",
         component: LinkaNova
+    }, {
+        path: "/linka/:id",
+        name: "LinkaDetail",
+        component: LinkaDetail
     },
 
 

@@ -6,7 +6,7 @@
         <label for="entity" class="form-label">Název</label>
         <input v-model="entityModel.NAZEV_POZICE_ZAMESTNANCE" type="text" class="form-control" id="entity">
       </div>
-      <button :disabled="isChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
+      <button :disabled="!isChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
     </form>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     isChanged() {
-      return this.areObjectsEqual(this.entity, this.entityModel);
+      return !this.areObjectsEqual(this.entity, this.entityModel);
     }
   },
   methods: {

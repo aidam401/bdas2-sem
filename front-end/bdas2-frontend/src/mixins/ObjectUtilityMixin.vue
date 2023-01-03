@@ -17,6 +17,17 @@ export default {
       }
       return true;
     },
+    areObjectsArrayEqual(array1, array2) {
+      if (array1?.length !== array2?.length) {
+        return false;
+      }
+      for (let i = 0; i < array1.length; i++) {
+        if (!this.areObjectsEqual(array1[i], array2[i])) {
+          return false
+        }
+      }
+      return true;
+    },
     isDefinedNonEmptyArray(array) {
       return array !== undefined && Array.isArray(array) && array.length > 0;
     },
@@ -37,7 +48,17 @@ export default {
       }
     },
     difference(array1, array2) {
-      return array1.filter((item) => !array2.includes(item));
+      return array1?.filter((item) =>  {
+        for (let i = 0; i < array2?.length; i++) {
+          if (array2[i].value === item.value) {
+            return false;
+          }
+        }
+        return true;
+      });
+    },
+    sortObjectsArrayByObjectKey(array, key) {
+      return array.sort((a, b) => a[key] - b[key]);
     }
   }
 

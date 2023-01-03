@@ -6,7 +6,9 @@
           @dragover="dragOver(index)"
           @dragend="dragEnd(index)"
           :class="{ 'dragging': index === draggingIndex }"
-          draggable="true">{{ item.text }}</li>
+          draggable="true">{{ item.text }}
+        <button type="button"  class="btn-close" @click="deleteItem(index)" aria-label="Close"></button>
+      </li>
     </ul>
   </div>
 </template>
@@ -37,11 +39,16 @@ export default {
     },
     dragEnd(index) {
       if (this.originalIndex !== this.draggingIndex) {
-        //this.$emit('listChanged', this.items);
+        this.$emit('listChanged', this.items);
       }
       this.originalIndex = null;
       this.draggingIndex = null;
     },
+    deleteItem(index) {
+      const item = this.items[index];
+      this.items.splice(index, 1);
+      this.$emit('deleteItem', item);
+    }
   },
 };
 </script>

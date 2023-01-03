@@ -6,7 +6,7 @@
         <label for="zastavka" class="form-label">Název</label>
         <input v-model="zastavkaModel.NAZEV_ZASTAVKA" type="text" class="form-control" id="zastavka">
       </div>
-      <button :disabled="isZastavkaChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
+      <button :disabled="!isZastavkaChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
     </form>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     isZastavkaChanged() {
-      return this.areObjectsEqual(this.zastavka, this.zastavkaModel);
+      return !this.areObjectsEqual(this.zastavka, this.zastavkaModel);
     }
   },
   methods: {

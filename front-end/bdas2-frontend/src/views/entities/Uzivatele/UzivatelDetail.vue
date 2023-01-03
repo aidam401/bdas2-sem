@@ -19,7 +19,7 @@
         <label for="file" class="form-label">Profilový obrázek</label>
         <input id="file" @change="onFileChange" type="file" accept=".png, .jpg, .jpeg" class="form-control">
       </div>
-      <button :disabled="isUserChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
+      <button :disabled="!isUserChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
     </form>
   </div>
 </template>
@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     isUserChanged () {
-      return this.areObjectsEqual(this.nonChangedUser, this.userModel);
+      return !this.areObjectsEqual(this.nonChangedUser, this.userModel);
     },
     getUserFile () {
       return this.userModel?.DATA_SOUBOR ? URL.createObjectURL(this.userModel.DATA_SOUBOR) : this.getUniversalUserImagePath;
