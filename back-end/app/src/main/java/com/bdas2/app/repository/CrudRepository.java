@@ -30,15 +30,6 @@ public class CrudRepository {
         List<Object> args = new ArrayList<>();
         List<Integer> types = new ArrayList<>();
 
-        if (limit != -1 && offset != -1) {
-            sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-            args.add(offset);
-            types.add(Types.INTEGER);
-            args.add(limit);
-            types.add(Types.INTEGER);
-
-        }
-
         if (query != "") {
             var col_name = dao.fetchObject("SELECT column_name FROM user_tab_columns WHERE table_name = '" + tableName.toUpperCase() + "' AND REGEXP_LIKE(column_name, '^nazev_', 'i') and ROWNUM = 1",
                     String.class
@@ -46,6 +37,13 @@ public class CrudRepository {
             sql += " where LOWER(" + col_name + ") like ?";
             args.add("%" + query.toLowerCase() + "%");
             types.add(Types.VARCHAR);
+        }
+        if (limit != -1 && offset != -1) {
+            sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            args.add(offset);
+            types.add(Types.INTEGER);
+            args.add(limit);
+            types.add(Types.INTEGER);
         }
         int[] prim_types = new int[types.size()];
         for (int i = 0; i < types.size(); i++) {
