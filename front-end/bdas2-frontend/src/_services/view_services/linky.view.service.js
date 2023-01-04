@@ -4,7 +4,7 @@ import {API_URL, authBasic} from "@/_helpers";
 
 class LinkyViewService extends BaseEntityService {
     constructor() {
-        super('zastavkalinkaview');
+        super('Zastavka_linka_view');
     }
 
     getLinkaDetail(id) {

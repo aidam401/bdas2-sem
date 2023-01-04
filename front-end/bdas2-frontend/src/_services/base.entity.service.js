@@ -16,20 +16,8 @@ export default class BaseEntityService {
         }).catch(e => console.log(e));
     }
 
-    getAll(limit, offset) {
-        return axios.get(API_URL + this.table + '/get', {
-            params: {
-                limit: limit,
-                offset: offset
-            },
-            headers: {
-                'Authorization': authBasic(),
-                'Access-Control-Allow-Origin': '*',}
-        }).catch(e => console.log(e));
-    }
-
-    search(limit, offset, searchQuery) {
-        return axios.get(API_URL + this.table + '/search', {
+    getAll(limit, offset, searchQuery) {
+        return axios.get(API_URL + this.table + '/read', {
             params: {
                 limit: limit,
                 offset: offset,
@@ -42,7 +30,7 @@ export default class BaseEntityService {
     }
 
     getById(id) {
-        return axios.get(API_URL + this.table + '/detail',
+        return axios.get(API_URL + this.table + '/read',
             {
                 params: {id: id},
                 headers: {

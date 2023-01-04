@@ -2,7 +2,7 @@ import BaseEntityService from "@/_services/base.entity.service";
 
 class VozidloViewService extends BaseEntityService {
     constructor() {
-        super('vozidloview');
+        super('VOZIDLO_VIEW');
     }
 }
 

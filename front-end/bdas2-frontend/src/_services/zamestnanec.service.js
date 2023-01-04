@@ -2,7 +2,7 @@ import BaseEntityService from "@/_services/base.entity.service";
 
 class ZamestnanecService extends BaseEntityService {
     constructor() {
-        super('zamestnance');
+        super('Zamestnanec');
     }
 }
 

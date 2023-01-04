@@ -2,7 +2,7 @@ import BaseEntityService from "@/_services/base.entity.service";
 
 class RidicViewService extends BaseEntityService {
     constructor() {
-        super('ridicview');
+        super('Ridic_view');
     }
 }
 
