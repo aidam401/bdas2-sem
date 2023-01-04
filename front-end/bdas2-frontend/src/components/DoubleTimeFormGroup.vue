@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column align-items-start">
+  <div class="d-flex flex-column align-items-center">
     <label class="h5 mb-0">{{item.text}}</label>
     <div class="d-flex flex-row justify-content-between">
       <div class="form-group mr-2">
