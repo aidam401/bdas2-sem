@@ -16,5 +16,7 @@ public interface CrudRepository<T> {
     List<T> readList(Integer offset, Integer limit);
     List<T> readList(Integer offset, Integer limit, String query);
 
+    Integer count();
+
 
 }

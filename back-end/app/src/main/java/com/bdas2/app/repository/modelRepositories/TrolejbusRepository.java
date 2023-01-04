@@ -5,13 +5,11 @@ import com.bdas2.app.model.Trolejbus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class TrolejbusRepository extends BaseCrudRepository<Trolejbus> {
 
     @Autowired
-    protected TrolejbusRepository(Dao dao) {
+    public TrolejbusRepository(Dao dao) {
         super(dao);
     }
 }

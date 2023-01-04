@@ -11,13 +11,13 @@ import java.util.List;
 
 @Repository
 public abstract class BaseCrudRepository<T> implements CrudRepository<T>{
-    private final Class<T> genericType;
-    private final String tableName;
-    private final String primaryKeyName;
+    public final Class<T> genericType;
+    public final String tableName;
+    public final String primaryKeyName;
     final Dao dao;
 
 
-    protected BaseCrudRepository(Dao dao) {
+    public BaseCrudRepository(Dao dao) {
         this.genericType = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), BaseCrudRepository.class);
         this.tableName = genericType.getSimpleName().toUpperCase();
         this.primaryKeyName = "ID_" + genericType.getSimpleName().toUpperCase();
@@ -139,6 +139,18 @@ public abstract class BaseCrudRepository<T> implements CrudRepository<T>{
                     "SELECT * FROM " + tableName + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY  WHERE LOWER(" + col_name + ") like ?",
                     new Object[]{offset, limit, query},
                     new BeanPropertyRowMapper<>(genericType)
+            );
+        } catch (Exception ex) {
+            throw new RepositoryException("Chyba na repository vrstvě", ex);
+        }
+    }
+
+    public Integer count(){
+        try {
+            return dao.readAsObject(
+                    "SELECT COUNT(*) FROM " + tableName,
+                    new Object[]{},
+                    new BeanPropertyRowMapper<>(Integer.class)
             );
         } catch (Exception ex) {
             throw new RepositoryException("Chyba na repository vrstvě", ex);

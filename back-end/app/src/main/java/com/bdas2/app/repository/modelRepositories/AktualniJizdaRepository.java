@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class AktualniJizdaRepository extends BaseCrudRepository<Aktualni_Jizda>{
-
     @Autowired
-    protected AktualniJizdaRepository(Dao dao) {
+    public AktualniJizdaRepository(Dao dao) {
         super(dao);
     }
 }

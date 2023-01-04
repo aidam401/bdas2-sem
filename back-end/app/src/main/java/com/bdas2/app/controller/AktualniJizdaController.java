@@ -1,9 +1,7 @@
 package com.bdas2.app.controller;
 
 import com.bdas2.app.model.Aktualni_Jizda;
-import com.bdas2.app.model.Uzivatel;
 import com.bdas2.app.repository.modelRepositories.AktualniJizdaRepository;
-import com.bdas2.app.repository.modelRepositories.UzivatelRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/AktualniJizda")
 public class AktualniJizdaController {
+
     public final AktualniJizdaRepository repo;
 
     public AktualniJizdaController(AktualniJizdaRepository repo) {
@@ -70,7 +69,7 @@ public class AktualniJizdaController {
         } catch (Exception ex) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("Chyba na controller vrstvě " + ex.getMessage()+ ex.getCause());
+                    .body("Chyba na controller vrstvě " + ex.getMessage() + ex.getCause());
         }
     }
 
@@ -78,6 +77,17 @@ public class AktualniJizdaController {
     public ResponseEntity update(@RequestParam Integer id, @RequestBody Aktualni_Jizda body) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(repo.update(id, body));
+        } catch (Exception ex) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Chyba na controller vrstvě " + ex.getMessage() + ex.getCause());
+        }
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity count() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repo.count());
         } catch (Exception ex) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

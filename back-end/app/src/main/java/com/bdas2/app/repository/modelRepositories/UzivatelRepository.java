@@ -5,13 +5,11 @@ import com.bdas2.app.model.Uzivatel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class UzivatelRepository extends BaseCrudRepository<Uzivatel> {
 
     @Autowired
-    protected UzivatelRepository(Dao dao) {
+    public UzivatelRepository(Dao dao) {
         super(dao);
     }
 }

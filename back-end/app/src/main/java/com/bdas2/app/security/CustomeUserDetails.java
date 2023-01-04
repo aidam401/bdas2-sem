@@ -15,11 +15,9 @@ public class CustomeUserDetails implements UserDetails {
     public String heslo;
     public String login;
     public Integer role;
-
     public CustomeUserDetails() {
         super();
     }
-
     public CustomeUserDetails(String login, String heslo, Integer role) {
         super();
         this.heslo = heslo;

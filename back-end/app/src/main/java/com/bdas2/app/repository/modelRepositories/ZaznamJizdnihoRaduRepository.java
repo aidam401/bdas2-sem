@@ -5,13 +5,11 @@ import com.bdas2.app.model.Zaznam_Jizdniho_Radu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class ZaznamJizdnihoRaduRepository extends BaseCrudRepository<Zaznam_Jizdniho_Radu>{
 
     @Autowired
-    protected ZaznamJizdnihoRaduRepository(Dao dao) {
+    public ZaznamJizdnihoRaduRepository(Dao dao) {
         super(dao);
     }
 }

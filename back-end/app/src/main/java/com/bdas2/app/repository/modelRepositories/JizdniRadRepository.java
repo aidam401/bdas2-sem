@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JizdniRadRepository extends BaseCrudRepository<Jizdni_Rad> {
     @Autowired
-    protected JizdniRadRepository(Dao dao) {
+    public JizdniRadRepository(Dao dao) {
         super(dao);
     }
 }

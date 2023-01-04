@@ -5,13 +5,11 @@ import com.bdas2.app.model.Spoj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class SpojRepository extends BaseCrudRepository<Spoj>{
 
     @Autowired
-    protected SpojRepository(Dao dao) {
+    public SpojRepository(Dao dao) {
         super(dao);
     }
 }

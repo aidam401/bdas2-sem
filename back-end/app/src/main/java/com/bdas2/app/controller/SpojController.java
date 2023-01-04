@@ -1,7 +1,6 @@
 package com.bdas2.app.controller;
 
 import com.bdas2.app.model.Spoj;
-import com.bdas2.app.repository.modelRepositories.JizdniRadRepository;
 import com.bdas2.app.repository.modelRepositories.SpojRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,6 +76,16 @@ public class SpojController {
     public ResponseEntity update(@RequestParam Integer id, @RequestBody Spoj body) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(repo.update(id, body));
+        } catch (Exception ex) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Chyba na controller vrstvě " + ex.getMessage() + ex.getCause());
+        }
+    }
+    @GetMapping("/count")
+    public ResponseEntity count() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repo.count());
         } catch (Exception ex) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

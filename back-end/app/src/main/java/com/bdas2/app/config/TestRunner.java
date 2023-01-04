@@ -1,25 +1,20 @@
 package com.bdas2.app.config;
 
-import com.bdas2.app.dao.Dao;
 
-
-import com.bdas2.app.model.Uzivatel;
-import com.bdas2.app.repository.modelRepositories.AktualniJizdaRepository;
-import com.bdas2.app.repository.modelRepositories.UzivatelRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
 public class TestRunner implements CommandLineRunner {
-    final Dao dao;
-
-    final UzivatelRepository repo;
-
-    public TestRunner(Dao dao, UzivatelRepository repo) {
-        this.dao = dao;
-        this.repo = repo;
-    }
+//    final Dao dao;
+//
+//    final UzivatelRepository repo;
+//
+//    public TestRunner(Dao dao, UzivatelRepository repo) {
+//        this.dao = dao;
+//        this.repo = repo;
+//    }
 
     @Override
     public void run(String... args) throws Exception {

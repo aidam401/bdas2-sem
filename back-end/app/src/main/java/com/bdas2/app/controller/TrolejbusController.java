@@ -82,4 +82,14 @@ public class TrolejbusController {
                     .body("Chyba na controller vrstvě " + ex.getMessage() + ex.getCause());
         }
     }
+    @GetMapping("/count")
+    public ResponseEntity count() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repo.count());
+        } catch (Exception ex) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Chyba na controller vrstvě " + ex.getMessage() + ex.getCause());
+        }
+    }
 }
