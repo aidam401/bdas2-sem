@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/Vozidlo")
+@RequestMapping("/vozidlo")
 public class VozidloController {
     public final VozidloRepository repo;
 

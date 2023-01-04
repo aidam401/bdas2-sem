@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/Role")
+@RequestMapping("/role")
 public class RoleController {
     public final RoleRepository repo;
 

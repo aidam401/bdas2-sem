@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/Spoj")
+@RequestMapping("/spoj")
 public class SpojController {
     public final SpojRepository repo;
 

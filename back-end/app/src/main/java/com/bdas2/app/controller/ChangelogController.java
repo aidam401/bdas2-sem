@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/Changelog")
+@RequestMapping("/changelog")
 public class ChangelogController {
     public final ChangelogRepository repo;
 
