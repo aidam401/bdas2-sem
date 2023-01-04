@@ -14,12 +14,12 @@ public class LoginController {
     public LoginController(LoginRepository repo) {
         this.repo = repo;
     }
-    @PostMapping("/login")
-    public ResponseEntity userExist(@RequestParam String user,
+    @GetMapping("/login")
+    public ResponseEntity userExist(@RequestParam String name,
                                     @RequestParam String password,
                                     @RequestParam(required = false) String anotherUsername) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(repo.userExist(user, password, anotherUsername));
+            return ResponseEntity.status(HttpStatus.OK).body(repo.userExist(name, password, anotherUsername));
         } catch (Exception ex) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
