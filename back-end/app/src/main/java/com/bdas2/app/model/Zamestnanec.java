@@ -9,14 +9,14 @@ import java.sql.Date;
 @AllArgsConstructor
 public class Zamestnanec {
     
-    public Integer id_zamestnanec;
+    public Integer ID_ZAMESTNANEC;
     
-    public String jmeno;
+    public String JMENO;
     
-    public String prijmeni;
+    public String PRIJMENI;
     
-    public Date datum_narozeni;
+    public Date DATUM_NAROZENI;
     
-    public Integer pozice;
+    public Integer POZICE;
 
 }

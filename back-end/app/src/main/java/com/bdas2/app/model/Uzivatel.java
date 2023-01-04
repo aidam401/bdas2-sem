@@ -8,15 +8,15 @@ import org.springframework.lang.Nullable;
 @AllArgsConstructor
 public class Uzivatel {
     
-    public Integer id_uzivatel;
+    public Integer ID_UZIVATEL;
     
-    public String login;
+    public String LOGIN;
     
-    public String heslo;
+    public String HESLO;
     
-    public Integer id_soubor;
+    public Integer ID_SOUBOR;
     
-    public Integer id_role;
+    public Integer ID_ROLE;
 
 
 }

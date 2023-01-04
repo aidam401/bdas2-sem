@@ -1,13 +1,12 @@
 package com.bdas2.app.controller;
 import com.bdas2.app.model.Uzivatel;
 import com.bdas2.app.repository.modelRepositories.UzivatelRepository;
+import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.net.http.HttpResponse;
 
 
 @CrossOrigin
@@ -22,9 +21,8 @@ public class UzivatelController {
     }
 
     @GetMapping("/detail")
-    public ResponseEntity read(@RequestParam Integer id, HttpResponse idk) {
+    public ResponseEntity read(@RequestParam Integer id) {
         try {
-            log.info("", idk);
             return ResponseEntity.status(HttpStatus.OK).body(repo.read(id));
         } catch (Exception ex) {
             return ResponseEntity
