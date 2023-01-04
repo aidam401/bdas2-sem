@@ -15,11 +15,11 @@ public class LoginController {
         this.repo = repo;
     }
     @PostMapping("/login")
-    public ResponseEntity userExist(@RequestParam String username,
+    public ResponseEntity userExist(@RequestParam String user,
                                     @RequestParam String password,
                                     @RequestParam(required = false) String anotherUsername) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(repo.userExist(username, password, anotherUsername));
+            return ResponseEntity.status(HttpStatus.OK).body(repo.userExist(user, password, anotherUsername));
         } catch (Exception ex) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

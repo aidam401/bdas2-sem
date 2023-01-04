@@ -17,7 +17,7 @@ public class AktualniJizdaController {
         this.repo = repo;
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail" )
     public ResponseEntity read(@RequestParam Integer id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(repo.read(id));
