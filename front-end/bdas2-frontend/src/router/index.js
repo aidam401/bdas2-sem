@@ -12,7 +12,7 @@ import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import store from "@/store";
 import Profile from "@/views/Profile.vue";
-import Vozidla from "@/views/entities/Vozidla.vue";
+import Vozidla from "@/views/entities/Vozidla/Vozidla.vue";
 import Zamestnanci from "@/views/entities/Zamestnanci.vue";
 import UzivatelDetail from "@/views/entities/Uzivatele/UzivatelDetail.vue";
 import ZastavkaDetail from "@/views/entities/Zastavky/ZastavkaDetail.vue";
@@ -26,6 +26,7 @@ import RoleNova from "@/views/entities/Role/RoleNova.vue";
 import RoleDetail from "@/views/entities/Role/RoleDetail.vue";
 import LinkaNova from "@/views/entities/Linky/LinkaNova.vue";
 import LinkaDetail from "@/views/entities/Linky/LinkaDetail.vue";
+import VozidloNove from "@/views/entities/Vozidla/VozidloNove.vue";
 
 const routes = [
     {
@@ -109,6 +110,14 @@ const routes = [
         path: "/linka/:id",
         name: "LinkaDetail",
         component: LinkaDetail
+    }, {
+        path: "/vozidlo",
+        name: "Vozidlo",
+        component: Vozidla
+    }, {
+        path: "/vozidlo/add",
+        name: "VozidloNove",
+        component: VozidloNove
     },
 
 
@@ -139,11 +148,8 @@ const routes = [
         path: "/zamestnanec",
         name: "Zamestnanec",
         component: Zamestnanci
-    }, {
-        path: "/vozidlo",
-        name: "Vozidlo",
-        component: Vozidla
     },
+
     // otherwise redirect to home
     {
         path: "/:catchAll(.*)",
