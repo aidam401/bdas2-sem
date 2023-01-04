@@ -35,20 +35,20 @@ public class SpecialRepository {
     }
 
 
-    public JSONArray spoje(String nazev, Integer limit, Integer offset) {
-        var sql = "SELECT ID_SPOJ, ID_LINKA, NAZEV_LINKA, NAZEV_SPOJ, PRAVIDELNY_PRIJEZD, PRAVIDELNY_ODJEZD " +
-                "FROM JIZDNI_RAD_VIEW " +
-                "WHERE NAZEV_SPOJ LIKE ? " +
-                "GROUP BY ID_SPOJ, ID_LINKA, NAZEV_LINKA, NAZEV_SPOJ, PRAVIDELNY_PRIJEZD, PRAVIDELNY_ODJEZD " +
+    public JSONArray spoje(Integer limit, Integer offset, Integer id) {
+        var sql = "SELECT ID_SPOJ, ID_LINKA, NAZEV_SPOJ, ID_JIZDNI_RAD " +
+                "FROM ZAZNAM_JIZDNIHO_RADU_VIEW " +
+                "where ID_SPOJ = ? " +
+                "GROUP BY ID_SPOJ, ID_LINKA, NAZEV_SPOJ, ID_JIZDNI_RAD " +
                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        return dao.fetchJsonArray(sql, new Object[]{"%"+nazev+"%", offset, limit}, new int[]{Types.VARCHAR, Types.INTEGER, Types.INTEGER});
+        return dao.fetchJsonArray(sql, new Object[]{id, offset, limit}, new int[]{Types.INTEGER, Types.INTEGER, Types.INTEGER});
     }
 
     public JSONArray spojeDetail(Integer id) {
-        var sql = "SELECT ID_ZAZNAM_JIZDNIHO_RADU, ID_ZASTAVKA, NAZEV_ZASTAVKA, PORADI_ZASTAVKY, PRAVIDELNY_PRIJEZD, PRAVIDELNY_ODJEZD, ID_JIZDNI_RAD, NAZEV_JIZDNI_RAD " +
-                "FROM JIZDNI_RAD_VIEW " +
-                "WHERE ID_SPOJ = ?";
+        var sql = "SELECT ID_ZAZNAM_JIZDNIHO_RADU, ID_ZASTAVKA_LINKA, NAZEV_ZASTAVKA, PRAVIDELNY_PRIJEZD, PRAVIDELNY_ODJEZD, " +
+                "ID_JIZDNI_RAD  FROM ZAZNAM_JIZDNIHO_RADU_VIEW  WHERE ID_SPOJ = ? " +
+                "ORDER BY PORADI_ZASTAVKY";
 
         return dao.fetchJsonArray(sql,  new Object[]{id}, new int[]{Types.INTEGER});
     }

@@ -105,9 +105,9 @@ public class AllRestController {
 
     @ResponseBody
     @GetMapping(value = "/spoje", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> spoje(@RequestParam String nazev, @RequestParam Integer limit, @RequestParam Integer offset) {
+    public ResponseEntity<String> spoje(@RequestParam Integer limit, @RequestParam Integer offset, @RequestParam Integer id) {
         try {
-            return new ResponseEntity<>(specialRepository.spoje(nazev, limit, offset).toString(), HttpStatus.OK);
+            return new ResponseEntity<>(specialRepository.spoje(limit, offset, id).toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
