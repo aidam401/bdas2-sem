@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="mr-2" for="select">Select an option:</label>
+    <label class="mr-2" for="select">{{ label }}</label>
     <select class="custom-select" id="select" v-model="selected" v-bind:value="selected">
       <option v-for="option in options" :key="option.value" :value="option.value">
         {{ option.text }}
@@ -13,10 +13,8 @@
 export default {
   name: 'SelectBox',
   props: {
-    selected: {
-      type: String,
-      required: true
-    },
+    label: String,
+    selected: String | Number,
     options: {
       type: Array,
       required: true

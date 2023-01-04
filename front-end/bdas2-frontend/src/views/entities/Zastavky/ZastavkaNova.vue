@@ -32,7 +32,6 @@ export default {
     handlePridat() {
       event.preventDefault()
       ZastavkaService.createEntity(this.zastavkaModel).then((resp) => {
-        console.log(resp);
         this.goToTheDetailFromAdd(resp.data);
       })
     }

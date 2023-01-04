@@ -4,17 +4,17 @@
 
 <script>
 import WrapperList from "@/components/WrapperList.vue";
-import VozidloService from "@/_services/vozidlo.service";
+import SpojService from "@/_services/spoj.service";
 
 export default {
-  name: "Vozidlo",
+  name: "Spoje",
   components: {WrapperList},
   data () {
     return {
-      title: 'Vozidla',
-      detailIdKey: 'ID_VOZIDLO',
+      title: 'Spoje',
+      detailIdKey: 'ID_SPOJ',
       allowedHeaderItems: [],
-      service: VozidloService,
+      service: SpojService,
     }
   }
 }

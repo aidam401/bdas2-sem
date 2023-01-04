@@ -44,7 +44,7 @@ export default {
     handleUpravit () {
       event.preventDefault();
       delete this.userModel.authData;
-      UzivatelViewService.updateEntity(this.userModel?.ID_UZIVATELE, this.userModel, 'ID_UZIVATELE');
+      UzivatelViewService.updateEntity(this.userModel?.ID_UZIVATEL, this.userModel, 'ID_UZIVATEL');
     },
     onFileChange (e) {
       const [file] = e.target.files;

@@ -12,7 +12,7 @@ export default {
   data () {
     return {
       title: 'Uživatelé',
-      detailIdKey: 'ID_UZIVATELE',
+      detailIdKey: 'ID_UZIVATEL',
       allowedHeaderItems: [],
       service: UzivatelViewService
     }

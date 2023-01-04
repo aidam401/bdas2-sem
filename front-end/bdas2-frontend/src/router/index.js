@@ -2,7 +2,7 @@ import Home from "../views/Home.vue";
 import {createRouter, createWebHistory} from "vue-router";
 import Linky from "@/views/entities/Linky/Linky.vue";
 import Zastavky from "@/views/entities/Zastavky/Zastavky.vue";
-import Spoje from "@/views/entities/Spoje.vue";
+import Spoje from "@/views/entities/Spoje/Spoje.vue";
 import CasyZastavek from "@/views/entities/CasyZastavek.vue";
 import ZaznamyJizdnichRadu from "@/views/entities/ZaznamyJizdnichRadu.vue";
 import JizdniRady from "@/views/entities/JizdniRad/JizdniRady.vue";
@@ -13,7 +13,7 @@ import Register from "@/views/Register.vue";
 import store from "@/store";
 import Profile from "@/views/Profile.vue";
 import Vozidla from "@/views/entities/Vozidla/Vozidla.vue";
-import Zamestnanci from "@/views/entities/Zamestnanci.vue";
+import Zamestnanci from "@/views/entities/Zamestnanci/Zamestnanci.vue";
 import UzivatelDetail from "@/views/entities/Uzivatele/UzivatelDetail.vue";
 import ZastavkaDetail from "@/views/entities/Zastavky/ZastavkaDetail.vue";
 import uzivatelNovy from "@/views/entities/Uzivatele/UzivatelNovy.vue";
@@ -28,6 +28,11 @@ import LinkaNova from "@/views/entities/Linky/LinkaNova.vue";
 import LinkaDetail from "@/views/entities/Linky/LinkaDetail.vue";
 import VozidloNove from "@/views/entities/Vozidla/VozidloNove.vue";
 import VozidloDetail from "@/views/entities/Vozidla/VozidloDetail.vue";
+import ZamestnanecNovy from "@/views/entities/Zamestnanci/ZamestnanecNovy.vue";
+import ZamestnanecDetail from "@/views/entities/Zamestnanci/ZamestnanecDetail.vue";
+import JizdniRadNovy from "@/views/entities/JizdniRad/JizdniRadNovy.vue";
+import JIzdniRadDetail from "@/views/entities/JizdniRad/JIzdniRadDetail.vue";
+import SpojNovy from "@/views/entities/Spoje/SpojNovy.vue";
 
 const routes = [
     {
@@ -123,17 +128,44 @@ const routes = [
         path: "/vozidlo/:id",
         name: "VozidloDetail",
         component: VozidloDetail
+    }, {
+        path: "/zamestnanec",
+        name: "Zamestnanec",
+        component: Zamestnanci
+    }, {
+        path: "/zamestnanec/add",
+        name: "ZamestnanecNovy",
+        component: ZamestnanecNovy
+    }, {
+        path: "/zamestnanec/:id",
+        name: "ZamestnanecDetail",
+        component: ZamestnanecDetail
+    }, {
+        path: "/jizdni-rad",
+        name: "JizdniRad",
+        component: JizdniRady
+    }, {
+        path: "/jizdni-rad/add",
+        name: "JizdniRadNovy",
+        component: JizdniRadNovy
+    }, {
+        path: "/jizdni-rad/:id",
+        name: "JizdniRadDetail",
+        component: JIzdniRadDetail
+    }, {
+        path: "/spoj",
+        name: "Spoj",
+        component: Spoje
+    }, {
+        path: "/spoj/add",
+        name: "SpojNovy",
+        component: SpojNovy
     },
 
 
 
 
-
     {
-        path: "/spoj",
-        name: "Spoj",
-        component: Spoje
-    }, {
         path: "/cas-zastavky",
         name: "Casy_zastavek",
         component: CasyZastavek
@@ -142,17 +174,9 @@ const routes = [
         name: "Zaznam_jizdniho_radu",
         component: ZaznamyJizdnichRadu
     }, {
-        path: "/jizdni-rad",
-        name: "Jizdni_rad",
-        component: JizdniRady
-    }, {
         path: "/aktualni-jizda",
         name: "Aktualni_jizda",
         component: AktualniJizdy
-    }, {
-        path: "/zamestnanec",
-        name: "Zamestnanec",
-        component: Zamestnanci
     },
 
     // otherwise redirect to home

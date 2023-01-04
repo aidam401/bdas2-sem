@@ -14,11 +14,12 @@ import BaseEntityService from "@/_services/base.entity.service";
 import Pagination from "@/components/Pagination.vue";
 import Filters from "@/components/Filters.vue";
 import UserMixin from "@/mixins/UserMixin.vue";
+import ObjectUtilityMixin from "@/mixins/ObjectUtilityMixin.vue";
 
 export default {
   name: "WrapperList",
   components: {Filters, TableList, MainHeader, Pagination},
-  mixins: [UserMixin],
+  mixins: [UserMixin, ObjectUtilityMixin],
   data () {
     return {
       items: [],
@@ -46,7 +47,7 @@ export default {
       if (Array.isArray(this.allowedHeaderItems) && this.allowedHeaderItems.length) {
         this.headerItems = this.allowedHeaderItems;
       } else {
-        this.headerItems = this.items ? Object.keys(this.items[0]) : [];
+        this.headerItems = this.isDefinedNonEmptyArray(this.items) ? Object.keys(this.items[0]) : [];
       }
     },
     handlePageChanged (page, perPage) {
