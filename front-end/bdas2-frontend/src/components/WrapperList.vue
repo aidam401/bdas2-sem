@@ -33,7 +33,8 @@ export default {
     title: String,
     detailIdKey: String,
     allowedHeaderItems: Array,
-    entityService: BaseEntityService
+    entityService: BaseEntityService,
+    deleteService: BaseEntityService,
   },
   created () {
     this.refreshItems(15, 0).then( () => {
@@ -65,7 +66,7 @@ export default {
       });
     },
     handleDeleteItem (id) {
-      return this.entityService.deleteEntity(id).then( (resp) => {
+      return this.deleteService.deleteEntity(id).then( (resp) => {
         let limit = this.perPage;
         let offset = this.perPage * (this.page - 1);
         this.refreshItems(limit, offset);

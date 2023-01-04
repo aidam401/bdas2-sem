@@ -1,5 +1,5 @@
 <template>
-  <WrapperList :entity-service="service" :title="title" :detail-id-key="detailIdKey"/>
+  <WrapperList :entity-service="service" :delete-service="service" :title="title" :detail-id-key="detailIdKey"/>
 </template>
 
 <script>
