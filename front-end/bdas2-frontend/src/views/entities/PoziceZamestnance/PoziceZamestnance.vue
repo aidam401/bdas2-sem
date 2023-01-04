@@ -12,7 +12,7 @@ export default {
   data () {
     return {
       title: 'Pozice zaměstnance',
-      detailIdKey: 'ID_POZICE',
+      detailIdKey: 'ID_POZICE_ZAMESTNANCE',
       allowedHeaderItems: [],
       service: PozicezamestnanceService
     }

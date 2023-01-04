@@ -98,7 +98,7 @@ export default {
         { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
         { name: 'Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
         { name: 'Linky' , to: 'Linka', icon: 'fa-map-location-dot'},
-        { name: 'TODO Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
+        { name: 'Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
         { name: 'TODO Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
         { name: 'TODO Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
         { name: 'TODO Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},

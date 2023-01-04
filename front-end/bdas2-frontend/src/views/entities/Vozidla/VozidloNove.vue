@@ -86,10 +86,6 @@ export default {
           }
         }
       }).catch((e) => console.log(e));
-      /*
-      RoleService.createEntity(this.entity).then((resp) => {
-        this.goToTheDetailFromAdd(resp.data);
-      })*/
     }
   },
   computed: {

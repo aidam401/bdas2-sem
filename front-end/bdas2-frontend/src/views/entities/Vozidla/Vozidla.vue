@@ -4,7 +4,6 @@
 
 <script>
 import WrapperList from "@/components/WrapperList.vue";
-import VozidloViewService from "@/_services/view_services/vozidlo.view.service";
 import VozidloService from "@/_services/vozidlo.service";
 
 export default {
@@ -15,7 +14,7 @@ export default {
       title: 'Vozidla',
       detailIdKey: 'ID_VOZIDLO',
       allowedHeaderItems: [],
-      service: VozidloViewService,
+      service: VozidloService,
       deleteService: VozidloService,
     }
   }

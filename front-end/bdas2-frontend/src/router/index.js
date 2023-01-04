@@ -27,6 +27,7 @@ import RoleDetail from "@/views/entities/Role/RoleDetail.vue";
 import LinkaNova from "@/views/entities/Linky/LinkaNova.vue";
 import LinkaDetail from "@/views/entities/Linky/LinkaDetail.vue";
 import VozidloNove from "@/views/entities/Vozidla/VozidloNove.vue";
+import VozidloDetail from "@/views/entities/Vozidla/VozidloDetail.vue";
 
 const routes = [
     {
@@ -118,6 +119,10 @@ const routes = [
         path: "/vozidlo/add",
         name: "VozidloNove",
         component: VozidloNove
+    }, {
+        path: "/vozidlo/:id",
+        name: "VozidloDetail",
+        component: VozidloDetail
     },
 
 

@@ -1,13 +1,13 @@
 <template>
   <div class="main-wrapper">
-    <MainHeader title="Nová linka"/>
+    <MainHeader title="Detail linky"/>
     <div class="mb-3">
       <label for="zastavka" class="form-label">Název linky</label>
       <input v-model="linkaModel.NAZEV_LINKA" type="text" class="form-control" id="zastavka">
     </div>
     <SelectBoxAddButton :title="'Přidat zastávku'" :options="optionsZastavky" @addItem="handleAddZastavka"/>
     <DragAndDropList :items="zastavkyLinky" @deleteItem="handleDeleteZastavka"/>
-    <button :disabled="!areDataChanged" @click="handlePridat" class="btn btn-primary">Přidat</button>
+    <button :disabled="areDataSame" @click="handlePridat" class="btn btn-primary">Přidat</button>
   </div>
 </template>
 
@@ -27,9 +27,7 @@ export default {
   mixins: [ObjectUtilityMixin, RouterDetailMixin],
   data () {
     return {
-      linkaModel: {
-        NAZEV_LINKA: ''
-      },
+      linkaModel: null,
       linka: null,
       optionsZastavky: [],
       zastavkyLinky: [],
@@ -43,6 +41,7 @@ export default {
     LinkaService.getById(this.getIdDetail).then((resp) => {
       if (resp?.data) {
         this.linkaModel = resp.data[0];
+        this.linka = {...this.linkaModel};
       }
     });
     ZastavkaService.getAll().then((resp) => {
@@ -120,8 +119,10 @@ export default {
     }
   },
   computed: {
-    areDataChanged () {
-      return this.areObjectsEqual(this.linkaModel, this.linka) || !this.areObjectsArrayEqual(this.zastavkyLinky, this.previousZastavky);
+    areDataSame () {
+      console.log(this.linka, this.linkaModel)
+      console.log(this.areObjectsEqual(this.linkaModel, this.linka), this.areObjectsArrayEqual(this.zastavkyLinky, this.previousZastavky));
+      return this.areObjectsEqual(this.linkaModel, this.linka) && this.areObjectsArrayEqual(this.zastavkyLinky, this.previousZastavky);
     }
   }
 }
