@@ -33,7 +33,11 @@ class AuthService {
     }
 
     register(user) {
-        return axios.post(API_URL + 'signup', user);
+        return axios.post(API_URL + 'signup',
+            {
+                LOGIN: user.LOGIN,
+                HESLO: user.HESLO
+            });
     }
 
     logout () {
