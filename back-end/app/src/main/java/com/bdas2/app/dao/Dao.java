@@ -1,23 +1,27 @@
 package com.bdas2.app.dao;
 
-import com.bdas2.app.exception.CrudDaoException;
+import com.bdas2.app.exception.DaoException;
+
+
 import com.bdas2.app.security.CustomeUserDetails;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.internal.OracleTypes;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.stereotype.Repository;
+import org.springframework.lang.Nullable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@Repository
+@Component
 @Slf4j
 public class Dao {
     final DataSource datasource;
@@ -30,126 +34,113 @@ public class Dao {
         this.connection = connection;
     }
 
-    public <T> T fetchObject(@NonNull String sql, @NonNull Object[] args, @NonNull int[] argsTypes, @NonNull Class<T> type) {
+    public <T> List<T> readAsList(@NonNull String sql, @NonNull Object[] args, RowMapper<T> mapper) {
         try {
-            return template.queryForObject(sql, args, argsTypes, type);
-        } catch (DataAccessException e) {
-            throw new CrudDaoException(e.getMessage(), e);
+            return template.query(sql, args, mapper);
+        } catch (Exception ex) {
+            throw new DaoException("Chyba na dao vrstvě (readAsList): " + ex.getMessage(), ex.getCause());
         }
     }
 
-    public CustomeUserDetails login(String login) {
+    public <T> T readAsObject(@NonNull String sql, @NonNull Object[] args, RowMapper<T> mapper) {
         try {
-            CallableStatement stmt = connection.prepareCall("{ ? = call get_login_info(?) }");
-
-            stmt.registerOutParameter(1, OracleTypes.CURSOR);
-            stmt.setString(2, login);
-            stmt.execute();
-            ResultSet rs = (ResultSet) stmt.getObject(1);
-            rs.next();
-            var ret = new CustomeUserDetails(rs.getString(1), rs.getString(2), rs.getInt(3));
-            rs.close();
-            stmt.close();
-
-            return ret;
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    public Integer createUser(String login, String password, Integer file_id, Integer role_id) {
-
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(template)
-                .withProcedureName("add_user")
-                .declareParameters(
-                        new SqlParameter("login", Types.VARCHAR),
-                        new SqlParameter("password", Types.VARCHAR),
-                        new SqlParameter("file_id", Types.NUMERIC),
-                        new SqlParameter("role_id", Types.NUMERIC),
-                        new SqlOutParameter("new_id", Types.NUMERIC));
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("login", login);
-        parameters.put("password", password);
-        parameters.put("file_id", file_id);
-        parameters.put("role_id", role_id);
-        Map<String, Object> result = jdbcCall.execute(parameters);
-        return (Integer) result.get("new_id");
-    }
-
-    public <T> T fetchObject(@NonNull String sql, @NonNull Class<T> type) {
-        try {
-            return template.queryForObject(sql, type);
-        } catch (DataAccessException e) {
-            throw new CrudDaoException(e.getMessage(), e);
-        }
-    }
-
-    public boolean update(@NonNull String sql, @NonNull Object[] args){
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            for (int i = 0; i < args.length; i++) {
-                log.info(args[i].toString());
-                stmt.setObject(i+1, args[i]);
+            var res = template.query(sql, args, mapper);
+            if (res.isEmpty()) {
+                return null;
             }
-            var ex = !stmt.execute();
-            stmt.close();
-            return ex;
-        }catch (SQLException e){
-            throw new RuntimeException(e);
+            return res.get(0);
+        } catch (Exception ex) {
+            throw new DaoException("Chyba na dao vrstvě (readAsList): " + ex.getMessage(), ex.getCause());
         }
     }
 
-    public boolean call(@NonNull String sql,@NonNull Object[] args){
+    public boolean update(@NonNull String sql, @NonNull Object[] args) {
         try {
-            PreparedStatement stmt = connection.prepareCall(sql);
-            for (int i = 0; i < args.length; i++)
-                stmt.setObject(i+1, args[i]);
-            var ex = stmt.executeUpdate() > 0;
-            stmt.close();
-            return ex;
-        }catch (SQLException e){
-            throw new RuntimeException(e);
+            return template.update(sql, args) != 0;
+        } catch (Exception ex) {
+            throw new DaoException("Chyba na dao vrstvě (update): " + ex.getMessage(), ex.getCause());
         }
     }
 
-    public JSONArray fetchJsonArray(@NonNull String sql) {
+    public boolean delete(@NonNull String sql, @NonNull Object[] args) {
         try {
-            JSONArray out = new JSONArray();
+            return template.update(sql, args) != 0;
+        } catch (Exception ex) {
+            throw new DaoException("Chyba na dao vrstvě (update): " + ex.getMessage(), ex.getCause());
+        }
 
-            template.query(sql, (rs, rowNum) -> {
-                JSONObject json = new JSONObject();
+    }
 
-                var metadata = rs.getMetaData();
-                for (int i = 1; i <= metadata.getColumnCount(); i++) {
-                    json.put(metadata.getColumnName(i), rs.getObject(i));
-                }
-                return json;
-            }).forEach(out::put);
-            return out;
+    public Integer insertProcedure(@NonNull String insertSql,
+                                   @NonNull String selectSql) {
+        try {
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("insert_sql", insertSql);
+            parameters.put("select_sql", selectSql);
 
-        } catch (DataAccessException e) {
-            throw new CrudDaoException(e.getMessage(), e);
+            SimpleJdbcCall jdbcCall = new SimpleJdbcCall(template)
+                    .withProcedureName("insert_into_table")
+                    .declareParameters(
+                            new SqlParameter("insert_sql", Types.VARCHAR),
+                            new SqlParameter("select_sql", Types.VARCHAR),
+                            new SqlOutParameter("last_primary_key", Types.NUMERIC));
+
+            Map<String, Object> result = jdbcCall.execute(parameters);
+            return ((BigDecimal) result.get("last_primary_key")).intValue();
+        } catch (Exception ex) {
+            throw new DaoException("Chyba na dao vrstvě (update): " + ex.getMessage(), ex.getCause());
         }
     }
 
-    public JSONArray fetchJsonArray(@NonNull String sql, @NonNull Object[] args, @NonNull int[] argsTypes) {
+    public UserDetails getUserDetail(@NonNull String login) {
         try {
-            JSONArray out = new JSONArray();
+            String heslo;
+            Integer idRole;
 
-            template.query(sql, args, argsTypes, (rs, rowNum) -> {
-                JSONObject json = new JSONObject();
+            SimpleJdbcCall jdbcCall = new SimpleJdbcCall(template)
+                    .withFunctionName("get_user_detail")
+                    .declareParameters(
+                            new SqlOutParameter("h_heslo", Types.VARCHAR),
+                            new SqlOutParameter("h_id_role", Types.NUMERIC),
+                            new SqlOutParameter("return", Types.NUMERIC)
+                    ).returningResultSet("result", new RowMapper<Object>() {
+                        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                            return rs;
+                        }
+                    });
+            SqlParameterSource in = new MapSqlParameterSource()
+                    .addValue("h_login", login)
+                    .addValue("h_heslo", Types.VARCHAR)
+                    .addValue("h_id_role", Types.NUMERIC);
 
-                var metadata = rs.getMetaData();
-                for (int i = 1; i <= metadata.getColumnCount(); i++) {
-                    json.put(metadata.getColumnName(i), rs.getObject(i));
-                }
-                return json;
-            }).forEach(out::put);
-            return out;
 
-        } catch (DataAccessException e) {
-            throw new CrudDaoException(e.getMessage(), e);
+            Map<String, Object> result = jdbcCall.execute(in);
+            heslo = (String) result.get("h_heslo");
+            idRole = ((BigDecimal) result.get("h_id_role")).intValue();
+            return new CustomeUserDetails(login, heslo, idRole);
+        } catch (Exception ex) {
+            throw new DaoException("Chyba na dao vrstvě (update): " + ex.getMessage(), ex.getCause());
+        }
+    }
+
+    public String getLogin(@NonNull String userName, @NonNull String userPassword, @Nullable String anotherUser) {
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("user_name", userName);
+            params.put("user_password", userPassword);
+            params.put("another_user", anotherUser);
+            SimpleJdbcCall call = new SimpleJdbcCall(template)
+                    .withProcedureName("user_exist")
+                    .declareParameters(
+                            new SqlParameter("user_name", Types.VARCHAR),
+                            new SqlParameter("user_password", Types.VARCHAR),
+                            new SqlParameter("another_user", Types.VARCHAR),
+                            new SqlOutParameter("ret", Types.VARCHAR)
+                    );
+            Map<String, Object> result = call.execute(params);
+            return (String) result.get("ret");
+        } catch (Exception ex) {
+            throw new DaoException("Chyba na dao vrstvě (update): " + ex.getMessage(), ex.getCause());
         }
     }
 
