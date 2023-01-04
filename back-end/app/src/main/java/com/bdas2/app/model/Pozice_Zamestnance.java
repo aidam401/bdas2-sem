@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Pozice_Zamestnance {
     
-    public Integer idPozice;
+    public Integer id_pozice_zamestnance;
     
-    public String nazevPoziceZamestnance;
+    public String nazev_pozice_zamestnance;
 }
