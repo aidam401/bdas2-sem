@@ -4,8 +4,12 @@ import com.bdas2.app.dao.Dao;
 import com.bdas2.app.exception.RepositoryException;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -150,7 +154,12 @@ public abstract class BaseCrudRepository<T> implements CrudRepository<T>{
             return dao.readAsObject(
                     "SELECT COUNT(*) FROM " + tableName,
                     new Object[]{},
-                    new BeanPropertyRowMapper<>(Integer.class)
+                    new RowMapper<Integer>() {
+                        @Override
+                        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+                            return ((BigDecimal) rs.getObject(1)).intValue();
+                        }
+                    }
             );
         } catch (Exception ex) {
             throw new RepositoryException("Chyba na repository vrstvě", ex);
