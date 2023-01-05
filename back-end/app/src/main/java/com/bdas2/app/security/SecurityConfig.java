@@ -43,10 +43,11 @@ public class SecurityConfig {
                     auth.antMatchers("/login").permitAll();
                     auth.antMatchers("/linkyDetail").permitAll();
                     auth.antMatchers("/linka/read").permitAll();
-                    auth.regexMatchers("^/\\D+").hasRole("1");
+
                     auth.regexMatchers("^/spojDetail").hasAnyRole("1", "2");
                     auth.regexMatchers("^/spoj/read").hasAnyRole("1", "2");
                     auth.regexMatchers("^/uzivatel_view/update").hasAnyRole("1", "2");
+                    auth.regexMatchers("^/\\D+").hasRole("1");
                 })
                 .httpBasic(Customizer.withDefaults())
                 .build();
