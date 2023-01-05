@@ -16,9 +16,8 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-
-@Repository
 @Slf4j
+@Repository
 public class Dao {
     final DataSource datasource;
     final JdbcTemplate template;
