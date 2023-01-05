@@ -1,13 +1,19 @@
 package com.bdas2.app.repository;
 
 import com.bdas2.app.dao.Dao;
+import com.google.common.collect.Iterators;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Repository
 public class CrudRepository {
@@ -76,6 +82,25 @@ public class CrudRepository {
         while (keys.hasNext()) {
             var key = keys.next();
             var val = body.get(key);
+
+            if(Pattern.matches("\\d{4}-\\d{2}-\\d{2}", String.valueOf(val))){
+                try {
+                    var datek = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(val));
+                    val = new java.sql.Date(datek.getTime());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }else if(Pattern.matches("\\d{2}:\\d{2}", String.valueOf(val))){
+
+                LocalTime time = LocalTime.parse((String)val);
+                LocalDate localDate = LocalDate.now();
+                LocalDateTime localDateTime = LocalDateTime.of(localDate, time);
+                val = java.sql.Timestamp.valueOf(localDateTime);
+
+
+            }
+
+
             args.add(val);
 
             colString += key;
@@ -103,23 +128,43 @@ public class CrudRepository {
     }
 
     public Boolean update(String tableName, Integer id, JSONObject body, @Nullable String idCol) {
+
+
         var argStr = "";
         Iterator<String> keys = body.keys();
+        var args = new ArrayList<>();
+
         while (keys.hasNext()) {
             var key = keys.next();
-            var val = body.get(key);
-            argStr += key + " = " + val;
+            var val =  body.get(key);
+            if(Pattern.matches("\\d{4}-\\d{2}-\\d{2}", String.valueOf(val))){
+                Date datek = null;
+                try {
+                    datek = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(val));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                val = new java.sql.Date(datek.getTime());
+            }else if(Pattern.matches("\\d{2}:\\d{2}", String.valueOf(val))){
+
+                LocalTime time = LocalTime.parse(String.valueOf(val));
+                LocalDate localDate = LocalDate.now();
+                LocalDateTime localDateTime = LocalDateTime.of(localDate, time);
+                val = java.sql.Timestamp.valueOf(localDateTime);
+            }
+
+            argStr += key + " = ?";
+            args.add(val);
+
             if(keys.hasNext())
                 argStr += ", ";
             else
                 argStr += " ";
         }
+        args.add(id);
 
-
-        var sql = "{call update_table(?, ?, ?)}";
-
-
-        return dao.call(sql, new Object[]{tableName, argStr, ((idCol == null) ? getPrimaryKeyName(tableName) : idCol) + "=" + id});
+        var sql = "UPDATE "+tableName+" SET "+argStr+ " WHERE "+((idCol == null) ? getPrimaryKeyName(tableName) : idCol) + "= ?";
+        return dao.update(sql, args.toArray());
     }
 
     private String getPrimaryKeyName(String tableName) {

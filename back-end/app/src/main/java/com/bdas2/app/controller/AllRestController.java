@@ -2,6 +2,7 @@ package com.bdas2.app.controller;
 
 
 import com.bdas2.app.repository.CrudRepository;
+import com.bdas2.app.repository.DateRepository;
 import com.bdas2.app.repository.LoginRepository;
 import com.bdas2.app.repository.SpecialRepository;
 import lombok.NonNull;
@@ -26,11 +27,13 @@ public class AllRestController {
     final CrudRepository crudRepo;
     final LoginRepository loginRepo;
     final SpecialRepository specialRepository;
+    final DateRepository dateRepository;
 
-    public AllRestController(CrudRepository repo, LoginRepository loginRepo, SpecialRepository specialRepository) {
+    public AllRestController(CrudRepository repo, LoginRepository loginRepo, SpecialRepository specialRepository, DateRepository dateRepository) {
         this.crudRepo = repo;
         this.loginRepo = loginRepo;
         this.specialRepository = specialRepository;
+        this.dateRepository = dateRepository;
     }
 
 
@@ -44,11 +47,13 @@ public class AllRestController {
         try {
             var method = request.getMethod();
 
+
             //CRUD
             if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "create")) {
                 return create(tableName, body);
             }
             if (Objects.equals(method, "GET") && Objects.equals(keyword.toLowerCase(), "read")) {
+
                 return read(
                         tableName,
                         Integer.parseInt((String) params.getOrDefault("limit", "-1")),
@@ -145,10 +150,10 @@ public class AllRestController {
 
 
     @ResponseBody
-    @PostMapping(value="/signup")
+    @PostMapping(value = "/signup")
     public ResponseEntity<String> jizdyDetail(@RequestParam String login, @RequestParam String password) {
         try {
-            return new ResponseEntity<>(String.valueOf(loginRepo.register(login, password)),  HttpStatus.OK);
+            return new ResponseEntity<>(String.valueOf(loginRepo.register(login, password)), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -212,5 +217,43 @@ public class AllRestController {
         }
     }
 
-
+//    private ResponseEntity<String> zaznam_jizdniho_radu(String method, String keyword, Map<String, Object> params, String body) {
+//
+//        if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "create")) {
+//
+//        }
+//        if (Objects.equals(method, "GET") && Objects.equals(keyword.toLowerCase(), "read")) {
+//
+//
+//        }
+//        if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "update")) {
+//
+//        }
+//        if (Objects.equals(method, "DELETE") && Objects.equals(keyword.toLowerCase(), "delete")) {
+//
+//        }
+//        return new ResponseEntity<>("Endpoint nenalezen", HttpStatus.NOT_FOUND);
+//    }
+//
+//    private ResponseEntity<String> zamestnanci(String method, String keyword, Map<String, Object> params, String body) {
+//        if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "create")) {
+//            return dateRepository.createZamestnanci(body);
+//        }
+//        if (Objects.equals(method, "GET") && Objects.equals(keyword.toLowerCase(), "read")) {
+//            return dateRepository.getZamestnanci(
+//                    Integer.parseInt((String) params.getOrDefault("limit", "-1")),
+//                    Integer.parseInt((String) params.getOrDefault("offset", "-1")),
+//                    Integer.parseInt((String) params.getOrDefault("id", "-1")),
+//                    (String) params.getOrDefault("query", "")
+//            );
+//
+//        }
+//        if (Objects.equals(method, "POST") && Objects.equals(keyword.toLowerCase(), "update")) {
+//
+//        }
+//        if (Objects.equals(method, "DELETE") && Objects.equals(keyword.toLowerCase(), "delete")) {
+//
+//        }
+//        return new ResponseEntity<>("Endpoint nenalezen", HttpStatus.NOT_FOUND);
+//    }
 }
