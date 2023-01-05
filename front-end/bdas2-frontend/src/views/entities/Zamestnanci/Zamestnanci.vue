@@ -1,5 +1,5 @@
 <template>
-  <WrapperList :entity-service="service" :delete-service="deleteService" :title="title" :detail-id-key="detailIdKey"/>
+  <WrapperList :allowed-header-items="allowedHeaderItems" :entity-service="service" :delete-service="deleteService" :title="title" :detail-id-key="detailIdKey"/>
 </template>
 
 <script>
@@ -14,7 +14,12 @@ export default {
     return {
       title: 'Zaměstnanci',
       detailIdKey: 'ID_ZAMESTNANEC',
-      allowedHeaderItems: [],
+      allowedHeaderItems: [
+          'NAZEV_POZICE_ZAMESTNANCE',
+          'JMENO',
+          'PRIJMENI',
+          'DATUM_NAROZENI'
+      ],
       service: ZamestnanecViewService,
       deleteService: ZamestnanecService
     }

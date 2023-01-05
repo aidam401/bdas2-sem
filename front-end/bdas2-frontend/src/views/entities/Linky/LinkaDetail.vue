@@ -120,8 +120,6 @@ export default {
   },
   computed: {
     areDataSame () {
-      console.log(this.linka, this.linkaModel)
-      console.log(this.areObjectsEqual(this.linkaModel, this.linka), this.areObjectsArrayEqual(this.zastavkyLinky, this.previousZastavky));
       return this.areObjectsEqual(this.linkaModel, this.linka) && this.areObjectsArrayEqual(this.zastavkyLinky, this.previousZastavky);
     }
   }

@@ -6,8 +6,8 @@
           @dragover="dragOver(index)"
           @dragend="dragEnd(index)"
           :class="{ 'dragging': index === draggingIndex }"
-          draggable="true">{{ item.text }}
-        <button type="button"  class="btn-close" @click="deleteItem(index)" aria-label="Close"></button>
+          :draggable="draggable">{{ item.text }}
+        <button v-if="deletable" type="button"  class="btn-close" @click="deleteItem(index)" aria-label="Close"></button>
       </li>
     </ul>
   </div>
@@ -18,6 +18,14 @@ export default {
   name: "DragAndDropList",
   props: {
     items: Array,
+    draggable: {
+      type: Boolean,
+      default: true
+    },
+    deletable: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
