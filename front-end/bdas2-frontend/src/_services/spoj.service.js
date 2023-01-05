@@ -4,11 +4,11 @@ import {API_URL, authBasic} from "@/_helpers";
 
 class SpojService extends BaseEntityService {
     constructor() {
-        super('SPOJ');
+        super('spoj');
     }
 
     getSpoj(id) {
-        return axios.get(API_URL + this.table, {
+        return axios.get(API_URL + this.table + 'e', {
             params: {
                 id: id
             },
@@ -19,7 +19,7 @@ class SpojService extends BaseEntityService {
     }
 
     getZastavkySpoje(id) {
-        return axios.get(API_URL + this.table + 'detail', {
+        return axios.get(API_URL + this.table + 'eDetail', {
             params: {
                 id: id
             },
