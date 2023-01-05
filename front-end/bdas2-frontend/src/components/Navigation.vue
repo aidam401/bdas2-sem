@@ -101,8 +101,8 @@ export default {
         { name: 'Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
         { name: 'Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
         { name: 'Jizdní řády' , to: 'JizdniRad', icon: 'fa-table-list'},
+        { name: 'Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
         { name: 'TODO Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
-        { name: 'TODO Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
         { name: 'TODO Vyhledat SPOJ' , to: 'Spoj', icon: 'fa-circle-nodes' },
       ];
     },

@@ -33,6 +33,7 @@ import ZamestnanecDetail from "@/views/entities/Zamestnanci/ZamestnanecDetail.vu
 import JizdniRadNovy from "@/views/entities/JizdniRad/JizdniRadNovy.vue";
 import JIzdniRadDetail from "@/views/entities/JizdniRad/JIzdniRadDetail.vue";
 import SpojNovy from "@/views/entities/Spoje/SpojNovy.vue";
+import SpojDetail from "@/views/entities/Spoje/SpojDetail.vue";
 
 const routes = [
     {
@@ -160,6 +161,10 @@ const routes = [
         path: "/spoj/add",
         name: "SpojNovy",
         component: SpojNovy
+    }, {
+        path: "/spoj/:id",
+        name: "SpojDetail",
+        component: SpojDetail
     },
 
 

@@ -65,9 +65,7 @@ export default {
     fetchZastavky(id_linka) {
       LinkyViewService.getLinkaDetail(id_linka).then((resp) => {
         if (resp?.data) {
-          this.zastavky = this.getItemsWithValueKey(
-              this.sortObjectsArrayByObjectKey(resp.data, 'PORADI_ZASTAVKY'),
-              'ID_ZASTAVKA_LINKA', 'NAZEV_ZASTAVKA');
+          this.zastavky = this.sortObjectsArrayByObjectKey(resp.data, 'PORADI_ZASTAVKY');
         }
       }).catch((e) => console.log("Něco se pokazilo"));
     },
@@ -81,9 +79,9 @@ export default {
             ZaznamjizdnihoraduService.createEntity({
               ID_SPOJ: resp.data,
               ID_JIZDNI_RAD: this.jizdniRad,
-              ID_ZASTAVKA_LINKA: zastavka.value,
-              PRAVIDELNY_PRIJEZD: zastavka.PRIJEZD,
-              PRAVIDELNY_ODJEZD: zastavka.ODJEZD
+              ID_ZASTAVKA_LINKA: zastavka.ID_ZASTAVKA_LINKA,
+              PRAVIDELNY_PRIJEZD: zastavka.PRAVIDELNY_PRIJEZD,
+              PRAVIDELNY_ODJEZD: zastavka.PRAVIDELNY_ODJEZD
             }).catch((resp) => {console.log('Něco se pokazilo')});
           })
         }
