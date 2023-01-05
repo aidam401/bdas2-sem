@@ -35,14 +35,23 @@ public class SpecialRepository {
     }
 
 
-    public JSONArray spoje(Integer limit, Integer offset, Integer id) {
+//    public JSONArray spoje(Integer limit, Integer offset, Integer id) {
+//        var sql = "SELECT ID_SPOJ, ID_LINKA, NAZEV_SPOJ, ID_JIZDNI_RAD " +
+//                "FROM ZAZNAM_JIZDNIHO_RADU_VIEW " +
+//                "where ID_SPOJ = ? " +
+//                "GROUP BY ID_SPOJ, ID_LINKA, NAZEV_SPOJ, ID_JIZDNI_RAD " +
+//                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+//
+//        return dao.fetchJsonArray(sql, new Object[]{id, offset, limit}, new int[]{Types.INTEGER, Types.INTEGER, Types.INTEGER});
+//    }
+
+    public JSONArray spoje(Integer id) {
         var sql = "SELECT ID_SPOJ, ID_LINKA, NAZEV_SPOJ, ID_JIZDNI_RAD " +
                 "FROM ZAZNAM_JIZDNIHO_RADU_VIEW " +
                 "where ID_SPOJ = ? " +
-                "GROUP BY ID_SPOJ, ID_LINKA, NAZEV_SPOJ, ID_JIZDNI_RAD " +
-                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+                "GROUP BY ID_SPOJ, ID_LINKA, NAZEV_SPOJ, ID_JIZDNI_RAD";
 
-        return dao.fetchJsonArray(sql, new Object[]{id, offset, limit}, new int[]{Types.INTEGER, Types.INTEGER, Types.INTEGER});
+        return dao.fetchJsonArray(sql, new Object[]{id}, new int[]{Types.INTEGER});
     }
 
     public JSONArray spojeDetail(Integer id) {

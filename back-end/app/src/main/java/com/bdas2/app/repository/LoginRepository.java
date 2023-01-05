@@ -41,5 +41,9 @@ public class LoginRepository {
         return ret;
     }
 
+    public boolean register(String name, String password){
+        return dao.update("INSERT into uzivatel (login, heslo, id_role) values (?, ?, 2)", new Object[]{name, password});
+    }
+
 
 }

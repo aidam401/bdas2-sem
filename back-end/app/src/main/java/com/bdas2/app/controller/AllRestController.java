@@ -103,11 +103,21 @@ public class AllRestController {
         }
     }
 
+//    @ResponseBody
+//    @GetMapping(value = "/spoje", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<String> spoje(@RequestParam Integer limit, @RequestParam Integer offset, @RequestParam Integer id) {
+//        try {
+//            return new ResponseEntity<>(specialRepository.spoje(limit, offset, id).toString(), HttpStatus.OK);
+//        } catch (Exception ex) {
+//            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+
     @ResponseBody
     @GetMapping(value = "/spoje", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> spoje(@RequestParam Integer limit, @RequestParam Integer offset, @RequestParam Integer id) {
+    public ResponseEntity<String> spoje(@RequestParam Integer limit) {
         try {
-            return new ResponseEntity<>(specialRepository.spoje(limit, offset, id).toString(), HttpStatus.OK);
+            return new ResponseEntity<>(specialRepository.spoje(limit).toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -133,6 +143,18 @@ public class AllRestController {
         }
     }
 
+
+    @ResponseBody
+    @PostMapping(value="/signup")
+    public ResponseEntity<String> jizdyDetail(@RequestParam String login, @RequestParam String password) {
+        try {
+            return new ResponseEntity<>(String.valueOf(loginRepo.register(login, password)),  HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     @ResponseBody
     @GetMapping(value = "/jizdyDetail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> jizdyDetail(@RequestParam Integer id) {
@@ -146,8 +168,8 @@ public class AllRestController {
 
     public ResponseEntity<String> create(@NonNull String tableName, @NonNull String body) {
         try {
-            if (tableName.toLowerCase() == "uzivatel")
-                return new ResponseEntity<>(String.valueOf(crudRepo.createUser(new JSONObject(body))), HttpStatus.OK);
+            //if (tableName.toLowerCase() == "uzivatel")
+            //    return new ResponseEntity<>(String.valueOf(crudRepo.createUser(new JSONObject(body))), HttpStatus.OK);
             return new ResponseEntity<>(String.valueOf(crudRepo.create(tableName, new JSONObject(body))), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
