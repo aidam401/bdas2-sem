@@ -1,8 +1,14 @@
 <template>
   <div class="main-wrapper">
-    <MainHeader title="Domovská stránka" />
+    <h1 class="display-4 mb-3">Vítejte na naší dopravní aplikaci!</h1>
     <p class="lead">
-      <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque explicabo in quae tempora tenetur, vero? Ab accusamus aliquid asperiores consectetur, corporis dignissimos, ea earum hic itaque natus velit veniam voluptates?</span><span>Ad autem culpa cum cumque doloremque est facere, fugit labore laborum magni minima pariatur sint, soluta vel veniam veritatis, voluptatum! Consectetur eaque minus molestiae nulla omnis porro recusandae reprehenderit rerum.</span>
+      Jako host můžete použít naši vyhledávací funkci, abyste našli požadovanou trasu. Stačí vyhledat nebo vybrat linku z nabídky a my Vám ukážeme jednotlivé zastávky.
+    </p>
+    <p class="lead">
+      Pokud si založíte účet, budete moci dělat ještě více. Nejenže si můžete vyhledat zastávky linek, ale také si můžete prohlédnout časy zastávek odjezdu a příjezdu pro každé spojení a to z pohodlí svého domova.
+    </p>
+    <p class="lead" v-if="!isUserLogged">
+      Tak proč čekat? <router-link class="btn btn-primary" :to="{name: 'Register'}">Zaregistrujte se nyní</router-link><br> a využijte všechny možnosti, které naše aplikace nabízí. Doufáme, že si ji budete užívat!
     </p>
     <Login v-if="!isUserLogged"></Login>
   </div>

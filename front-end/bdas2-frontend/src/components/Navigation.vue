@@ -76,7 +76,6 @@ export default {
         { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
         { name: 'CRUD Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
         { name: 'CRUD Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
-        { name: 'CRUD Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
         { name: 'CRUD Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
         { name: 'CRUD Spoje' , to: 'Casy_zastavek', icon: 'fa-circle-nodes'},
         { name: 'CRUD Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
@@ -100,7 +99,6 @@ export default {
         { name: 'Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
         { name: 'Jizdní řády' , to: 'JizdniRad', icon: 'fa-table-list'},
         { name: 'Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
-        { name: 'TODO Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
         { name: 'Vyhledat spoj' , to: 'SpojSearch', icon: 'fa-circle-nodes' },
         { name: 'Vyhledat linku' , to: 'LinkaSearch', icon: 'fa-circle-nodes' },
       ];

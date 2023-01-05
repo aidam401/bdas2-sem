@@ -3,9 +3,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import Linky from "@/views/entities/Linky/Linky.vue";
 import Zastavky from "@/views/entities/Zastavky/Zastavky.vue";
 import Spoje from "@/views/entities/Spoje/Spoje.vue";
-import ZaznamyJizdnichRadu from "@/views/entities/ZaznamyJizdnichRadu.vue";
 import JizdniRady from "@/views/entities/JizdniRad/JizdniRady.vue";
-import AktualniJizdy from "@/views/entities/AktualniJizdy.vue";
 import Uzivatele from "@/views/entities/Uzivatele/Uzivatele.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
@@ -175,16 +173,6 @@ const routes = [
         name: "LinkaSearch",
         component: HledatLinku
     },
-
-
-
-
-    {
-        path: "/aktualni-jizda",
-        name: "Aktualni_jizda",
-        component: AktualniJizdy
-    },
-
     // otherwise redirect to home
     {
         path: "/:catchAll(.*)",
@@ -198,9 +186,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const publicPaths = ['/', '/spoj', '/login', '/register'];
+    const publicPaths = ['/', '/spoj', '/login', '/register', '/hledatLinku'];
     const userPaths = ['/', '/profile', '/spoj', '/login', '/register', '/hledatLinku', '/hledatSpoj']
-    //const adminPaths = ['/zamestnanec', '/vozidlo',  '/uzivatel', '/aktualni-jizda', '/jizdni_rad', '/cas_zastavek', '/zastavka'];
     const authRequired = !publicPaths.includes(to.path);
     const adminRequired = !userPaths.includes(to.path);
     const loggedIn = store.getters["auth/isLoggedIn"];
