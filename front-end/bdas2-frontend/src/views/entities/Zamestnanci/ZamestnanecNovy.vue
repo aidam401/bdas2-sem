@@ -38,7 +38,7 @@ export default {
         JMENO: '',
         PRIJMENI: '',
         DATUM_NAROZENI: '',
-        ID_POZICE: 0,
+        ID_POZICE_ZAMESTNANCE: 0,
       },
       poziceOptions: [],
     };
@@ -59,7 +59,7 @@ export default {
       });
     },
     updateSelectedOption (e) {
-      this.entityModel.ID_POZICE = e.target.value;
+      this.entityModel.ID_POZICE_ZAMESTNANCE = e.target.value;
     }
   },
   computed: {

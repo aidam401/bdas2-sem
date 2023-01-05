@@ -14,7 +14,7 @@
         <label for="datum" class="form-label">Narozen</label>
         <input v-model="entityModel.DATUM_NAROZENI" type="date" class="form-control" id="datum">
       </div>
-      <select-box @input="updateSelectedOption" label="Pozice" :options="poziceOptions" :selected="entityModel.ID_POZICE"/>
+      <select-box @input="updateSelectedOption" label="Pozice" :options="poziceOptions" :selected="entityModel.ID_POZICE_ZAMESTNANCE"/>
       <button :disabled="isSomewthingWrong" @click="handleUpravit" class="btn btn-primary">Přidat</button>
     </form>
   </div>
@@ -38,7 +38,7 @@ export default {
         JMENO: '',
         PRIJMENI: '',
         DATUM_NAROZENI: '',
-        ID_POZICE: 0,
+        ID_POZICE_ZAMESTNANCE: 0,
       },
       entity: null,
       poziceOptions: [],
@@ -66,7 +66,7 @@ export default {
       }).catch((e) => console.log(e));
     },
     updateSelectedOption (e) {
-      this.entityModel.ID_POZICE = e.target.value;
+      this.entityModel.ID_POZICE_ZAMESTNANCE = e.target.value;
     }
   },
   computed: {

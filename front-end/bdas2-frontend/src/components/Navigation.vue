@@ -68,7 +68,7 @@ export default {
     navigationPublicItems() {
       return [
         { name: 'Domovská stránka' , to: 'Home', icon: 'fa-home' },
-        { name: 'Vyhledat SPOJ' , to: 'Spoj', icon: 'fa-circle-nodes' },
+        { name: 'Vyhledat linku' , to: 'LinkaSearch', icon: 'fa-circle-nodes' },
       ];
     },
     navigationAdminItems() {
@@ -85,9 +85,7 @@ export default {
     },
     navigationLoggedInItems() {
       return [
-          // TODO Přehled linek s detailem spojů
-        { name: 'Linky' , to: 'Linka', icon: 'fa-map-location-dot'}
-
+        { name: 'Vyhledat spoj' , to: 'SpojSearch', icon: 'fa-circle-nodes' },
       ];
     },
     allNavigationItems() {
@@ -101,9 +99,10 @@ export default {
         { name: 'Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
         { name: 'Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
         { name: 'Jizdní řády' , to: 'JizdniRad', icon: 'fa-table-list'},
+        { name: 'Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
         { name: 'TODO Jízdy' , to: 'Aktualni_jizda', icon: 'fa-road'},
-        { name: 'TODO Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
-        { name: 'TODO Vyhledat SPOJ' , to: 'Spoj', icon: 'fa-circle-nodes' },
+        { name: 'Vyhledat spoj' , to: 'SpojSearch', icon: 'fa-circle-nodes' },
+        { name: 'Vyhledat linku' , to: 'LinkaSearch', icon: 'fa-circle-nodes' },
       ];
     },
     navigationItems() {

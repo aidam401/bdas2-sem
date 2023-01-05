@@ -43,7 +43,7 @@ export default {
   methods: {
     handleUpravit() {
       event.preventDefault()
-      PozicezamestnanceService.updateEntity(this.getIdDetail, this.entityModel, 'ID_POZICE').then((resp) => {
+      PozicezamestnanceService.updateEntity(this.getIdDetail, this.entityModel, 'ID_POZICE_ZAMESTNANCE').then((resp) => {
         if (resp.data) {
           console.log("update proběhl v pořádku!");
         }

@@ -1,10 +1,11 @@
 <template>
-<WrapperList :entity-service="service" :delete-service="service" :title="title" :detail-id-key="detailIdKey"/>
+<WrapperList :allowed-header-items="allowedHeaderItems" :entity-service="service" :delete-service="deleteService" :title="title" :detail-id-key="detailIdKey"/>
 </template>
 
 <script>
 import WrapperList from "@/components/WrapperList.vue";
 import UzivatelViewService from "@/_services/view_services/uzivatel.view.service";
+import userService from "@/_services/user.service";
 
 export default {
   name: "Uzivatele",
@@ -13,8 +14,14 @@ export default {
     return {
       title: 'Uživatelé',
       detailIdKey: 'ID_UZIVATEL',
-      allowedHeaderItems: [],
-      service: UzivatelViewService
+      allowedHeaderItems: [
+          'NAZEV_ROLE',
+          'LOGIN',
+          'NAZEV_SOUBOR',
+          'TYP_SOUBOR'
+      ],
+      service: UzivatelViewService,
+      deleteService: userService
     }
   }
 }

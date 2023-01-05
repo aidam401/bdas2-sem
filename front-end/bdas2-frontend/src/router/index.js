@@ -3,7 +3,6 @@ import {createRouter, createWebHistory} from "vue-router";
 import Linky from "@/views/entities/Linky/Linky.vue";
 import Zastavky from "@/views/entities/Zastavky/Zastavky.vue";
 import Spoje from "@/views/entities/Spoje/Spoje.vue";
-import CasyZastavek from "@/views/entities/CasyZastavek.vue";
 import ZaznamyJizdnichRadu from "@/views/entities/ZaznamyJizdnichRadu.vue";
 import JizdniRady from "@/views/entities/JizdniRad/JizdniRady.vue";
 import AktualniJizdy from "@/views/entities/AktualniJizdy.vue";
@@ -33,6 +32,9 @@ import ZamestnanecDetail from "@/views/entities/Zamestnanci/ZamestnanecDetail.vu
 import JizdniRadNovy from "@/views/entities/JizdniRad/JizdniRadNovy.vue";
 import JIzdniRadDetail from "@/views/entities/JizdniRad/JIzdniRadDetail.vue";
 import SpojNovy from "@/views/entities/Spoje/SpojNovy.vue";
+import SpojDetail from "@/views/entities/Spoje/SpojDetail.vue";
+import HledatSpoj from "@/views/entities/HledatSpoj.vue";
+import HledatLinku from "@/views/entities/HledatLinku.vue";
 
 const routes = [
     {
@@ -160,20 +162,24 @@ const routes = [
         path: "/spoj/add",
         name: "SpojNovy",
         component: SpojNovy
+    }, {
+        path: "/spoj/:id",
+        name: "SpojDetail",
+        component: SpojDetail
+    }, {
+        path: "/hledatSpoj",
+        name: "SpojSearch",
+        component: HledatSpoj
+    }, {
+        path: "/hledatLinku",
+        name: "LinkaSearch",
+        component: HledatLinku
     },
 
 
 
 
     {
-        path: "/cas-zastavky",
-        name: "Casy_zastavek",
-        component: CasyZastavek
-    }, {
-        path: "/zaznam-jizdniho-radu",
-        name: "Zaznam_jizdniho_radu",
-        component: ZaznamyJizdnichRadu
-    }, {
         path: "/aktualni-jizda",
         name: "Aktualni_jizda",
         component: AktualniJizdy
@@ -193,9 +199,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const publicPaths = ['/', '/spoj', '/login', '/register'];
-    const adminPaths = ['/zamestnanec', '/vozidlo',  '/uzivatel', '/aktualni-jizda', '/jizdni_rad', '/cas_zastavek', '/zastavka'];
+    const userPaths = ['/', '/profile', '/spoj', '/login', '/register', '/hledatLinku', '/hledatSpoj']
+    //const adminPaths = ['/zamestnanec', '/vozidlo',  '/uzivatel', '/aktualni-jizda', '/jizdni_rad', '/cas_zastavek', '/zastavka'];
     const authRequired = !publicPaths.includes(to.path);
-    const adminRequired = adminPaths.includes(to.path);
+    const adminRequired = !userPaths.includes(to.path);
     const loggedIn = store.getters["auth/isLoggedIn"];
     const isAdmin = store.getters["auth/isAdmin"];
 
