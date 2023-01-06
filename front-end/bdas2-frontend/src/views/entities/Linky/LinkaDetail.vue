@@ -1,11 +1,14 @@
 <template>
   <div class="main-wrapper">
     <MainHeader title="Detail linky"/>
+    <div v-if="error" class="alert alert-danger">{{error}}</div>
     <div class="mb-3">
       <label for="zastavka" class="form-label">Název linky</label>
-      <input v-model="linkaModel.NAZEV_LINKA" type="text" class="form-control" id="zastavka">
+      <input v-model="linkaModel.NAZEV_LINKA" type="text" class="form-control" id="zastavka" :class="{ 'is-invalid': submitted && !this.linkaModel.NAZEV_LINKA }">
+      <div v-show="submitted && !linkaModel.NAZEV_LINKA" class="invalid-feedback">Název je povinný</div>
     </div>
-    <SelectBoxAddButton :title="'Přidat zastávku'" :options="optionsZastavky" @addItem="handleAddZastavka"/>
+    <SelectBoxAddButton :title="'Přidat zastávku'" :options="optionsZastavky" @addItem="handleAddZastavka" :class="{ 'is-invalid': submitted && this.zastavkyLinky.length < 2 }"/>
+    <div v-show="submitted && this.zastavkyLinky.length < 2 " class="invalid-feedback">Přidejte alespoň dvě zastávky do linky</div>
     <DragAndDropList :items="zastavkyLinky" @deleteItem="handleDeleteZastavka"/>
     <button :disabled="areDataSame" @click="handlePridat" class="btn btn-primary">Upravit</button>
   </div>
@@ -33,7 +36,9 @@ export default {
       linka: null,
       optionsZastavky: [],
       zastavkyLinky: [],
-      previousZastavky: []
+      previousZastavky: [],
+      submitted: false,
+      error: ''
     }
   },
   created () {
@@ -71,32 +76,38 @@ export default {
       this.refreshZastavky();
     },
     handlePridat () {
-      LinkaService.updateEntity(this.getIdDetail, this.linkaModel, 'ID_LINKA').then((resp) => {
-        if (resp.data) {
-          this.optionsZastavky.forEach((zastavka) => {
-            if (zastavka.ID_ZASTAVKA_LINKA) {
-              ZastavkalinkaService.deleteEntity(zastavka.ID_ZASTAVKA_LINKA);
-            }
-          });
-          this.zastavkyLinky.forEach((zastavka, index) => {
-            if (zastavka.ID_ZASTAVKA_LINKA) {
-              ZastavkalinkaService.updateEntity(zastavka.ID_ZASTAVKA_LINKA, {
-                'ID_LINKA' : this.getIdDetail,
-                'ID_ZASTAVKA' : zastavka.ID_ZASTAVKA,
-                'PORADI_ZASTAVKY' : index + 1
-              });
-            } else {
-              ZastavkalinkaService.createEntity({
-                'ID_LINKA' : this.getIdDetail,
-                'ID_ZASTAVKA' : zastavka.ID_ZASTAVKA,
-                'PORADI_ZASTAVKY' : index + 1
-              });
-            }
-          })
-        }
-      }).then((e) => {
-        setTimeout(() => { this.init(); }, 1000);
-      }).catch((e) => console.log('Nastala chyba při vytváření záznamu LINKA', e));
+      this.submitted = true;
+      if (this.isOk) {
+        LinkaService.updateEntity(this.getIdDetail, this.linkaModel, 'ID_LINKA').then((resp) => {
+          if (resp.data) {
+            this.optionsZastavky.forEach((zastavka) => {
+              if (zastavka.ID_ZASTAVKA_LINKA) {
+                ZastavkalinkaService.deleteEntity(zastavka.ID_ZASTAVKA_LINKA);
+              }
+            });
+            this.zastavkyLinky.forEach((zastavka, index) => {
+              if (zastavka.ID_ZASTAVKA_LINKA) {
+                ZastavkalinkaService.updateEntity(zastavka.ID_ZASTAVKA_LINKA, {
+                  'ID_LINKA' : this.getIdDetail,
+                  'ID_ZASTAVKA' : zastavka.ID_ZASTAVKA,
+                  'PORADI_ZASTAVKY' : index + 1
+                });
+              } else {
+                ZastavkalinkaService.createEntity({
+                  'ID_LINKA' : this.getIdDetail,
+                  'ID_ZASTAVKA' : zastavka.ID_ZASTAVKA,
+                  'PORADI_ZASTAVKY' : index + 1
+                });
+              }
+            })
+          }
+        }).then(() => {
+          setTimeout(() => { this.init(); }, 1000);
+        }).catch((e) => this.error = 'Něco se pokazilo');
+      } else {
+        this.error = 'Doplňte potřebné údaje';
+      }
+
     },
     handleDeleteZastavka (item) {
       this.optionsZastavky.push(item);
@@ -105,6 +116,9 @@ export default {
   computed: {
     areDataSame () {
       return this.areObjectsEqual(this.linkaModel, this.linka) && this.areObjectsArrayEqual(this.zastavkyLinky, this.previousZastavky);
+    },
+    isOk () {
+      return !!this.linkaModel.NAZEV_LINKA && this.zastavkyLinky.length >= 2;
     }
   }
 }
