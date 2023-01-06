@@ -13,13 +13,13 @@
         <input v-model="userModel.HESLO" type="text" class="form-control" id="profile-password">
       </div>
       <div class="mb-3">
-        <searchable-select-box v-if="this.roleItems.length > 0" label="Role" :options="this.roleItems" :selected="getSelectedRoleItem" @changeSelection="handleChangeRole" />
+        <select-box @input="handleChangeRole" label="Role" :options="this.roleItems" :selected="this.userModel.ID_ROLE"/>
       </div>
       <div class="mb-3">
         <label for="file" class="form-label">Profilový obrázek</label>
         <input id="file" @change="onFileChange" type="file" accept=".png, .jpg, .jpeg" class="form-control">
       </div>
-      <button :disabled="!isUserChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
+      <button :disabled="isUserSame" @click="handleUpravit" class="btn btn-primary">Upravit</button>
     </form>
   </div>
 </template>
@@ -32,13 +32,15 @@ import MainHeader from "@/components/MainHeader.vue";
 import UzivatelViewService from "@/_services/view_services/uzivatel.view.service";
 import SearchableSelectBox from "@/components/SearchableSelectBox.vue";
 import RoleService from "@/_services/role.service";
+import UserService from "@/_services/user.service";
+import SelectBox from "@/components/SelectBox.vue";
 
 export default {
   name: "UzivatelDetail",
-  mixins: [UserMixin, ObjectUtilityMixin],
-  components: {SearchableSelectBox, MainHeader},
+  mixins: [UserMixin, ObjectUtilityMixin, RouterDetailMixin],
+  components: {SelectBox, SearchableSelectBox, MainHeader},
   created () {
-    UzivatelViewService.getById(this.getIdDetail).then((resp) => {
+    UserService.getById(this.getIdDetail).then((resp) => {
       if (this.isDefinedNonEmptyArray(resp.data)) {
         this.nonChangedUser =  {...resp.data[0]};
         this.userModel = {...this.nonChangedUser};
@@ -61,7 +63,9 @@ export default {
   methods: {
     handleUpravit () {
       event.preventDefault();
-      UzivatelViewService.updateEntity(this.userModel?.ID_UZIVATEL, this.userModel, 'ID_UZIVATEL');
+      UserService.updateEntity(this.getIdDetail, this.userModel, 'ID_UZIVATEL').then(() => {
+        this.nonChangedUser = {...this.userModel}
+      });
     },
     onFileChange (e) {
       const [file] = e.target.files;
@@ -85,26 +89,19 @@ export default {
         }
       }
     },
-    handleChangeRole (id, name) {
-      this.userModel.ID_ROLE = id;
-      this.userModel.NAZEV_ROLE = name;
+    handleChangeRole (e) {
+      this.userModel.ID_ROLE = e.target.value;
     }
   },
   computed: {
-    isUserChanged () {
-      return !this.areObjectsEqual(this.nonChangedUser, this.userModel);
+    isUserSame () {
+      return this.areObjectsEqual(this.nonChangedUser, this.userModel);
     },
     getUserFile () {
       return this.userModel?.DATA_SOUBOR ? URL.createObjectURL(this.userModel.DATA_SOUBOR) : this.getUniversalUserImagePath;
     },
     getProfileTitleSuffix () {
       return String(this.userModel?.LOGIN);
-    },
-    getSelectedRoleItem() {
-      return this.getItemWithValueKey({
-        'ID_ROLE' : this.userModel.ID_ROLE,
-        'NAZEV_ROLE' : this.userModel.NAZEV_ROLE
-      }, 'ID_ROLE', 'NAZEV_ROLE');
     }
   }
 }
