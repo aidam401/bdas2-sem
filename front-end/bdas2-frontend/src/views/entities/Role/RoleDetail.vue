@@ -45,7 +45,7 @@ export default {
       event.preventDefault()
       RoleService.updateEntity(this.getIdDetail, this.entityModel, 'ID_ROLE').then((resp) => {
         if (resp.data) {
-          console.log("update proběhl v pořádku!");
+          this.entity = {...this.entityModel}
         }
       }).catch(() => {
         console.log("Něco se pokazilo");

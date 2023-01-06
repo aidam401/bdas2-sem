@@ -15,7 +15,7 @@
         <input v-model="entityModel.DATUM_NAROZENI" type="date" class="form-control" id="datum">
       </div>
       <select-box @input="updateSelectedOption" label="Pozice" :options="poziceOptions" :selected="entityModel.ID_POZICE_ZAMESTNANCE"/>
-      <button :disabled="isSomewthingWrong" @click="handleUpravit" class="btn btn-primary">Přidat</button>
+      <button :disabled="areDataSame" @click="handleUpravit" class="btn btn-primary">Upravit</button>
     </form>
   </div>
 </template>
@@ -27,10 +27,11 @@ import SelectBox from "@/components/SelectBox.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import PozicezamestnanceService from "@/_services/pozicezamestnance.service";
 import ZamestnanecService from "@/_services/zamestnanec.service";
+import DateTimeMixin from "@/mixins/DateTimeMixin.vue";
 
 export default {
   name: "ZamestnanecDetail",
-  mixins: [RouterDetailMixin, ObjectUtilityMixin],
+  mixins: [RouterDetailMixin, ObjectUtilityMixin, DateTimeMixin],
   components: {SelectBox, MainHeader},
   data() {
     return {
@@ -53,6 +54,7 @@ export default {
     ZamestnanecService.getById(this.getIdDetail).then((resp) => {
       if (resp?.data) {
         this.entityModel = resp.data[0];
+        this.entityModel.DATUM_NAROZENI = this.dateOnly(this.entityModel.DATUM_NAROZENI);
         this.entity = {...this.entityModel};
       }
     });
@@ -62,7 +64,7 @@ export default {
       event.preventDefault();
       const dataEntity = {...this.entityModel};
       ZamestnanecService.updateEntity(this.getIdDetail, dataEntity, 'ID_ZAMESTNANEC').then((resp) => {
-        console.log('Update proběhl ok!')
+        this.entity = {...this.entityModel}
       }).catch((e) => console.log(e));
     },
     updateSelectedOption (e) {

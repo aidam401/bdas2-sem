@@ -46,7 +46,7 @@ export default {
     // reset login status
     this.$store.dispatch("auth/logout");
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.$route.query.returnUrl || '/profile';
+    this.returnUrl = this.$route.query.returnUrl || '/';
   },
   methods: {
     handleSubmit (e) {

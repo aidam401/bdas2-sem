@@ -1,6 +1,6 @@
 <template>
   <div class="main-wrapper">
-    <MainHeader title="Nová vozidlo"/>
+    <MainHeader title="Nové vozidlo"/>
     <form>
       <div class="mb-3">
         <label for="entity" class="form-label">Název</label>
@@ -73,12 +73,16 @@ export default {
               AutobusService.createEntity({
                 'ID_VOZIDLO' : resp?.data,
                 'KAPACITA_NADRZE' : this.KAPACITA_NADRZE
+              }).then(() => {
+                this.goToTheDetailFromAdd(resp.data);
               }).catch((e) => console.log(e));
               break;
             case "TROLEJBUS":
               TrolejbusService.createEntity( {
                 'ID_VOZIDLO' : resp?.data,
                 'ELEKTRICKA_SPOTREBA' : this.ELEKTRICKA_SPOTREBA
+              }).then(() => {
+                this.goToTheDetailFromAdd(resp.data);
               }).catch((e) => console.log(e));
               break;
             default:

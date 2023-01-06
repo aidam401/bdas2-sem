@@ -45,8 +45,7 @@ export default {
       event.preventDefault()
       PozicezamestnanceService.updateEntity(this.getIdDetail, this.entityModel, 'ID_POZICE_ZAMESTNANCE').then((resp) => {
         if (resp.data) {
-          console.log("update proběhl v pořádku!");
-          this.$router.go(-1);
+          this.entity = {...this.entityModel}
         }
       }).catch(() => {
         console.log("Něco se pokazilo");

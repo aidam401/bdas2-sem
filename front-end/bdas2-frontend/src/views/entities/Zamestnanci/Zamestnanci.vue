@@ -15,10 +15,9 @@ export default {
       title: 'Zaměstnanci',
       detailIdKey: 'ID_ZAMESTNANEC',
       allowedHeaderItems: [
-          'NAZEV_POZICE_ZAMESTNANCE',
           'JMENO',
           'PRIJMENI',
-          'DATUM_NAROZENI'
+          'NAZEV_POZICE_ZAMESTNANCE',
       ],
       service: ZamestnanecViewService,
       deleteService: ZamestnanecService

@@ -28,6 +28,16 @@ export default {
       }
       return true;
     },
+    areProxyObjectsArrayEqual(array1, array2) {
+      for (var key in array1) {
+        const array1String = JSON.stringify(array1[key]);
+        const array2String = JSON.stringify(array2[key]);
+        if (array1String !== array2String) {
+          return false
+        }
+      }
+      return true;
+    },
     isDefinedNonEmptyArray(array) {
       return array !== undefined && Array.isArray(array) && array.length > 0;
     },
@@ -42,7 +52,10 @@ export default {
 
     getItemWithValueKey(item, valueKey, textKey) {
       if (item !== null) {
-        return { value: item[valueKey], text: item[textKey] };
+        let newItem = {...item};
+        newItem.value = item[valueKey];
+        newItem.text = item[textKey];
+        return newItem;
       } else {
         return {};
       }

@@ -85,6 +85,7 @@ export default {
             }).catch((resp) => {console.log('Něco se pokazilo')});
           })
         }
+        this.goToTheDetailFromAdd(resp.data);
       })
     }
   },

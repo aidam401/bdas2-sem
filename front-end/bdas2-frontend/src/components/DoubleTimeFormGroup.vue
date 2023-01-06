@@ -4,11 +4,11 @@
     <div class="d-flex flex-row justify-content-between">
       <div class="form-group mr-2">
         <label for="date1">Příjezd</label>
-        <input class="form-control" type="time" id="date1" v-model="item.PRAVIDELNY_PRIJEZD" />
+        <input class="form-control" type="time" id="date1" v-model="item.PRAVIDELNY_PRIJEZD" required/>
       </div>
       <div class="form-group ml-2">
         <label for="date2">Odjezd</label>
-        <input class="form-control" type="time" id="date2" v-model="item.PRAVIDELNY_ODJEZD" />
+        <input class="form-control" type="time" id="date2" v-model="item.PRAVIDELNY_ODJEZD" required/>
       </div>
     </div>
   </div>

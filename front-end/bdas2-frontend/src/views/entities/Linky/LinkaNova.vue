@@ -64,6 +64,7 @@ export default {
             }).catch((e) => console.log('Nastala chyba při vytváření záznamu ZASTAVKA_LINKA'))
           });
         }
+        this.goToTheDetailFromAdd(resp.data);
       }).catch((e) => console.log('Nastala chyba při vytváření záznamu LINKA'));
 
     }

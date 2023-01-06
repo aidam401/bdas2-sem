@@ -45,7 +45,7 @@ export default {
       event.preventDefault()
       ZastavkaService.updateEntity(this.getIdDetail, this.zastavkaModel, 'ID_ZASTAVKA').then((resp) => {
         if (resp.data) {
-          console.log("update proběhl v pořádku!");
+          this.zastavka = {...this.zastavkaModel};
         }
       }).catch(() => {
         console.log("Něco se pokazilo");

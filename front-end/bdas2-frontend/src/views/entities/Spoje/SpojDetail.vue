@@ -9,7 +9,7 @@
       <select-box @input="updateSelectedJROption" label="Vyberte jízdní řád" :options="radyOptions" :selected="spojModel.ID_JIZDNI_RAD"/>
       <select-box @input="updateSelectedOption" label="Vyberte linku" :options="linkyOptions" :selected="spojModel.ID_LINKA"/>
       <double-time-form-group v-for="(zastavka, index) in zastavky" :key="index" :item="zastavka"/>
-      <button :disabled="!areDataChanged" @click="handleUpravit" class="btn btn-primary">Upravit</button>
+      <button :disabled="areDataSame" @click="handleUpravit" class="btn btn-primary">Upravit</button>
     </form>
   </div>
 </template>
@@ -24,10 +24,11 @@ import SelectBox from "@/components/SelectBox.vue";
 import SpojService from "@/_services/spoj.service";
 import LinkyViewService from "@/_services/view_services/linky.view.service";
 import ZaznamjizdnihoraduService from "@/_services/zaznamjizdnihoradu.service";
+import DateTimeMixin from "@/mixins/DateTimeMixin.vue";
 
 export default {
   name: "SpojDetail",
-  mixins: [RouterDetailMixin, ObjectUtilityMixin],
+  mixins: [RouterDetailMixin, ObjectUtilityMixin, DateTimeMixin],
   components: {DoubleTimeFormGroup, MainHeader, SelectBox},
   data() {
     return {
@@ -46,25 +47,28 @@ export default {
     }
   },
   created () {
-    LinkaService.getAll().then((resp) => {
-      if (resp?.data) {
-        this.linkyOptions = this.getItemsWithValueKey(resp.data, 'ID_LINKA', 'NAZEV_LINKA')
-      }
-    });
-    JizdniradyService.getAll().then((resp) => {
-      if (resp?.data) {
-        this.radyOptions = this.getItemsWithValueKey(resp.data, 'ID_JIZDNI_RAD', 'NAZEV_JIZDNI_RAD')
-      }
-    });
-    SpojService.getSpoj(this.getIdDetail).then((resp) => {
-      if (resp?.data) {
-        this.spoj = {...resp.data[0]};
-        this.spojModel = {...this.spoj};
-      }
-    });
-    this.initZastavky();
+    this.init();
   },
   methods: {
+    init () {
+      LinkaService.getAll().then((resp) => {
+        if (resp?.data) {
+          this.linkyOptions = this.getItemsWithValueKey(resp.data, 'ID_LINKA', 'NAZEV_LINKA')
+        }
+      });
+      JizdniradyService.getAll().then((resp) => {
+        if (resp?.data) {
+          this.radyOptions = this.getItemsWithValueKey(resp.data, 'ID_JIZDNI_RAD', 'NAZEV_JIZDNI_RAD')
+        }
+      });
+      SpojService.getSpoj(this.getIdDetail).then((resp) => {
+        if (resp?.data) {
+          this.spoj = {...resp.data[0]};
+          this.spojModel = {...this.spoj};
+        }
+      });
+      this.initZastavky();
+    },
     updateSelectedOption (e) {
       this.spojModel.ID_LINKA = e.target.value;
       if (this.spojModel.ID_LINKA === this.spoj.ID_LINKA) {
@@ -79,8 +83,12 @@ export default {
     initZastavky() {
       SpojService.getZastavkySpoje(this.getIdDetail).then((resp) => {
         if (resp?.data) {
-          this.zastavky = resp.data;
-          this.prevZastavky = {...this.zastavky};
+          this.zastavky = JSON.parse(JSON.stringify(resp.data));
+          this.zastavky.forEach((zastavka) => {
+            zastavka.PRAVIDELNY_PRIJEZD = this.timeOnly(this.extract(zastavka.PRAVIDELNY_PRIJEZD, 1));
+            zastavka.PRAVIDELNY_ODJEZD = this.timeOnly(this.extract(zastavka.PRAVIDELNY_ODJEZD, 1));
+          })
+          this.prevZastavky = JSON.parse(JSON.stringify(this.zastavky));
         }
       }).catch((e) => console.log("Něco se pokazilo"));
     },
@@ -99,7 +107,7 @@ export default {
           ID_LINKA: this.spojModel.ID_LINKA
         });
       }
-      if (this.spoj.ID_LINKA !== this.spojModel.ID_LINKA) {
+      if (this.spoj.ID_LINKA === this.spojModel.ID_LINKA) {
         this.prevZastavky.forEach((zaznam) => {
           ZaznamjizdnihoraduService.deleteEntity(zaznam.ID_ZAZNAM_JIZDNIHO_RADU).catch((e) => {console.log("něco se pokazilo")})
         });
@@ -123,12 +131,14 @@ export default {
             PRAVIDELNY_ODJEZD: zaznam.PRAVIDELNY_ODJEZD
           }, 'ID_ZAZNAM_JIZDNIHO_RADU')
         });
+        this.init();
       }
     }
   },
   computed: {
-    areDataChanged () {
-      return !this.areObjectsEqual(this.spoj, this.spojModel) || !this.areObjectsArrayEqual(this.zastavky, this.prevZastavky);
+    areDataSame () {
+      console.log("are data same?", this.prevZastavky, this.zastavky);
+      return this.areObjectsEqual(this.spoj, this.spojModel) && this.areProxyObjectsArrayEqual(this.prevZastavky, this.zastavky);
     }
   }
 }

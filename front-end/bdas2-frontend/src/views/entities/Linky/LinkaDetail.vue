@@ -7,7 +7,7 @@
     </div>
     <SelectBoxAddButton :title="'Přidat zastávku'" :options="optionsZastavky" @addItem="handleAddZastavka"/>
     <DragAndDropList :items="zastavkyLinky" @deleteItem="handleDeleteZastavka"/>
-    <button :disabled="areDataSame" @click="handlePridat" class="btn btn-primary">Přidat</button>
+    <button :disabled="areDataSame" @click="handlePridat" class="btn btn-primary">Upravit</button>
   </div>
 </template>
 
@@ -27,94 +27,78 @@ export default {
   mixins: [ObjectUtilityMixin, RouterDetailMixin],
   data () {
     return {
-      linkaModel: null,
+      linkaModel: {
+        NAZEV_LINKA: ''
+      },
       linka: null,
       optionsZastavky: [],
       zastavkyLinky: [],
-      previousZastavky: [],
-      deletedZastavky: [],
-      addedZastavky: [],
-      zaznamyZastavkaLinka: []
+      previousZastavky: []
     }
   },
   created () {
-    LinkaService.getById(this.getIdDetail).then((resp) => {
-      if (resp?.data) {
-        this.linkaModel = resp.data[0];
-        this.linka = {...this.linkaModel};
-      }
-    });
-    ZastavkaService.getAll().then((resp) => {
-      if (resp?.data) {
-        this.optionsZastavky = this.getItemsWithValueKey(resp.data, 'ID_ZASTAVKA', 'NAZEV_ZASTAVKA');
-        this.refreshZastavky();
-      }
-    });
-    LinkyViewService.getLinkaDetail(this.getIdDetail).then((resp) => {
-      if (resp?.data) {
-        this.zaznamyZastavkaLinka = resp.data;
-        this.zastavkyLinky = this.getItemsWithValueKey(
-            this.sortObjectsArrayByObjectKey(resp.data, 'PORADI_ZASTAVKY'),
-            'ID_ZASTAVKA', 'NAZEV_ZASTAVKA');
-        this.previousZastavky = [...this.zastavkyLinky];
-        this.refreshZastavky();
-      }
-    });
+    this.init();
   },
   methods: {
+    init () {
+      LinkaService.getById(this.getIdDetail).then((resp) => {
+        if (resp?.data) {
+          this.linkaModel = resp.data[0];
+          this.linka = {...this.linkaModel};
+        }
+      });
+      ZastavkaService.getAll().then((resp) => {
+        if (resp?.data) {
+          this.optionsZastavky = this.getItemsWithValueKey(resp.data, 'ID_ZASTAVKA', 'NAZEV_ZASTAVKA');
+          this.refreshZastavky();
+        }
+      });
+      LinkyViewService.getLinkaDetail(this.getIdDetail).then((resp) => {
+        if (resp?.data) {
+          this.zastavkyLinky = this.getItemsWithValueKey(
+              this.sortObjectsArrayByObjectKey(resp.data, 'PORADI_ZASTAVKY'),
+              'ID_ZASTAVKA', 'NAZEV_ZASTAVKA');
+          this.previousZastavky = [...this.zastavkyLinky];
+          this.refreshZastavky();
+        }
+      });
+    },
     refreshZastavky () {
       this.optionsZastavky = this.difference(this.optionsZastavky, this.zastavkyLinky);
     },
     handleAddZastavka (item) {
       this.zastavkyLinky.push(item);
-      if (!this.previousZastavky.includes(item)) {
-        if (this.deletedZastavky.includes(item)) {
-          this.deletedZastavky.filter(ob => !this.areObjectsEqual(ob, item));
-        }
-        this.addedZastavky.push(item);
-      }
       this.refreshZastavky();
     },
     handlePridat () {
-      var profileId;
-      LinkaService.updateEntity(this.linkaModel).then((resp) => {
-        profileId = resp.data;
+      LinkaService.updateEntity(this.getIdDetail, this.linkaModel, 'ID_LINKA').then((resp) => {
         if (resp.data) {
-          this.deletedZastavky?.forEach((zastavka) => {
-            this.zaznamyZastavkaLinka?.forEach((zaznam) => {
-              if (zaznam.ID_ZASTAVKA === zastavka.value) {
-                ZastavkalinkaService.deleteEntity(zaznam.ID_ZASTAVKA_LINKA).catch((e) => { console.log('Nepodařilo se smazat záznam', zaznam) });
-              }
-            });
+          this.optionsZastavky.forEach((zastavka) => {
+            if (zastavka.ID_ZASTAVKA_LINKA) {
+              ZastavkalinkaService.deleteEntity(zastavka.ID_ZASTAVKA_LINKA);
+            }
           });
-
-          this.difference(this.zastavkyLinky, this.addedZastavky)?.forEach((zastavka, index) => {
-            const poradi = index + 1;
-            ZastavkalinkaService.updateEntity({
-              'ID_LINKA' : resp.data,
-              'ID_ZASTAVKA' : zastavka.value,
-              'PORADI_ZASTAVKY' : poradi
-            }).catch((e) => console.log('Nastala chyba při vytváření záznamu ZASTAVKA_LINKA'))
-          });
-
-          this.addedZastavky?.forEach((zastavky, index) => {
-            const poradi = index + 1;
-            ZastavkalinkaService.createEntity({
-              'ID_LINKA' : resp.data,
-              'ID_ZASTAVKA' : zastavka.value,
-              'PORADI_ZASTAVKY' : poradi
-            }).catch((e) => console.log('Nastala chyba při vytváření záznamu ZASTAVKA_LINKA'))
-          });
+          this.zastavkyLinky.forEach((zastavka, index) => {
+            if (zastavka.ID_ZASTAVKA_LINKA) {
+              ZastavkalinkaService.updateEntity(zastavka.ID_ZASTAVKA_LINKA, {
+                'ID_LINKA' : this.getIdDetail,
+                'ID_ZASTAVKA' : zastavka.ID_ZASTAVKA,
+                'PORADI_ZASTAVKY' : index + 1
+              });
+            } else {
+              ZastavkalinkaService.createEntity({
+                'ID_LINKA' : this.getIdDetail,
+                'ID_ZASTAVKA' : zastavka.ID_ZASTAVKA,
+                'PORADI_ZASTAVKY' : index + 1
+              });
+            }
+          })
         }
-      }).catch((e) => console.log('Nastala chyba při vytváření záznamu LINKA'));
+      }).then((e) => {
+        setTimeout(() => { this.init(); }, 1000);
+      }).catch((e) => console.log('Nastala chyba při vytváření záznamu LINKA', e));
     },
     handleDeleteZastavka (item) {
-      if (this.previousZastavky.includes(item)) {
-        if (this.addedZastavky.includes(item)) {
-          this.addedZastavky.filter(ob => !this.areObjectsEqual(ob, item));
-        }
-        this.deletedZastavky.push(item);
-      }
       this.optionsZastavky.push(item);
     }
   },

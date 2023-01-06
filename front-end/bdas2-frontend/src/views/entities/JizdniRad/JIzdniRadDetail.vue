@@ -24,10 +24,11 @@ import RouterDetailMixin from "@/mixins/RouterDetailMixin.vue";
 import ObjectUtilityMixin from "@/mixins/ObjectUtilityMixin.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import JizdniradyService from "@/_services/jizdnirady.service";
+import DateTimeMixin from "@/mixins/DateTimeMixin.vue";
 
 export default {
   name: "JIzdniRadDetail",
-  mixins: [RouterDetailMixin, ObjectUtilityMixin],
+  mixins: [RouterDetailMixin, ObjectUtilityMixin, DateTimeMixin],
   components: {MainHeader},
   data() {
     return {
@@ -42,7 +43,9 @@ export default {
   created() {
     JizdniradyService.getById(this.getIdDetail).then((resp) => {
       if (resp?.data) {
-        this.entityModel = resp.data[0];
+        this.entityModel = {...resp.data[0]};
+        this.entityModel.DATUM_KONCE_PLATNOSTI = this.dateOnly(this.entityModel.DATUM_KONCE_PLATNOSTI);
+        this.entityModel.DATUM_ZAHAJENI_PLATNOSTI = this.dateOnly(this.entityModel.DATUM_ZAHAJENI_PLATNOSTI);
         this.entity = {...this.entityModel}
       }
     }).catch((e) => console.log("Nepodařilo se načíst Jízdní řád"))
@@ -53,7 +56,7 @@ export default {
       const data = {...this.entityModel}
       JizdniradyService.updateEntity(this.getIdDetail, data, 'ID_JIZDNI_RAD').then((resp) => {
         if (resp?.data) {
-          console.log("Update ok");
+          this.entity = {...this.entityModel}
         }
       }).catch((e) => console.log("Update se pokazil", e));
     }

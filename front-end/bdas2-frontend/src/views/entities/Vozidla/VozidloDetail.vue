@@ -55,37 +55,39 @@ export default {
     };
   },
   created() {
-    VozidloService.getById(this.getIdDetail).then((resp) => {
-      if (resp?.data) {
-        this.entity = resp.data[0];
-        this.entityModel = {...this.entity};
-        switch (this.entityModel.DISCR) {
-          case "AUTOBUS":
-            AutobusService.getById(this.getIdDetail).then((resp) => {
-              if (resp?.data) {
-                this.entityVozidlo = resp?.data[0];
-                this.entityVozidlo.ELEKTRICKA_SPOTREBA = null;
-                this.entityVozidloModel = {...this.entityVozidlo};
-              }
-            }).catch((e) => console.log(e));
-            break;
-          case "TROLEJBUS":
-            TrolejbusService.getById( this.getIdDetail).then((resp) => {
-              if (resp?.data) {
-                this.entityVozidlo = resp?.data[0];
-                this.entityVozidlo.KAPACITA_NADRZE = null;
-                this.entityVozidloModel = {...this.entityVozidlo};
-              }
-            }).catch((e) => console.log(e));
-            break;
-          default:
-            break;
-        }
-      }
-    });
-
+    this.init();
   },
   methods: {
+    init () {
+      VozidloService.getById(this.getIdDetail).then((resp) => {
+        if (resp?.data) {
+          this.entity = resp.data[0];
+          this.entityModel = {...this.entity};
+          switch (this.entityModel.DISCR) {
+            case "AUTOBUS":
+              AutobusService.getById(this.getIdDetail).then((resp) => {
+                if (resp?.data) {
+                  this.entityVozidlo = resp?.data[0];
+                  this.entityVozidlo.ELEKTRICKA_SPOTREBA = null;
+                  this.entityVozidloModel = {...this.entityVozidlo};
+                }
+              }).catch((e) => console.log(e));
+              break;
+            case "TROLEJBUS":
+              TrolejbusService.getById( this.getIdDetail).then((resp) => {
+                if (resp?.data) {
+                  this.entityVozidlo = resp?.data[0];
+                  this.entityVozidlo.KAPACITA_NADRZE = null;
+                  this.entityVozidloModel = {...this.entityVozidlo};
+                }
+              }).catch((e) => console.log(e));
+              break;
+            default:
+              break;
+          }
+        }
+      });
+    },
     updateSelectedOption (e) {
       this.entityModel.DISCR = e.target.value;
       switch (this.entityModel.DISCR) {
@@ -110,10 +112,12 @@ export default {
           switch (dataEntity.DISCR) {
             case "AUTOBUS":
               AutobusService.deleteEntity(this.getIdDetail).catch((e) => console.log(e));
+              delete dataEntityVozidloModel.ELEKTRICKA_SPOTREBA
               TrolejbusService.createEntity( this.entityVozidloModel).catch((e) => console.log(e));
               break;
             case "TROLEJBUS":
               TrolejbusService.deleteEntity( this.getIdDetail ).catch((e) => console.log(e));
+              delete dataEntityVozidloModel.KAPACITA_NADRZE
               AutobusService.createEntity(dataEntityVozidloModel).catch((e) => console.log(e));
               break;
             default:
@@ -122,16 +126,18 @@ export default {
         } else {
           switch (dataEntityModel.DISCR) {
             case "AUTOBUS":
+              delete dataEntityVozidloModel.ELEKTRICKA_SPOTREBA
               AutobusService.updateEntity(this.getIdDetail, dataEntityVozidloModel, 'ID_VOZIDLO').catch((e) => console.log(e));
               break;
             case "TROLEJBUS":
+              delete dataEntityVozidloModel.KAPACITA_NADRZE
               TrolejbusService.updateEntity( this.getIdDetail, dataEntityVozidloModel, 'ID_VOZIDLO').catch((e) => console.log(e));
               break;
             default:
               break;
           }
         }
-      }).catch((e) => console.log(e));
+      }).then(() => {this.init()}).catch((e) => console.log(e));
     }
   },
   computed: {

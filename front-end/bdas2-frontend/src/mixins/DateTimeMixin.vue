@@ -6,7 +6,7 @@ export default {
       return value.split(' ')[index]
     },
     timeOnly (value) {
-      return value.split(':').slice(0, 2).join(':') + 'h'
+      return value.split(':').slice(0, 2).join(':')
     },
     dateOnly (value) {
       const date = new Date(value)
