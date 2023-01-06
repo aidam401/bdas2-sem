@@ -68,39 +68,28 @@ export default {
     navigationPublicItems() {
       return [
         { name: 'Domovská stránka' , to: 'Home', icon: 'fa-home' },
-        { name: 'Vyhledat linku' , to: 'LinkaSearch', icon: 'fa-circle-nodes' },
-      ];
-    },
-    navigationAdminItems() {
-      return [
-        { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
-        { name: 'CRUD Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
-        { name: 'CRUD Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
-        { name: 'CRUD Jizdní řády' , to: 'Jizdni_rad', icon: 'fa-table-list'},
-        { name: 'CRUD Spoje' , to: 'Casy_zastavek', icon: 'fa-circle-nodes'},
-        { name: 'CRUD Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
-        { name: 'CRUD Linky' , to: 'Linka', icon: 'fa-link' },
+        { name: 'Vyhledat linku' , to: 'LinkaSearch', icon: 'fa-magnifying-glass-location' },
       ];
     },
     navigationLoggedInItems() {
       return [
-        { name: 'Vyhledat spoj' , to: 'SpojSearch', icon: 'fa-circle-nodes' },
+        { name: 'Vyhledat spoj' , to: 'SpojSearch', icon: 'fa-magnifying-glass' },
       ];
     },
     allNavigationItems() {
       return [
         { name: 'Domovská stránka' , to: 'Home', icon: 'fa-home' },
-        { name: 'Pozice zaměstnance' , to: 'Pozice', icon: ''},
-        { name: 'Role uživatele' , to: 'Role', icon: ''},
-        { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
+        { name: 'Pozice zaměstnance' , to: 'Pozice', icon: 'fa-briefcase'},
         { name: 'Zastávky' , to: 'Zastavka', icon: 'fa-location-crosshairs'},
         { name: 'Linky' , to: 'Linka', icon: 'fa-map-location-dot'},
         { name: 'Vozidla', to: 'Vozidlo', icon: 'fa-bus'},
         { name: 'Zaměstnanci' , to: 'Zamestnanec', icon: 'fa-id-card'},
         { name: 'Jizdní řády' , to: 'JizdniRad', icon: 'fa-table-list'},
         { name: 'Spoje' , to: 'Spoj', icon: 'fa-circle-nodes'},
-        { name: 'Vyhledat spoj' , to: 'SpojSearch', icon: 'fa-circle-nodes' },
-        { name: 'Vyhledat linku' , to: 'LinkaSearch', icon: 'fa-circle-nodes' },
+        { name: 'Role uživatele' , to: 'Role', icon: 'fa-shield-halved'},
+        { name: 'Uživatelé', to: 'Uzivatel', icon: 'fa-users'},
+        { name: 'Vyhledat spoj' , to: 'SpojSearch', icon: 'fa-magnifying-glass' },
+        { name: 'Vyhledat linku' , to: 'LinkaSearch', icon: 'fa-magnifying-glass-location' },
       ];
     },
     navigationItems() {
